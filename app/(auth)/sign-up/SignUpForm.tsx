@@ -30,8 +30,8 @@ import { Calendar } from "@/components/ui/calendar";
 import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Major } from "@/enums/enums/major.enums";
-import { University } from "@/enums/enums/university.enums";
+import { Major } from "@/enums/major.enums";
+import { University } from "@/enums/university.enums";
 
 // Define the form schema using Zod
 const formSchema = z

@@ -1,8 +1,6 @@
 import Link from "next/link";
 import MobileMenu from "./mobile-menu";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import {SignedIn, SignedOut, UserButton} from "@clerk/nextjs";
 import NavItems from "@/components/ui/NavItems";
 
 export default function Header() {
