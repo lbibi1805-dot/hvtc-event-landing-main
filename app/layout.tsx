@@ -4,6 +4,7 @@ import { Montserrat } from 'next/font/google'
 
 import Header from '@/components/ui/header'
 import Banner from '@/components/banner'
+import React from "react";
 
 export const metadata = {
   title: 'Create Next App',
@@ -22,7 +23,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className={montserrat.className}>
-    <body className={`antialiased bg-blend-multiply bg-gray-500 bg-fixed text-gray-200 tracking-tight`} style={{ backgroundImage: "url('/images/BACK-01.png')" }}>
+    <body className={`antialiasing bg-blend-multiply bg-gray-500 bg-fixed text-gray-200 tracking-tight`} style={{ backgroundImage: "url('/images/BACK-01.png')" }}>
         <div className="flex flex-col min-h-screen overflow-hidden">
           <Header />
           {children}
