@@ -33,11 +33,13 @@ import { cn } from "@/lib/utils";
 import { Major } from "@/enums/enums/major.enums";
 import { University } from "@/enums/enums/university.enums";
 
-
 // Define the form schema using Zod
 const formSchema = z
 	.object({
-		name: z.string().min(2, { message: "Họ và tên phải có ít nhất 2 ký tự" }).trim(),
+		name: z
+			.string()
+			.min(2, { message: "Họ và tên phải có ít nhất 2 ký tự" })
+			.trim(),
 		dob: z.date({ required_error: "Ngày sinh là bắt buộc" }),
 		email: z
 			.string()
@@ -48,19 +50,17 @@ const formSchema = z
 		phone: z
 			.string()
 			.optional()
-			.refine(
-				(val) => !val || /^(\+84|0)[0-9]{9,10}$/.test(val),
-				{ message: "Số điện thoại không hợp lệ" }
-			)
-			.transform((val) => val?.trim() || ""),
+			.refine(val => !val || /^(\+84|0)[0-9]{9,10}$/.test(val), {
+				message: "Số điện thoại không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
 		cccd: z
 			.string()
 			.optional()
-			.refine(
-				(val) => !val || /^[0-9]{9,12}$/.test(val),
-				{ message: "Số CCCD không hợp lệ" }
-			)
-			.transform((val) => val?.trim() || ""),
+			.refine(val => !val || /^[0-9]{9,12}$/.test(val), {
+				message: "Số CCCD không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
 		university: z.enum(Object.values(University) as [string, ...string[]], {
 			required_error: "Trường đại học là bắt buộc",
 			invalid_type_error: "Trường đại học không hợp lệ",
@@ -72,33 +72,37 @@ const formSchema = z
 		sid: z
 			.string()
 			.optional()
-			.refine(
-				(val) => !val || /^[A-Za-z0-9-]+$/.test(val),
-				{ message: "Mã sinh viên không hợp lệ" }
-			)
-			.transform((val) => val?.trim() || ""),
-		password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-		confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+			.refine(val => !val || /^[A-Za-z0-9-]+$/.test(val), {
+				message: "Mã sinh viên không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
+		password: z
+			.string()
+			.min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+		confirmPassword: z
+			.string()
+			.min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 		linkFacebook: z
 			.string()
 			.optional()
 			.refine(
-				(val) => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val),
+				val =>
+					!val ||
+					/^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val),
 				{ message: "Đường dẫn Facebook không hợp lệ" }
 			),
-		terms: z.boolean().refine((val) => val === true, {
+		terms: z.boolean().refine(val => val, {
 			message: "Bạn phải đồng ý với các điều khoản",
 		}),
 	})
-	.refine((data) => data.password === data.confirmPassword, {
+	.refine(data => data.password === data.confirmPassword, {
 		message: "Mật khẩu không khớp",
 		path: ["confirmPassword"],
 	});
 
 const SignUpForm = () => {
-
 	const form = useForm<z.infer<typeof formSchema>>({
-		resolver: zodResolver(formSchema),
+		resolver: zodResolver(formSchema) as any,
 		defaultValues: {
 			name: "",
 			dob: undefined as unknown as Date,
@@ -118,8 +122,38 @@ const SignUpForm = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
 
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
+	// const onSubmit = (values: z.infer<typeof formSchema>) => {
+	// 	console.log(
+	// 		`Đăng ký thành công với thông tin: ${JSON.stringify(values)}`
+	// 	)
+	// };
 
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(values),
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				alert("Đăng ký thành công!");
+				setSuccess("Đăng ký thành công!");
+				setError(null);
+				form.reset();
+			} else {
+				alert("Đăng ký thất bại!");
+				setError(data.message || "Đăng ký thất bại. Vui lòng thử lại.");
+				setSuccess(null);
+			}
+		} catch (err) {
+			alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			setSuccess(null);
+		}
 	};
 
 	return (
@@ -130,18 +164,31 @@ const SignUpForm = () => {
 						<p className="text-xl font-semibold leading-tight tracking-tight text-gray-900 md:text-2xl">
 							Tham gia <span>Race of Finance</span>
 						</p>
-						{error && <p className="text-red-500 text-sm">{error}</p>}
-						{success && <p className="text-green-500 text-sm">{success}</p>}
+						{error && (
+							<p className="text-red-500 text-sm">{error}</p>
+						)}
+						{success && (
+							<p className="text-green-500 text-sm">{success}</p>
+						)}
 						<Form {...form}>
-							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+							<form
+								onSubmit={form.handleSubmit(onSubmit)}
+								className="space-y-8"
+							>
 								<FormField
 									control={form.control}
 									name="name"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Họ và Tên</FormLabel>
+											<FormLabel className="text-black">
+												Họ và Tên
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Nhập họ tên trên CCCD của bạn" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Nhập họ tên trên CCCD của bạn"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -152,33 +199,52 @@ const SignUpForm = () => {
 									name="dob"
 									render={({ field }) => (
 										<FormItem className="flex flex-col">
-											<FormLabel className="text-black">Ngày sinh</FormLabel>
+											<FormLabel className="text-black">
+												Ngày sinh
+											</FormLabel>
 											<Popover>
 												<PopoverTrigger asChild>
 													<FormControl>
 														<Button
 															variant={"outline"}
 															className={cn(
+																"text-black",
 																"w-full pl-3 text-left font-normal",
-																!field.value && "text-muted-foreground"
+																!field.value &&
+																	"text-muted-foreground"
 															)}
 														>
 															{field.value ? (
-																format(field.value, "PPP")
+																format(
+																	field.value,
+																	"PPP"
+																)
 															) : (
-																<span>Chọn ngày sinh</span>
+																<span>
+																	Chọn ngày
+																	sinh
+																</span>
 															)}
 															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 														</Button>
 													</FormControl>
 												</PopoverTrigger>
-												<PopoverContent className="w-auto p-0" align="start">
+												<PopoverContent
+													className="w-auto p-0"
+													align="start"
+												>
 													<Calendar
 														mode="single"
 														selected={field.value}
-														onSelect={field.onChange}
-														disabled={(date) =>
-															date > new Date() || date < new Date("1900-01-01")
+														onSelect={
+															field.onChange
+														}
+														disabled={date =>
+															date > new Date() ||
+															date <
+																new Date(
+																	"1900-01-01"
+																)
 														}
 														initialFocus
 													/>
@@ -193,9 +259,15 @@ const SignUpForm = () => {
 									name="email"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Email</FormLabel>
+											<FormLabel className="text-black">
+												Email
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Nhập email của bạn" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Nhập email của bạn"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -206,9 +278,15 @@ const SignUpForm = () => {
 									name="phone"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Số điện thoại</FormLabel>
+											<FormLabel className="text-black">
+												Số điện thoại
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Số điện thoại của bạn" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Số điện thoại của bạn"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -219,9 +297,15 @@ const SignUpForm = () => {
 									name="cccd"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Số Căn Cước Công Dân</FormLabel>
+											<FormLabel className="text-black">
+												Số Căn Cước Công Dân
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Số CCCD ghi trong CCCD" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Số CCCD ghi trong CCCD"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -232,16 +316,26 @@ const SignUpForm = () => {
 									name="university"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Trường đang theo học</FormLabel>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormLabel className="text-black">
+												Trường đang theo học
+											</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Chọn trường đại học" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{Object.values(University).map((uni, index) => (
-														<SelectItem key={`university-${index}`} value={String(uni)}>
+													{Object.values(
+														University
+													).map((uni, index) => (
+														<SelectItem
+															key={`university-${index}`}
+															value={String(uni)}
+														>
 															{uni}
 														</SelectItem>
 													))}
@@ -257,19 +351,29 @@ const SignUpForm = () => {
 									name="major"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Ngành học</FormLabel>
-											<Select onValueChange={field.onChange} defaultValue={field.value}>
+											<FormLabel className="text-black">
+												Ngành học
+											</FormLabel>
+											<Select
+												onValueChange={field.onChange}
+												defaultValue={field.value}
+											>
 												<FormControl>
 													<SelectTrigger>
 														<SelectValue placeholder="Chọn ngành học" />
 													</SelectTrigger>
 												</FormControl>
 												<SelectContent>
-													{Object.values(Major).map((major) => (
-														<SelectItem key={major} value={major}>
-															{major}
-														</SelectItem>
-													))}
+													{Object.values(Major).map(
+														major => (
+															<SelectItem
+																key={major}
+																value={major}
+															>
+																{major}
+															</SelectItem>
+														)
+													)}
 												</SelectContent>
 											</Select>
 											<FormMessage />
@@ -281,9 +385,15 @@ const SignUpForm = () => {
 									name="sid"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Mã sinh viên</FormLabel>
+											<FormLabel className="text-black">
+												Mã sinh viên
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Mã sinh viên của bạn" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Mã sinh viên của bạn"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -294,9 +404,16 @@ const SignUpForm = () => {
 									name="password"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Mật khẩu</FormLabel>
+											<FormLabel className="text-black">
+												Mật khẩu
+											</FormLabel>
 											<FormControl>
-												<Input type="password" placeholder="Nhập mật khẩu" {...field} />
+												<Input
+													className={"text-black"}
+													type="password"
+													placeholder="Nhập mật khẩu"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -307,9 +424,16 @@ const SignUpForm = () => {
 									name="confirmPassword"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Xác nhận mật khẩu</FormLabel>
+											<FormLabel className="text-black">
+												Xác nhận mật khẩu
+											</FormLabel>
 											<FormControl>
-												<Input type="password" placeholder="Xác nhận mật khẩu" {...field} />
+												<Input
+													className={"text-black"}
+													type="password"
+													placeholder="Xác nhận mật khẩu"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -320,9 +444,15 @@ const SignUpForm = () => {
 									name="linkFacebook"
 									render={({ field }) => (
 										<FormItem>
-											<FormLabel className="text-black">Link Facebook</FormLabel>
+											<FormLabel className="text-black">
+												Link Facebook
+											</FormLabel>
 											<FormControl>
-												<Input placeholder="Đường dẫn đến Facebook cá nhân" {...field} />
+												<Input
+													className={"text-black"}
+													placeholder="Đường dẫn đến Facebook cá nhân"
+													{...field}
+												/>
 											</FormControl>
 											<FormMessage />
 										</FormItem>
@@ -348,7 +478,8 @@ const SignUpForm = () => {
 														href="#"
 														className="text-[#27548A] font-medium hover:underline"
 													>
-														Các quy định của ban tổ chức và cuộc thi
+														Các quy định của ban tổ
+														chức và cuộc thi
 													</a>
 												</FormLabel>
 											</div>

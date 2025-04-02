@@ -95,8 +95,26 @@ const ProfileForm = () => {
 	});
 
 	// Define the submit handler
-	const onSubmit = (values: z.infer<typeof formSchema>) => {
-		alert("Clicked")
+	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		try {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in`, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/json",
+				},
+				body: JSON.stringify(values),
+			});
+
+			const data = await response.json();
+			if (response.ok) {
+				alert("Đăng nhập thành công!");
+				form.reset();
+			} else {
+				alert("Đăng nhập thất bại!");
+			}
+		} catch (err) {
+			alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+		}
 	};
 
 	return (
