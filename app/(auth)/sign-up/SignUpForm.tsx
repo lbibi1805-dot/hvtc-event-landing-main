@@ -32,7 +32,11 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Major } from "@/enums/major.enums";
 import { University } from "@/enums/university.enums";
-import ToastUtil from "@/lib/ToastUtil";
+import ToastUtil, { ToastType } from "@/lib/ToastUtil";
+import dynamic from 'next/dynamic';
+
+// Tải react-modal một cách động, chỉ trên client-side
+const Modal = dynamic(() => import('react-modal'), { ssr: false });
 
 // Define the form schema using Zod
 const formSchema = z
@@ -122,11 +126,15 @@ const SignUpForm = () => {
 
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [code, setCode] = useState('');
+	const [token, setToken] = useState('');
+	const [isResending, setIsResending] = useState(false);
 
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
 			const response = await fetch(
-				`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`,
+				`http://localhost:5001/api/v1/auth/sign-up`,
 				{
 					method: "POST",
 					headers: {
@@ -138,13 +146,32 @@ const SignUpForm = () => {
 
 			const data = await response.json();
 			if (response.ok) {
-				ToastUtil.success('Đăng ký thành công!', 'Chào mừng bạn', {
-					duration: 3000,
-					position: 'top-right',
-				});
-				setSuccess("Đăng ký thành công!");
-				setError(null);
-				form.reset();
+				// Gửi yêu cầu để lấy mã xác nhận
+				const verificationResponse = await fetch(
+					`http://localhost:5001/api/v1/auth/send-verification`,
+					{
+						method: "POST",
+						headers: {
+							"Content-Type": "application/json",
+						},
+						body: JSON.stringify({ email: values.email, candidateData: values }),
+					}
+				);
+
+				const verificationData = await verificationResponse.json();
+				if (verificationResponse.ok) {
+					setToken(verificationData.token);
+					ToastUtil.success('Thành công', verificationData.message, {
+						duration: 3000,
+						position: 'top-right',
+					});
+					setIsModalOpen(true); // Mở modal để nhập mã
+					setError(null);
+				} else {
+					ToastUtil.error('Thất bại', verificationData.message || "Không thể gửi mã xác nhận.");
+					setError(verificationData.message || "Không thể gửi mã xác nhận.");
+					setSuccess(null);
+				}
 			} else {
 				ToastUtil.error('Đăng ký thất bại', data.message || "Vui lòng thử lại.");
 				setError(data.message || "Đăng ký thất bại. Vui lòng thử lại.");
@@ -154,6 +181,80 @@ const SignUpForm = () => {
 			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
 			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
 			setSuccess(null);
+		}
+	};
+
+	const handleResendCode = async () => {
+		setIsResending(true);
+		const toastId = ToastUtil.show(ToastType.LOADING, 'Đang gửi lại mã xác nhận...');
+		try {
+			const response = await fetch(
+				`http://localhost:5001/api/v1/auth/send-verification`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({ email: form.getValues('email'), candidateData: form.getValues() }),
+				}
+			);
+			const data = await response.json();
+			if (response.ok) {
+				setToken(data.token);
+				ToastUtil.success('Thành công', data.message, {
+					duration: 3000,
+					position: 'top-right',
+				});
+			} else {
+				ToastUtil.error('Thất bại', data.message || "Không thể gửi lại mã xác nhận.");
+			}
+		} catch (error) {
+			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
+		} finally {
+			ToastUtil.dismiss(toastId);
+			setIsResending(false);
+		}
+	};
+
+	const handleVerifyCode = async () => {
+		const toastId = ToastUtil.show(ToastType.LOADING, 'Đang xác nhận...');
+		try {
+			const response = await fetch(
+				`http://localhost:5001/api/v1/auth/verify-code`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify({
+						email: form.getValues('email'),
+						code,
+						token,
+						candidateData: form.getValues(),
+					}),
+				}
+			);
+			const data = await response.json();
+			if (response.ok) {
+				ToastUtil.success('Đăng ký thành công!', 'Bạn có thể đăng nhập ngay bây giờ.', {
+					duration: 3000,
+					position: 'top-right',
+				});
+				setSuccess("Đăng ký thành công!");
+				setError(null);
+				setIsModalOpen(false);
+				form.reset();
+			} else {
+				ToastUtil.error('Xác nhận thất bại', data.message || "Vui lòng thử lại.");
+				setError(data.message || "Xác nhận thất bại. Vui lòng thử lại.");
+				setSuccess(null);
+			}
+		} catch (error) {
+			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
+			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			setSuccess(null);
+		} finally {
+			ToastUtil.dismiss(toastId);
 		}
 	};
 
@@ -212,7 +313,7 @@ const SignUpForm = () => {
 																"text-black",
 																"w-full pl-3 text-left font-normal",
 																!field.value &&
-																	"text-muted-foreground"
+																"text-muted-foreground"
 															)}
 														>
 															{field.value ? (
@@ -222,9 +323,9 @@ const SignUpForm = () => {
 																)
 															) : (
 																<span>
-																	Chọn ngày
-																	sinh
-																</span>
+                                  Chọn ngày
+                                  sinh
+                                </span>
 															)}
 															<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
 														</Button>
@@ -243,9 +344,9 @@ const SignUpForm = () => {
 														disabled={date =>
 															date > new Date() ||
 															date <
-																new Date(
-																	"1900-01-01"
-																)
+															new Date(
+																"1900-01-01"
+															)
 														}
 														initialFocus
 													/>
@@ -346,7 +447,6 @@ const SignUpForm = () => {
 										</FormItem>
 									)}
 								/>
-
 								<FormField
 									control={form.control}
 									name="major"
@@ -502,6 +602,49 @@ const SignUpForm = () => {
 					</div>
 				</div>
 			</div>
+
+			{/* Modal để nhập mã xác nhận */}
+			<Modal
+				isOpen={isModalOpen}
+				onRequestClose={() => setIsModalOpen(false)}
+				className="fixed inset-0 flex items-center justify-center p-4 bg-black bg-opacity-50"
+				overlayClassName="fixed inset-0"
+			>
+				<div className="bg-white rounded-lg p-6 max-w-sm w-full">
+					<h2 className="text-xl font-bold mb-4 text-gray-800">Xác Nhận Email</h2>
+					<p className="text-black mb-4">Vui lòng nhập mã xác nhận đã được gửi đến email {form.getValues('email')}</p>
+					<input
+						type="text"
+						value={code}
+						onChange={(e) => setCode(e.target.value)}
+						className="w-full p-2 border rounded mb-4 text-gray-800"
+						placeholder="Nhập mã xác nhận"
+						required
+					/>
+					<button
+						type="button"
+						onClick={handleResendCode}
+						disabled={isResending}
+						className="mb-4 text-blue-500 hover:underline disabled:opacity-50"
+					>
+						Gửi lại mã
+					</button>
+					<div className="flex justify-end gap-2">
+						<button
+							onClick={() => setIsModalOpen(false)}
+							className="p-2  text-white bg-red-700 rounded hover:bg-red-800"
+						>
+							Hủy
+						</button>
+						<button
+							onClick={handleVerifyCode}
+							className="p-2 bg-[#203355] text-white rounded hover:bg-purple-700"
+						>
+							Xác Nhận
+						</button>
+					</div>
+				</div>
+			</Modal>
 		</div>
 	);
 };
