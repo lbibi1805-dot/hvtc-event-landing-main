@@ -5,12 +5,20 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/components/ClientWrapper.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ProtectedRoute.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/components/ui/NavLink.tsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/lib/ToastUtil.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-in/signInForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-in/signInForm.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/components/ui/header.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/header.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/enums/major.enums.ts" beforeDir="false" afterPath="$PROJECT_DIR$/enums/major.enums.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/enums/source.enum.ts" beforeDir="false" afterPath="$PROJECT_DIR$/enums/source.enum.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/enums/enums/university.enums.ts" beforeDir="false" afterPath="$PROJECT_DIR$/enums/university.enums.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/mobile-menu.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/mobile-menu.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/context/AuthContext.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/context/AuthContext.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/interfaces/AuthContextInterface.ts" beforeDir="false" afterPath="$PROJECT_DIR$/interfaces/AuthContextInterface.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
     </list>
@@ -46,6 +54,9 @@
   &quot;associatedIndex&quot;: 1
 }</component>
   <component name="ProjectId" id="2uwaOpuTy13uk6qfZa3IDrJrbs5" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -57,7 +68,7 @@
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "SignInAndSignUp",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Workspace/WebDev/hvtc-event-landing-main",
+    "last_opened_file_path": "D:/Workspace/WebDev/hvtc-backend",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
@@ -72,6 +83,7 @@
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\store" />
       <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\enums" />
       <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\components\ui" />
     </key>
@@ -125,7 +137,9 @@
       <workItem from="1743503681806" duration="9189000" />
       <workItem from="1743520299993" duration="7569000" />
       <workItem from="1743578801245" duration="590000" />
-      <workItem from="1743587842666" duration="2454000" />
+      <workItem from="1743587842666" duration="3470000" />
+      <workItem from="1743615188978" duration="3127000" />
+      <workItem from="1743841900761" duration="7552000" />
     </task>
     <servers />
   </component>

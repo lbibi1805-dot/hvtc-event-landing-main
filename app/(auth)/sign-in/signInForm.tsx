@@ -1,62 +1,3 @@
-// import React from "react";
-// import Link from "next/link";
-//
-// const Form = () => {
-// 	return (
-// 		<div className="max-w-screen-xl relative flex flex-col p-5 md:p-10 lg:p-18 rounded-xl text-black bg-white shadow-lg">
-// 			<div className="text-md md:text-lg lg:text-xl font-bold mb-7 text-[#1e0e4b] text-center">
-// 				Đăng nhập vào Race of Finance
-// 			</div>
-// 			{/*<div className="text-sm font-normal mb-4 text-center text-[#1e0e4b]">Log in to your account</div>*/}
-// 			<form className="flex flex-col gap-3">
-// 				<div className="block relative">
-// 					<label
-// 						htmlFor="email"
-// 						className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
-// 					>
-// 						Email hoặc username
-// 					</label>
-// 					<input
-// 						type="text"
-// 						id="email"
-// 						className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
-// 					/>
-// 				</div>
-// 				<div className="block relative">
-// 					<label
-// 						htmlFor="password"
-// 						className="block text-gray-600 cursor-text text-sm leading-[140%] font-normal mb-2"
-// 					>
-// 						Password
-// 					</label>
-// 					<input
-// 						type="text"
-// 						id="password"
-// 						className="rounded border border-gray-200 text-sm w-full font-normal leading-[18px] text-black tracking-[0px] appearance-none block h-11 m-0 p-[11px] focus:ring-2 ring-offset-2 ring-gray-900 outline-0"
-// 					/>
-// 				</div>
-// 				<div className="text-sm text-[#27548A] font-semibold">
-// 					<a href="/reset-password">Bạn quên mật khẩu?</a>
-// 				</div>
-// 				<button
-// 					type="submit"
-// 					className="bg-[#27548A] font-semibold w-max m-auto px-6 py-2 text-white text-sm rounded-xl"
-// 				>
-// 					Submit
-// 				</button>
-// 			</form>
-// 			<div className="text-sm text-center mt-[1.6rem]">
-// 				Chưa có tài khoản?{" "}
-// 				<a className="text-sm text-[#27548A]" href="/sign-up">
-// 					Đăng ký để tham gia!
-// 				</a>
-// 			</div>
-// 		</div>
-// 	);
-// };
-//
-// export default Form;
-
 "use client";
 
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -73,6 +14,10 @@ import {
 	FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { useState } from "react";
+import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
+import ToastUtil from "@/lib/ToastUtil";
 
 // Define the form schema using Zod
 const formSchema = z.object({
@@ -85,7 +30,14 @@ const formSchema = z.object({
 });
 
 // Initialize the form with react-hook-form and Zod resolver
-const ProfileForm = () => {
+const SignInForm = () => {
+
+
+	// @ts-ignore
+	const { login } = useAuth();
+	const [error, setError] = useState<string | null>(null);
+	const [success, setSuccess] = useState<string | null>(null);
+
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
 		defaultValues: {
@@ -105,15 +57,29 @@ const ProfileForm = () => {
 				body: JSON.stringify(values),
 			});
 
+
 			const data = await response.json();
 			if (response.ok) {
-				alert("Đăng nhập thành công!");
+				setSuccess("Đăng nhập thành công!");
+				setError(null);
+				ToastUtil.success('Đăng nhập thành công!', 'Chào mừng bạn quay lại.', {
+					duration: 3000,
+					position: 'top-right',
+				});
 				form.reset();
+
+				if (data.data.token) {
+					login(data.data.token); // Lưu token và cập nhật trạng thái xác thực
+				}
 			} else {
-				alert("Đăng nhập thất bại!");
+				setError(data.message || "Đăng nhập thất bại. Vui lòng thử lại.");
+				setSuccess(null);
+				ToastUtil.error('Đăng nhập thất bại', 'Vui lòng kiểm tra email và mật khẩu.');
 			}
 		} catch (err) {
-			alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			setSuccess(null);
+			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
 		}
 	};
 
@@ -166,4 +132,4 @@ const ProfileForm = () => {
 	);
 };
 
-export default ProfileForm;
+export default SignInForm;

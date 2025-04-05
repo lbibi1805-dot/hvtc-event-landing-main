@@ -32,6 +32,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Major } from "@/enums/major.enums";
 import { University } from "@/enums/university.enums";
+import ToastUtil from "@/lib/ToastUtil";
 
 // Define the form schema using Zod
 const formSchema = z
@@ -122,35 +123,35 @@ const SignUpForm = () => {
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
 
-	// const onSubmit = (values: z.infer<typeof formSchema>) => {
-	// 	console.log(
-	// 		`Đăng ký thành công với thông tin: ${JSON.stringify(values)}`
-	// 	)
-	// };
-
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(values),
-			});
+			const response = await fetch(
+				`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`,
+				{
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json",
+					},
+					body: JSON.stringify(values),
+				}
+			);
 
 			const data = await response.json();
 			if (response.ok) {
-				alert("Đăng ký thành công!");
+				ToastUtil.success('Đăng ký thành công!', 'Chào mừng bạn', {
+					duration: 3000,
+					position: 'top-right',
+				});
 				setSuccess("Đăng ký thành công!");
 				setError(null);
 				form.reset();
 			} else {
-				alert("Đăng ký thất bại!");
+				ToastUtil.error('Đăng ký thất bại', data.message || "Vui lòng thử lại.");
 				setError(data.message || "Đăng ký thất bại. Vui lòng thử lại.");
 				setSuccess(null);
 			}
 		} catch (err) {
-			alert("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
 			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
 			setSuccess(null);
 		}
