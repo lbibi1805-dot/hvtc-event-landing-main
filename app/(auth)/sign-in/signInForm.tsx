@@ -16,6 +16,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
+import { toast } from "sonner";
+import ToastUtil from "@/lib/ToastUtil";
 
 // Define the form schema using Zod
 const formSchema = z.object({
@@ -55,11 +57,15 @@ const SignInForm = () => {
 				body: JSON.stringify(values),
 			});
 
+
 			const data = await response.json();
 			if (response.ok) {
 				setSuccess("Đăng nhập thành công!");
 				setError(null);
-				alert("Sign in successful!");
+				ToastUtil.success('Đăng nhập thành công!', 'Chào mừng bạn quay lại.', {
+					duration: 3000,
+					position: 'top-right',
+				});
 				form.reset();
 
 				if (data.data.token) {
@@ -68,12 +74,12 @@ const SignInForm = () => {
 			} else {
 				setError(data.message || "Đăng nhập thất bại. Vui lòng thử lại.");
 				setSuccess(null);
-				alert("Sign in failed!");
+				ToastUtil.error('Đăng nhập thất bại', 'Vui lòng kiểm tra email và mật khẩu.');
 			}
 		} catch (err) {
 			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
 			setSuccess(null);
-			alert("An error occurred!");
+			ToastUtil.error('Lỗi hệ thống', 'Vui lòng thử lại sau.');
 		}
 	};
 
