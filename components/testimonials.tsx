@@ -7,11 +7,15 @@ import TestimonialImage03 from "@/public/images/testimonial-03.jpg";
 export default function Testimonials() {
   return (
     <section>
-      <div className="max-w-3xl mx-auto text-center">
-        <h2 className="h2 mt-32" data-aos="fade-up" style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}>
-          CƠ CẤU GIẢI THƯỞNG
-        </h2>
+      <div className="max-w-3xl mx-auto text-center pb-10 md:pb-12 -mb-24 mt-36">
+          <h2
+            className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 drop-shadow-lg"
+            style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)", color: "white" }}
+          >
+            CƠ CẤU GIẢI THƯỞNG
+          </h2>
       </div>
+
 
       <div className="max-w-6xl mx-auto mt-14">
         <div className="py-10 md:py-10 px-4 sm:px-6 rounded-3xl bg-gradient-to-r from-[#213c58] to-[#3b82f680]">
@@ -29,7 +33,7 @@ export default function Testimonials() {
           </div>
 
 
-         <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-4 lg:gap-6 items-start lg:max-w-none">
+          <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-4 lg:gap-6 items-start lg:max-w-none">
             <div
               className="flex flex-col h-full p-6 rounded-3xl"
               data-aos="fade-up"

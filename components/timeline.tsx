@@ -5,11 +5,16 @@ import ModalVideo from "@/components/modal-video";
 export default function Timeline() {
   return (
     <section id = "timeline"> 
-      <div className="max-w-3xl mx-auto text-center pb-10 md:pb-12">
-        <h2 className="h2" style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}>THỂ LỆ</h2>
+      <div className="max-w-3xl mx-auto text-center pb-10 md:pb-12 -mb-12">
+        <h2
+          className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 drop-shadow-lg"
+          style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)", color: "white" }}
+        >
+          THỂ LỆ
+        </h2>
       </div>
 
-      <div className=" max-w-6xl mx-auto  bg-[#2F6095] bg-opacity-50 py-10  rounded-3xl">
+      <div className=" max-w-6xl mx-auto  bg-[#2F6095] bg-opacity-50 py-4  rounded-3xl">
       <div
         className="px-4 sm:px-6 "
         data-aos="fade-up"
@@ -191,14 +196,16 @@ export default function Timeline() {
         
       </div>
       <div className="flex justify-center items-center text-center mt-10" data-aos="fade-up" data-aos-delay="400">
-          <a
-            className="btn text-white bg-[#2F6095] hover:bg-white hover:text-[#2F6095] w-full mb-4 sm:w-auto sm:mb-0 rounded-2xl inline-block drop-shadow-lg font-bold text-xl"
-            href="https://drive.google.com/file/d/1rchowFh5WA7EgyqtYul-1G9T1bh9BSIb/view" target="_blank"
-          >
-            BOOKLET CUỘC THI
-          </a>
-        </div>
-        </div>
+        <a
+          className="btn text-white bg-gradient-to-r from-[#2F6095] to-[#1E4A7A] hover:from-white hover:to-white hover:text-[#2F6095] px-8 py-4 rounded-full inline-block drop-shadow-lg font-bold text-lg transition duration-300 ease-in-out transform hover:scale-105"
+          href="https://drive.google.com/file/d/1rchowFh5WA7EgyqtYul-1G9T1bh9BSIb/view"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          BOOKLET CUỘC THI
+        </a>
+      </div>
+    </div>
     </section>
   );
 }

@@ -14,279 +14,34 @@ const slides = [
 
 function ImageList() {
   return (
-    <section>
-      <div className="flex justify-center items-center h-screen">
-        <div className="relative max-w-3xl mx-auto text-center pb-10 md:pb-12">
-          <h2
-            className="h2 mb-20"
-            style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}
-          >
-            HÌNH ẢNH VỀ CUỘC THI RACE OF FINANCE 2023
-          </h2>
-          <Carousel autoSlide={false}>
-            {slides.map((s, index) => (
-              <img key={index} src={s} alt={`Slide ${index + 1}`} />
-            ))}
-          </Carousel>
-          <div id="animation2" className="absolute -bottom-32 left-48">
-                <div id="stars" className="">
-                <div id="star" className="flex">
-                  <div className="particles">
-                    <div className="rotate">
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="particles">
-                    <div className="rotate">
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+    <section className="py-16">
+      <div className="flex justify-center items-center mt-36">
+        <div className="relative max-w-6xl mx-auto text-center">
+          {/* Section Header */}
+          <div className="pb-10 md:pb-12 mb-1.5">
+            <h2
+              className="text-2xl md:text-4xl font-extrabold color:white bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 drop-shadow-lg"
+              style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}
+            >
+              MỘT SỐ HÌNH ẢNH CUỘC THI RACE OF FINANCE 2023
+            </h2>
+          </div>
 
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                </div >
-                <div id="stars" className="">
-                <div id="star" className="flex">
-                  <div className="particles">
-                    <div className="rotate">
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="particles">
-                    <div className="rotate">
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-
-                      <div className="angle">
-                        <div className="size">
-                          <div className="position">
-                            <div className="pulse">
-                              <div className="particle"></div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                </div >
-              </div>
+          {/* Carousel */}
+          <div className="-mt-8">
+            <Carousel autoSlide={false}>
+              {slides.map((slide, index) => (
+                <img
+                  key={index}
+                  src={slide}
+                  alt={`Slide ${index + 1}`}
+                  className="rounded-lg shadow-lg"
+                />
+              ))}
+            </Carousel>
+          </div>
         </div>
       </div>
-      
     </section>
   );
 }
