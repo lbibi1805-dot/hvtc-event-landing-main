@@ -1,14 +1,18 @@
 "use client";
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
 	const [currentQuestion, setCurrentQuestion] = useState(1);
 	const [answers, setAnswers] = useState<Record<number, string | null>>({});
-	const [timeLeft, setTimeLeft] = useState(1800); // 30 minutes in seconds
+	const [timeLeft, setTimeLeft] = useState(5); // 30 minutes in seconds CHANGE THE COUNTDOWN TIME
 	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0);
 	const [warningMessage, setWarningMessage] = useState("");
+	const [isReady, setIsReady] = useState(false); // Modal state
+	const [timeUp, setTimeUp] = useState(false); // Time-up state
+	const router = useRouter();
 
 	// Reset tab switch count at start of exam
 	useEffect(() => {
@@ -18,11 +22,19 @@ const ExamQuestion = () => {
 
 	// Timer countdown logic
 	useEffect(() => {
-		const timer = setInterval(() => {
-			setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
-		}, 1000);
-		return () => clearInterval(timer);
-	}, []);
+		if (timeLeft > 0) {
+			const timer = setInterval(() => {
+				setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+			}, 1000);
+			return () => clearInterval(timer);
+		} else {
+			// When time is up
+			setTimeUp(true);
+			setTimeout(() => {
+				router.push("/"); // Redirect to home page after 10 seconds
+			}, 5000);
+		}
+	}, [timeLeft, router]);
 
 	// Detect tab or window switching (anti-cheating)
 	useEffect(() => {
@@ -31,7 +43,7 @@ const ExamQuestion = () => {
 			setTabSwitchCount(newCount);
 			localStorage.setItem("tabSwitchCount", newCount.toString());
 			setWarningMessage(
-				`⚠️ You left the exam environment! (${newCount} ${newCount === 1 ? "time" : "times"})`
+				`⚠️ Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
 			);
 			setTimeout(() => setWarningMessage(""), 30000);
 		};
@@ -69,105 +81,133 @@ const ExamQuestion = () => {
 		alert("Answers submitted!");
 	};
 
+	// Handle modal confirmation
+	const handleReady = () => {
+		setIsReady(true);
+	};
+
 	return (
 		<ProtectedRoute>
-			<div className="min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
-				<div className="w-full max-w-10xl bg-white shadow-sm rounded-2xl flex flex-col lg:flex-row overflow-hidden border border-gray-200">
-
-					{/* PDF Viewer Section */}
-					<div className="w-full lg:w-15/16 p-4 bg-gray-50 mt-16" >
-						<iframe
-							src="/project.pdf"
-							title="Exam"
-							className="w-full h-[400px] md:h-[500px] lg:h-[90vh] rounded-xl border border-gray-300"
-						></iframe>
-					</div>
-
-					{/* Answer Panel Section */}
-					<div className="w-full lg:w-1/3 p-6 flex flex-col justify-between mt-16">
-
-						{/* Refined Timer */}
-						<div className="text-right mb-6">
-							<div className="inline-flex items-center px-6 py-3 rounded-2xl bg-[#f2f2f2] text-gray-900 border border-gray-300 text-xl font-semibold tracking-wide shadow-inner">
-								{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
-								{String(timeLeft % 60).padStart(2, "0")}
-							</div>
-						</div>
-
-						{/* Tab switch warning */}
-						{warningMessage && (
-							<div className="mb-4 flex items-start gap-3 p-4 rounded-xl border border-red-200 bg-red-50 text-sm text-red-800 shadow-sm transition-opacity duration-300">
-								<svg
-									className="w-5 h-5 mt-0.5 shrink-0 text-red-500"
-									fill="none"
-									stroke="currentColor"
-									strokeWidth={2}
-									viewBox="0 0 24 24"
-								>
-									<path
-										strokeLinecap="round"
-										strokeLinejoin="round"
-										d="M12 9v2m0 4h.01m-.01-12a9 9 0 110 18 9 9 0 010-18z"
-									/>
-								</svg>
-								<span>{warningMessage}</span>
-							</div>
-						)}
-
-						{/* Question number buttons */}
-						<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
-							{Array.from({ length: totalQuestions }, (_, i) => i + 1).map((num) => (
-								<button
-									key={num}
-									onClick={() => handleQuestionSelect(num)}
-									className={`py-1 rounded-lg text-sm font-medium transition border ${
-										currentQuestion === num
-											? "bg-blue-600 text-white border-blue-600"
-											: answers[num]
-												? "bg-green-100 text-green-800 border-green-200"
-												: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-									}`}
-								>
-									{num}
-								</button>
-							))}
-						</div>
-
-						{/* Question header */}
-						<h2 className="text-lg font-semibold text-gray-800 mb-4">
-							Question {currentQuestion} of {totalQuestions}
-						</h2>
-
-						{/* Multiple choice answer options */}
-						<form className="space-y-3 mb-6">
-							{["A", "B", "C", "D"].map((option) => (
-								<label
-									key={option}
-									className="flex items-center space-x-3 text-gray-700 hover:text-blue-700"
-								>
-									<input
-										type="radio"
-										name={`question-${currentQuestion}`}
-										value={option}
-										checked={answers[currentQuestion] === option}
-										onChange={() => handleAnswerChange(option)}
-										className="accent-blue-600"
-									/>
-									<span className="text-base">{option}</span>
-								</label>
-							))}
-						</form>
-
-						{/* Submit answers button */}
+			{!isReady ? (
+				// Modal for readiness confirmation
+				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
+					<div className="bg-white p-6 rounded-lg shadow-lg text-center">
+						<h2 className="text-xl font-semibold text-black mb-4">Are you ready to start the exam?</h2>
 						<button
-							onClick={handleSubmit}
-							className="mt-auto w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+							onClick={handleReady}
+							className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
 						>
-							Submit
+							Yes, I'm Ready
 						</button>
 					</div>
 				</div>
-			</div>
+			) : (
+				<div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
+					{/* Disable screen when time is up */}
+					{timeUp && (
+						<div className="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
+							<div className="bg-white p-6 rounded-lg shadow-lg text-center">
+								<h2 className="text-xl font-semibold mb-4 text-red-600">Đã kết thức thời gian làm bài thi!</h2>
+								<p className="text-gray-700"> Đang điều hướng về trang chủ...</p>
+							</div>
+						</div>
+					)}
+
+					<div className="w-full max-w-10xl bg-white shadow-sm rounded-2xl flex flex-col lg:flex-row overflow-hidden border border-gray-200">
+						{/* PDF Viewer Section */}
+						<div className="w-full lg:w-15/16 p-4 bg-gray-50 mt-16">
+							<iframe
+								src="/project.pdf"
+								title="Exam"
+								className="w-full h-[400px] md:h-[500px] lg:h-[90vh] rounded-xl border border-gray-300"
+							></iframe>
+						</div>
+
+						{/* Answer Panel Section */}
+						<div className="w-full lg:w-1/3 p-6 flex flex-col justify-between mt-16">
+							{/* Refined Timer */}
+							<div className="text-right mb-6">
+								<div className="inline-flex items-center px-6 py-3 rounded-2xl bg-[#f2f2f2] text-gray-900 border border-gray-300 text-xl font-semibold tracking-wide shadow-inner">
+									{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+									{String(timeLeft % 60).padStart(2, "0")}
+								</div>
+							</div>
+
+							{/* Tab switch warning */}
+							{warningMessage && (
+								<div className="mb-4 flex items-start gap-3 p-4 rounded-xl border border-red-200 bg-red-50 text-sm text-red-800 shadow-sm transition-opacity duration-300">
+									<svg
+										className="w-5 h-5 mt-0.5 shrink-0 text-red-500"
+										fill="none"
+										stroke="currentColor"
+										strokeWidth={2}
+										viewBox="0 0 24 24"
+									>
+										<path
+											strokeLinecap="round"
+											strokeLinejoin="round"
+											d="M12 9v2m0 4h.01m-.01-12a9 9 0 110 18 9 9 0 010-18z"
+										/>
+									</svg>
+									<span>{warningMessage}</span>
+								</div>
+							)}
+
+							{/* Question number buttons */}
+							<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
+								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map((num) => (
+									<button
+										key={num}
+										onClick={() => handleQuestionSelect(num)}
+										className={`py-1 rounded-lg text-sm font-medium transition border ${
+											currentQuestion === num
+												? "bg-blue-600 text-white border-blue-600"
+												: answers[num]
+													? "bg-green-100 text-green-800 border-green-200"
+													: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+										}`}
+									>
+										{num}
+									</button>
+								))}
+							</div>
+
+							{/* Question header */}
+							<h2 className="text-lg font-semibold text-gray-800 mb-4">
+								Question {currentQuestion} of {totalQuestions}
+							</h2>
+
+							{/* Multiple choice answer options */}
+							<form className="space-y-3 mb-6">
+								{["A", "B", "C", "D"].map((option) => (
+									<label
+										key={option}
+										className="flex items-center space-x-3 text-gray-700 hover:text-blue-700"
+									>
+										<input
+											type="radio"
+											name={`question-${currentQuestion}`}
+											value={option}
+											checked={answers[currentQuestion] === option}
+											onChange={() => handleAnswerChange(option)}
+											className="accent-blue-600"
+										/>
+										<span className="text-base">{option}</span>
+									</label>
+								))}
+							</form>
+
+							{/* Submit answers button */}
+							<button
+								onClick={handleSubmit}
+								className="mt-auto w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
+							>
+								Submit
+							</button>
+						</div>
+					</div>
+				</div>
+			)}
 		</ProtectedRoute>
 	);
 };
