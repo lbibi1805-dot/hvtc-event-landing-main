@@ -24,9 +24,15 @@ import Sponsor from '@/components/sponsor'
 import ImageList from '@/components/ImageList'
 // import ImageList from '@/components/ImageList'
 
-const DATA = [{ image: "/images/Asset 1.png" },
-{ image: "/images/BACK-01.png" },
+const DATA = [
+    { image: "/images/Asset 1.png" },
+    { image: "/images/BACK-01.png" },
 ]
+const animationVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 
 export default function Home() {
   return (
@@ -47,7 +53,7 @@ export default function Home() {
       <Countdown />
       <Timeline />
       <Testimonials />
-      <Sponsor/>
+      {/*<Sponsor/>*/}
       <ImageList/>
     </div>
   )
