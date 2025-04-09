@@ -130,8 +130,9 @@ const Countdown: React.FC = () => {
           >
             <a
               className="btn text-white bg-[#2F6095] hover:bg-white hover:text-[#2F6095] px-6 py-3 rounded-2xl inline-block drop-shadow-lg font-bold text-xl transition duration-200"
-              href="https://quiz.yuanta.com.vn/cuoc-thi-race-of-finance-2024-vong-1/"
-              target="_blank"
+              // href="https://quiz.yuanta.com.vn/cuoc-thi-race-of-finance-2024-vong-1/"
+              href={"/sign-up"}
+              target="_self" // Ensures it opens in the same tab
               rel="noopener noreferrer"
             >
               THAM GIA NGAY
