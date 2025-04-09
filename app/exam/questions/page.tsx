@@ -2,6 +2,7 @@
 import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import AuthenticatedRoute from "@/components/AuthenticatedRoute";
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
@@ -87,7 +88,7 @@ const ExamQuestion = () => {
 	};
 
 	return (
-		<ProtectedRoute>
+		<AuthenticatedRoute>
 			{!isReady ? (
 				// Modal for readiness confirmation
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
@@ -208,7 +209,7 @@ const ExamQuestion = () => {
 					</div>
 				</div>
 			)}
-		</ProtectedRoute>
+		</AuthenticatedRoute>
 	);
 };
 
