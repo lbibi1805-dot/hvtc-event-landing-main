@@ -134,7 +134,7 @@ const SignUpForm = () => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
 			const response = await fetch(
-				`http://localhost:5001/api/v1/auth/sign-up`,
+				`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`,
 				{
 					method: "POST",
 					headers: {
@@ -148,7 +148,7 @@ const SignUpForm = () => {
 			if (response.ok) {
 				// Gửi yêu cầu để lấy mã xác nhận
 				const verificationResponse = await fetch(
-					`http://localhost:5001/api/v1/auth/send-verification`,
+					`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/send-verification`,
 					{
 						method: "POST",
 						headers: {
@@ -203,7 +203,7 @@ const SignUpForm = () => {
 		);
 		try {
 			const response = await fetch(
-				`http://localhost:5001/api/v1/auth/send-verification`,
+				`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/send-verification`,
 				{
 					method: "POST",
 					headers: {
@@ -240,7 +240,7 @@ const SignUpForm = () => {
 		const toastId = ToastUtil.show(ToastType.LOADING, "Đang xác nhận...");
 		try {
 			const response = await fetch(
-				`http://localhost:5001/api/v1/auth/verify-code`,
+				`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify-code`,
 				{
 					method: "POST",
 					headers: {
