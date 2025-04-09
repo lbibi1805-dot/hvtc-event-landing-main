@@ -32,7 +32,7 @@ interface FormFieldsProps {
 }
 
 export const FormFields = ({ form }: FormFieldsProps) => (
-	<>
+	<div className="grid grid-cols-1 md:grid-cols-2 gap-4">
 		<FormField control={form.control} name="name" render={({ field }) => (
 			<FormItem>
 				<FormLabel className="text-black">Họ và Tên</FormLabel>
@@ -43,7 +43,7 @@ export const FormFields = ({ form }: FormFieldsProps) => (
 			</FormItem>
 		)} />
 		<FormField control={form.control} name="dob" render={({ field }) => (
-			<FormItem className="flex flex-col">
+			<FormItem className="flex flex-col mb-2">
 				<FormLabel className="text-black">Ngày sinh</FormLabel>
 				<Popover>
 					<PopoverTrigger asChild>
@@ -176,5 +176,5 @@ export const FormFields = ({ form }: FormFieldsProps) => (
 				<FormMessage />
 			</FormItem>
 		)} />
-	</>
+	</div>
 );

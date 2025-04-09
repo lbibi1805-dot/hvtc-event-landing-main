@@ -5,9 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/(auth)/sign-up/components/FormFields.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/(auth)/sign-up/components/VerificationModal.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/components/FormFields.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/components/FormFields.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -141,7 +139,7 @@
       <workItem from="1744105775369" duration="4000" />
       <workItem from="1744180998541" duration="43000" />
       <workItem from="1744181085744" duration="1829000" />
-      <workItem from="1744186602808" duration="7558000" />
+      <workItem from="1744186602808" duration="7850000" />
     </task>
     <servers />
   </component>
