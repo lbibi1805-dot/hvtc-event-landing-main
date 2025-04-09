@@ -22,7 +22,6 @@ export default function SignUp() {
                             We exist to make entrepreneurship easier.
                         </p>
                     </div>
-
                     <SignUpForm />
                 </div>
             </section>
