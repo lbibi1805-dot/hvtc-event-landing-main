@@ -55,7 +55,9 @@ const SignUpForm = () => {
 	const [token, setToken] = useState("");
 	const [isResending, setIsResending] = useState(false);
 
+	//i want to refactor this
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
+		const toastId = ToastUtil.show(ToastType.LOADING, "Đang đăng ký...");
 		try {
 			const response = await fetch(`http://localhost:5001/api/v1/auth/sign-up`, {
 				method: "POST",
@@ -91,6 +93,9 @@ const SignUpForm = () => {
 			ToastUtil.error("Lỗi hệ thống", "Vui lòng thử lại sau.");
 			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
 			setSuccess(null);
+		}
+		finally {
+			ToastUtil.dismiss(toastId)
 		}
 	};
 

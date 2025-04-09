@@ -17,7 +17,8 @@ import { useState } from "react";
 import { useAuth } from "@/context/AuthContext";
 import { toast } from "sonner";
 import ToastUtil from "@/lib/ToastUtil";
-import {EyeIcon, EyeOffIcon} from "lucide-react";
+import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { signInUser } from "@/services/auth.service";
 
 // Define the form schema using Zod
 const formSchema = z.object({
@@ -47,36 +48,25 @@ const SignInForm = () => {
 	// Define the submit handler
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		try {
-			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-in`, {
-				method: "POST",
-				headers: {
-					"Content-Type": "application/json",
-				},
-				body: JSON.stringify(values),
-			});
-
-			const data = await response.json();
-			if (response.ok) {
-				setSuccess("Đăng nhập thành công!");
-				setError(null);
-				ToastUtil.success("Đăng nhập thành công!", "Chào mừng bạn quay lại.", {
-					duration: 3000,
-					position: "top-right",
-				});
-				form.reset();
-
-				if (data.data.token) {
-					login(data.data.token); // Lưu token và cập nhật trạng thái xác thực
-				}
-			} else {
-				setError(data.message || "Đăng nhập thất bại. Vui lòng thử lại.");
-				setSuccess(null);
-				ToastUtil.error("Đăng nhập thất bại", "Vui lòng kiểm tra email và mật khẩu.");
+			const data = await signInUser(values);
+			setSuccess("Đăng nhập thành công!");
+			setError(null);
+			ToastUtil.success(
+				"Đăng nhập thành công!",
+				"Chào mừng bạn quay lại.",
+				{ duration: 3000, position: "top-right" }
+			);
+			form.reset();
+			if (data.data.token) {
+				await login(data.data.token);
 			}
-		} catch (err) {
-			setError("Đã xảy ra lỗi. Vui lòng thử lại sau.");
+		} catch (err: any) {
+			setError(err.message || "Đăng nhập thất bại. Vui lòng thử lại.");
 			setSuccess(null);
-			ToastUtil.error("Lỗi hệ thống", "Vui lòng thử lại sau.");
+			ToastUtil.error(
+				"Đăng nhập thất bại",
+				"Vui lòng kiểm tra email và mật khẩu."
+			);
 		}
 	};
 
@@ -86,14 +76,19 @@ const SignInForm = () => {
 				<strong>Đăng Nhập</strong>
 			</h2>
 			<Form {...form}>
-				<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+				<form
+					onSubmit={form.handleSubmit(onSubmit)}
+					className="space-y-6"
+				>
 					{/* Email */}
 					<FormField
 						control={form.control}
 						name="email"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className="text-gray-700 font-bold">Email</FormLabel>
+								<FormLabel className="text-gray-700 font-bold">
+									Email
+								</FormLabel>
 								<FormControl>
 									<Input
 										placeholder="Nhập email của bạn"
@@ -112,18 +107,26 @@ const SignInForm = () => {
 						name="password"
 						render={({ field }) => (
 							<FormItem>
-								<FormLabel className="text-gray-700 font-bold">Mật khẩu</FormLabel>
+								<FormLabel className="text-gray-700 font-bold">
+									Mật khẩu
+								</FormLabel>
 								<FormControl>
 									<div className="relative">
 										<Input
-											type={showPassword ? "text" : "password"}
+											type={
+												showPassword
+													? "text"
+													: "password"
+											}
 											placeholder="Nhập mật khẩu của bạn"
 											className="rounded-lg border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 pr-10 transition text-black"
 											{...field}
 										/>
 										<button
 											type="button"
-											onClick={() => setShowPassword(!showPassword)}
+											onClick={() =>
+												setShowPassword(!showPassword)
+											}
 											className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-500 hover:text-gray-700"
 										>
 											{showPassword ? (
