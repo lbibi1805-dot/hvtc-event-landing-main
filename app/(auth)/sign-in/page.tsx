@@ -3,28 +3,29 @@ import SignInForm from "@/app/(auth)/sign-in/signInForm";
 export const metadata = {
     title: 'Sign In - Open PRO',
     description: 'Page description',
-}
+};
 
-import Link from 'next/link'
 import ProtectedRoute from "@/components/ProtectedRoute";
 
 export default function SignIn() {
     return (
         <ProtectedRoute>
-            <section className="relative">
-                <div className="max-w-6xl mx-auto px-4 sm:px-6">
-                    <div className="pt-32 pb-12 md:pt-40 md:pb-20 flex flex-col items-center justify-center">
+            <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-br px-4">
+                <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center py-20">
 
-                        {/* Page header */}
-                        <div className="max-w-3xl mx-auto text-center pb-12 md:pb-20">
-                            <h1 className="h1">Welcome back. We exist to make entrepreneurship easier.</h1>
-                        </div>
-                        <SignInForm/>
-
+                    {/* Page header */}
+                    <div className="-mb-5 text-center drop-shadow-md">
+                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
+                            Welcome back
+                        </h1>
+                        <p className="text-white text-md">
+                            We exist to make entrepreneurship easier.
+                        </p>
                     </div>
+
+                    <SignInForm />
                 </div>
             </section>
         </ProtectedRoute>
-
-    )
+    );
 }

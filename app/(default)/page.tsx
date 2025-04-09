@@ -24,28 +24,28 @@ import Sponsor from '@/components/sponsor'
 import ImageList from '@/components/ImageList'
 // import ImageList from '@/components/ImageList'
 
-const DATA = [{ image: "/images/Asset 1.png" },
-{ image: "/images/BACK-01.png" },
+const DATA = [
+    { image: "/images/Asset 1.png" },
+    { image: "/images/BACK-01.png" },
 ]
+const animationVariants = {
+    hidden: { opacity: 0, y: 50 },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
+};
+
 
 export default function Home() {
   return (
     <div>
       <Hero />
       {/* <Features /> */}
-      <Zigzag />
-      <ModalVideo
-            thumb={VideoThumb}
-            thumbWidth={1024}
-            thumbHeight={576}
-            thumbAlt="Modal video thumbnail"
-            video="/videos/video.mp4"
-            videoWidth={1920}
-            videoHeight={1080} />
-      <Countdown />
+      <div className='mt-0.05'>
+        <Zigzag />
+      </div>
+      {/*<Countdown />*/}
       <Timeline />
       <Testimonials />
-      <Sponsor/>
+      {/*<Sponsor/>*/}
       <ImageList/>
     </div>
   )

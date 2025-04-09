@@ -5,10 +5,10 @@ const HeroSection: React.FC = () => {
   const [imageSrc, setImageSrc] = useState('/images/head.jpg');
 
   const updateImageSource = () => {
-    if (window.innerWidth <= 640) {
+    if (window.innerWidth <= 720) {
       setImageSrc('/images/mobileHead.jpg');
     } else {
-      setImageSrc('/images/mainNew.png');
+      setImageSrc('/images/main_new_2025.jpg');
     }
   };
 
@@ -21,13 +21,13 @@ const HeroSection: React.FC = () => {
   }, []);
 
   return (
-    <section className="relative overflow-hidden mt-16 h-screen max-w-screen">
-      <div className="absolute inset-0 z-0">
+    <section className="relative overflow-hidden mt-16 h-screen max-w-screen mb-0">
+      <div className="absolute inset-0 z-0 md:pt-2">
         <img
           id="background-image"
           src={imageSrc}
           alt="Background"
-          className="object-fit object-center w-full h-full"
+          className="object-fit object-center"
         />
       </div>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">

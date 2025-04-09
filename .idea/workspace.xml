@@ -4,17 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/app/exam/questions/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase_[Changes]1/shelved.patch" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_rebase__Changes_1.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/(auth)/sign-up/SignUpForm.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
-    </list>
+    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -40,9 +30,12 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/lbibi1805-dot/hvtc-event-landing-main.git&quot;,
-    &quot;accountId&quot;: &quot;eaf64fd2-3275-41cd-ad93-f273c6de9ecc&quot;
+    &quot;accountId&quot;: &quot;8d61ca47-1249-46f8-8c83-4370e29c582b&quot;
   }
 }</component>
+  <component name="ProblemsViewState">
+    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+  </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -59,23 +52,28 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "bach__develop__front__end",
     "ignore.virus.scanning.warn.message": "true",
-    "last_opened_file_path": "D:/Workspace/WebDev/hvtc-event-landing-main",
+    "javascript.nodejs.core.library.configured.version": "22.14.0",
+    "javascript.nodejs.core.library.typings.version": "22.14.0",
+    "last_opened_file_path": "C:/Users/itsld/Documents/GitHub/hvtc-event-landing-main/components",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
     "node.js.selected.package.eslint": "(autodetect)",
     "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_interpreter_path": "C:/Users/itsld/AppData/Roaming/JetBrains/WebStorm2024.3/node/versions/22.14.0/node",
     "nodejs_package_manager_path": "npm",
     "npm.dev.executor": "Run",
     "prettierjs.PrettierConfiguration.Package": "D:\\Workspace\\WebDev\\hvtc-event-landing-main\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "settings.javascript.prettier",
-    "ts.external.directory.path": "D:\\Workspace\\WebDev\\hvtc-event-landing-main\\node_modules\\typescript\\lib",
+    "settings.editor.selected.configurable": "settings.nodejs",
+    "ts.external.directory.path": "C:\\Users\\itsld\\Documents\\GitHub\\hvtc-event-landing-main\\node_modules\\typescript\\lib",
     "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\itsld\Documents\GitHub\hvtc-event-landing-main\components" />
+      <recent name="C:\Users\itsld\Documents\GitHub\hvtc-event-landing-main\public" />
       <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\store" />
       <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\enums" />
       <recent name="D:\Workspace\WebDev\hvtc-event-landing-main\components\ui" />
@@ -137,6 +135,10 @@
       <workItem from="1744013617507" duration="591000" />
       <workItem from="1744041191436" duration="2528000" />
       <workItem from="1744086454918" duration="1526000" />
+      <workItem from="1744105775369" duration="4000" />
+      <workItem from="1744180998541" duration="43000" />
+      <workItem from="1744181085744" duration="1829000" />
+      <workItem from="1744186602808" duration="8871000" />
     </task>
     <servers />
   </component>
