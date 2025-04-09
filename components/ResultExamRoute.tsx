@@ -8,7 +8,7 @@ interface ProtectedRouteProps {
 	children: React.ReactNode;
 }
 
-export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
+export default function ResultExamRoute({ children }: ProtectedRouteProps) {
 	const { isAuthenticated, isLoading, isTakenExam} = useAuth();
 	const router = useRouter();
 
@@ -34,6 +34,7 @@ export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
 		return null; // Render nothing while redirecting
 	}
 
+	if(isTakenExam) return null;
 
 	return <>{children}</>;
 }

@@ -5,6 +5,7 @@ const navItems = [
     {href: "#footer", label: "THÔNG TIN LIÊN HỆ"},
     {href: "/sign-in", label: "ĐĂNG NHẬP"},
     {href: "/sign-up", label: "ĐĂNG KÝ"},
+    {href: "/exam/questions", label: "LÀM BÀI THI"},
 ]
 
 export default navItems
