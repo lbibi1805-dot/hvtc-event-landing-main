@@ -32,6 +32,7 @@ interface FormFieldsProps {
 }
 
 export const FormFields = ({ form }: FormFieldsProps) => {
+	const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -159,14 +160,18 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 			<FormField control={form.control} name="major" render={({ field }) => (
 				<FormItem>
 					<FormLabel className="text-black">Ngành học</FormLabel>
-					<FormControl>
-						<Input
-							className="text-black border-gray-300 rounded-lg shadow-sm focus:ring-primary-500 focus:border-primary-500"
-							placeholder="Nhập ngành học của bạn"
-							value={field.value || ""} // Ensure the value is always a string
-							onChange={field.onChange} // Update the form state
-						/>
-					</FormControl>
+					<Select onValueChange={field.onChange} defaultValue={field.value}>
+						<FormControl>
+							<SelectTrigger>
+								<SelectValue placeholder="Chọn ngành học" />
+							</SelectTrigger>
+						</FormControl>
+						<SelectContent>
+							{Object.values(Major).map(major => (
+								<SelectItem key={major} value={major}>{major}</SelectItem>
+							))}
+						</SelectContent>
+					</Select>
 					<FormMessage />
 				</FormItem>
 			)} />
