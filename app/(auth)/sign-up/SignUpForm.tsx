@@ -154,12 +154,14 @@ const SignUpForm = () => {
 
 	return (
 		<div>
-			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-				<div className="w-full bg-white rounded-xl shadow border md:mt-0 max-w-7xl xl:p-0">
+			<div className="flex flex-col items-center justify-center py-8 mx-auto lg:py-0 md:-ml-10 md:-mr-20">
+				<div className=" w-full bg-white rounded-xl shadow border md:mt-0 max-w-7xl xl:p-0">
 					<div className="p-8 space-y-6 md:space-y-8 sm:p-10">
-						<p className="text-2xl font-semibold leading-tight tracking-tight text-gray-900 md:text-3xl">
-							Tham gia <span>Race of Finance</span>
-						</p>
+						<div className="flex flex-col items-center justify-center text-center">
+							<p className="text-2xl font-semibold leading-tight tracking-tight text-gray-900 md:text-3xl">
+								Tham gia <span>Race of Finance</span>
+							</p>
+						</div>
 						{error && <p className="text-red-500 text-sm">{error}</p>}
 						{success && <p className="text-green-500 text-sm">{success}</p>}
 						<Form {...form}>

@@ -45,25 +45,73 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 					<FormMessage />
 				</FormItem>
 			)} />
-			<FormField control={form.control} name="dob" render={({ field }) => (
-				<FormItem className="flex flex-col mt-2">
-					<FormLabel className="text-black">Ngày sinh</FormLabel>
-					<Popover>
-						<PopoverTrigger asChild>
-							<FormControl>
-								<Button variant="outline" className={cn("text-black", "w-full pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-									{field.value ? format(field.value, "PPP") : <span>Chọn ngày sinh</span>}
-									<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-								</Button>
-							</FormControl>
-						</PopoverTrigger>
-						<PopoverContent className="w-auto p-0" align="start">
-							<Calendar mode="single" selected={field.value} onSelect={field.onChange} disabled={date => date > new Date() || date < new Date("1900-01-01")} initialFocus />
-						</PopoverContent>
-					</Popover>
-					<FormMessage />
-				</FormItem>
-			)} />
+			<FormField control={form.control} name="dob" render={({ field }) => {
+				const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+				const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+
+				return (
+					<FormItem className="flex flex-col mt-2">
+						<FormLabel className="text-black">Ngày sinh</FormLabel>
+						<Popover>
+							<PopoverTrigger asChild>
+								<FormControl>
+									<Button
+										variant="outline"
+										className={cn(
+											"text-black",
+											"w-full pl-3 text-left font-normal",
+											!field.value && "text-muted-foreground"
+										)}
+									>
+										{field.value ? format(field.value, "PPP") : <span>Chọn ngày sinh</span>}
+										<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+									</Button>
+								</FormControl>
+							</PopoverTrigger>
+							<PopoverContent className="w-auto p-0" align="start">
+								<div className="flex flex-col px-4 py-2">
+									{/* Year Input */}
+									<div className="flex items-center gap-2 mb-2">
+										<label htmlFor="year-input" className="text-sm font-medium text-gray-700">
+											Năm:
+										</label>
+										<input
+											id="year-input"
+											type="number"
+											value={currentYear}
+											onChange={(e) => {
+												const year = parseInt(e.target.value, 10);
+												if (!isNaN(year) && year >= 1900 && year <= new Date().getFullYear()) {
+													setCurrentYear(year);
+													setCurrentMonth(0); // Reset to January to avoid invalid months
+												}
+											}}
+											className="w-20 px-2 py-1 border border-gray-300 rounded text-black focus:ring-primary-500 focus:border-primary-500"
+										/>
+									</div>
+								</div>
+
+								{/* Calendar */}
+								<Calendar
+									mode="single"
+									selected={field.value}
+									onSelect={(date) => {
+										field.onChange(date); // Update the form value
+									}}
+									disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+									initialFocus
+									month={new Date(currentYear, currentMonth)} // Tie the calendar to the current year and month
+									onMonthChange={(date) => {
+										setCurrentYear(date.getFullYear());
+										setCurrentMonth(date.getMonth());
+									}}
+								/>
+							</PopoverContent>
+						</Popover>
+						<FormMessage />
+					</FormItem>
+				);
+			}} />
 			<FormField control={form.control} name="email" render={({ field }) => (
 				<FormItem>
 					<FormLabel className="text-black">Email</FormLabel>
@@ -95,9 +143,9 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				<FormItem>
 					<FormLabel className="text-black">Trường đang theo học</FormLabel>
 					<Select onValueChange={field.onChange} defaultValue={field.value}>
-						<FormControl>
+						<FormControl className="text-black">
 							<SelectTrigger>
-								<SelectValue placeholder="Chọn trường đại học" />
+								<SelectValue  placeholder="Chọn trường đại học" />
 							</SelectTrigger>
 						</FormControl>
 						<SelectContent>
@@ -136,52 +184,6 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 					<FormMessage />
 				</FormItem>
 			)} />
-			<FormField control={form.control} name="password" render={({ field }) => (
-				<FormItem>
-					<FormLabel className="text-black">Mật khẩu</FormLabel>
-					<FormControl>
-						<div className="relative">
-							<Input
-								className="text-black"
-								type={showPassword ? "text" : "password"} // Toggle input type
-								placeholder="Nhập mật khẩu"
-								{...field}
-							/>
-							<button
-								type="button"
-								className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-								onClick={() => setShowPassword(!showPassword)} // Toggle visibility
-							>
-								{showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-							</button>
-						</div>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			)} />
-			<FormField control={form.control} name="confirmPassword" render={({ field }) => (
-				<FormItem>
-					<FormLabel className="text-black">Xác nhận mật khẩu</FormLabel>
-					<FormControl>
-						<div className="relative">
-							<Input
-								className="text-black"
-								type={showPassword ? "text" : "password"} // Toggle input type
-								placeholder="Xác nhận mật khẩu"
-								{...field}
-							/>
-							<button
-								type="button"
-								className="absolute inset-y-0 right-3 flex items-center text-gray-500"
-								onClick={() => setShowPassword(!showPassword)} // Toggle visibility
-							>
-								{showPassword ? <EyeOffIcon className="h-5 w-5" /> : <EyeIcon className="h-5 w-5" />}
-							</button>
-						</div>
-					</FormControl>
-					<FormMessage />
-				</FormItem>
-			)} />
 			<FormField control={form.control} name="linkFacebook" render={({ field }) => (
 				<FormItem>
 					<FormLabel className="text-black">Link Facebook</FormLabel>
@@ -192,9 +194,14 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				</FormItem>
 			)} />
 			<FormField control={form.control} name="terms" render={({ field }) => (
-				<FormItem className="flex items-start">
+				<FormItem className="flex items-center mt-5">
 					<FormControl>
-						<input type="checkbox" className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300" checked={field.value} onChange={field.onChange} />
+						<input
+							type="checkbox"
+							className="w-4 h-4 border border-gray-300 rounded bg-gray-50 focus:ring-3 focus:ring-primary-300"
+							checked={field.value}
+							onChange={field.onChange}
+						/>
 					</FormControl>
 					<div className="ml-3 text-sm">
 						<FormLabel className="font-light text-gray-500">
