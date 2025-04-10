@@ -24,8 +24,6 @@ export default function SignIn() {
                     </div>
                     
                     <SignInForm />
-
-                
                 </div>
             </section>
         </ProtectedRoute>

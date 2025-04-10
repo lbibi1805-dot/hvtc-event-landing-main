@@ -22,6 +22,8 @@ interface AuthContextInterface {
 	login: (token: string) => Promise<void>;
 	logout: () => void;
 	isLoading: boolean;
+	isTimeToDoTest: boolean; //  ĐẾN GIỜ LÀM TEST CHƯA
+	isTestClosed: boolean; //    HẾT THỜI HẠN LÀM TEST CHƯA
 }
 
 const AuthContext = createContext<AuthContextInterface | undefined>(undefined);
@@ -30,6 +32,8 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 	const [isAuthenticated, setIsAuthenticated] = useState(false);
 	const [isVoted, setIsVoted] = useState(false);
 	const [isTakenExam, setIsTakenExam] = useState(false);
+	const [isTimeToDoTest, setIsTimeToDoTest] = useState(false);
+	const [isTestClosed, setIsTestClosed] = useState(false); // STATE MỚI
 	const [user, setUser] = useState<User | null>(null);
 	const [token, setToken] = useState<string | null>(null);
 	const [isLoading, setIsLoading] = useState(true);
@@ -50,13 +54,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 					const examTaken = await fetchSubmissionStatus(userData._id);
 					setIsTakenExam(examTaken);
 
-					console.log("Exam taken status:", examTaken);
+					// SET MẤY GIỜ MỞ TEST
+					const currentDate = new Date();
+					const testStartDate = new Date('2025-04-15T00:00:00'); 	// THỜI GIAN MỞ TEST
+					const testEndDate = new Date('2025-04-20T23:59:59'); 	// THỜI GIAN ĐÓNG TEST
+					setIsTimeToDoTest(currentDate >= testStartDate && currentDate <= testEndDate);
+					setIsTestClosed(currentDate > testEndDate); // TEST ĐÓNG NẾU THỜI GIAN HIỆN TẠI VƯỢT TẠI THỜI GIAN ĐÓNG TEST
+
+					console.log('Exam taken status:', examTaken);
 				} catch (error) {
 					localStorage.removeItem('token');
 					setIsAuthenticated(false);
 					setUser(null);
 					setToken(null);
 					setIsTakenExam(false);
+					setIsTimeToDoTest(false);
+					setIsTestClosed(false);
 				}
 			}
 			setIsLoading(false);
@@ -80,14 +93,22 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 			const examTaken = await fetchSubmissionStatus(userData._id);
 			setIsTakenExam(examTaken);
 
-			console.log("Exam taken status login:", examTaken);
+			// Determine if it's time to do the test
+			const currentDate = new Date();
+			const testStartDate = new Date('2025-04-15T00:00:00'); // TEST START DATE 	   ||| FORMAT: (yyyy-mm-ddThh:mm:ss)
+			const testEndDate = new Date('2025-04-20T23:59:59');   // TEST CLOSING DATE    ||| FORMAT: (yyyy-mm-ddThh:mm:ss)
+			setIsTimeToDoTest(currentDate >= testStartDate && currentDate <= testEndDate);
+			setIsTestClosed(currentDate > testEndDate);  		   // TEST ĐÓNG NẾU THỜI GIAN HIỆN TẠI VƯỢT TẠI THỜI GIAN ĐÓNG TEST
 
+			console.log('Exam taken status login:', examTaken);
 		} catch (error) {
 			localStorage.removeItem('token');
 			setIsAuthenticated(false);
 			setUser(null);
 			setToken(null);
 			setIsTakenExam(false);
+			setIsTimeToDoTest(false);
+			setIsTestClosed(false);
 
 			console.error('Error fetching user data:', error);
 		} finally {
@@ -101,11 +122,26 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		setIsAuthenticated(false);
 		setToken(null);
 		setIsTakenExam(false);
+		setIsTimeToDoTest(false);
+		setIsTestClosed(false);
 		setIsLoading(false);
 	};
 
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, isVoted, isTakenExam, user, token, login, logout, isLoading }}>
+		<AuthContext.Provider
+			value={{
+				isAuthenticated,
+				isVoted,
+				isTakenExam,
+				isTimeToDoTest,
+				isTestClosed, // Provide the new property
+				user,
+				token,
+				login,
+				logout,
+				isLoading,
+			}}
+		>
 			{children}
 		</AuthContext.Provider>
 	);
