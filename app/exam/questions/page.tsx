@@ -3,6 +3,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
+
 import { tryParsePattern } from "next/dist/build/webpack/plugins/jsconfig-paths-plugin";
 import { startExam, submitExam } from "@/services/exam.service";
 import { SubmissionResponse } from "@/api/exam.api";
@@ -10,6 +11,8 @@ import { useSelector } from "react-redux";
 import { RootState } from "@reduxjs/toolkit/query";
 import { useAuth } from "@/context/AuthContext";
 import toastUtil from "@/lib/ToastUtil";
+import TestUnavailable from "@/components/TestUnavailable";
+
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
@@ -23,6 +26,8 @@ const ExamQuestion = () => {
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null); // State to hold exam data
 	const {user} = useAuth();
+	const { isTakenExam } = useAuth();
+
 	// Reset tab switch count at start of exam
 	useEffect(() => {
 		setTabSwitchCount(0);
@@ -136,6 +141,22 @@ const ExamQuestion = () => {
 		const response = await startExam();
 		setExamData(prev => response);
 	};
+
+	// Kiểm tra đã phải thời gian làm bài chưa
+	const isTimeToDoTest = () => {
+		const currentDate = Date.now(); // Lấy thời gian hiện tại
+		const testStartDate = new Date("2025-04-09T00:00:00").getTime(); // Thời gian bắt đầu bài thi
+		const testEndDate = new Date("2025-04-30T23:59:59").getTime(); // Thời gian kết thúc bài thi
+		return currentDate >= testStartDate && currentDate <= testEndDate;
+	};
+
+	if (!isTimeToDoTest()){
+		return (
+			<AuthenticatedRoute>
+				<TestUnavailable/>
+			</AuthenticatedRoute>
+		);
+	}
 
 	return (
 		<AuthenticatedRoute>

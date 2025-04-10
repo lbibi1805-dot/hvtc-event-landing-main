@@ -42,7 +42,7 @@ export default function Home() {
       <div className='mt-0.05'>
         <Zigzag />
       </div>
-      {/*<Countdown />*/}
+      <Countdown />
       <Timeline />
       <Testimonials />
       {/*<Sponsor/>*/}
