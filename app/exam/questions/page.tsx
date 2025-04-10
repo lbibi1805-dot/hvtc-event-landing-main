@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
 import TestUnavailable from "@/components/TestUnavailable";
+import { useAuth } from "@/context/AuthContext";
 
 
 
@@ -17,6 +18,7 @@ const ExamQuestion = () => {
 	const [isReady, setIsReady] = useState(false); // Modal state
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
 	const router = useRouter();
+	const { isTakenExam } = useAuth();
 
 
 	// Reset tab switch count at start of exam
@@ -94,7 +96,7 @@ const ExamQuestion = () => {
 	// Kiểm tra đã phải thời gian làm bài chưa
 	const isTimeToDoTest = () => {
 		const currentDate = Date.now(); // Lấy thời gian hiện tại
-		const testStartDate = new Date("2025-04-20T00:00:00").getTime(); // Thời gian bắt đầu bài thi
+		const testStartDate = new Date("2025-04-09T00:00:00").getTime(); // Thời gian bắt đầu bài thi
 		const testEndDate = new Date("2025-04-30T23:59:59").getTime(); // Thời gian kết thúc bài thi
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
@@ -103,6 +105,14 @@ const ExamQuestion = () => {
 		return (
 			<AuthenticatedRoute>
 				<TestUnavailable/>
+			</AuthenticatedRoute>
+		);
+	}
+
+	if (isTakenExam){
+		return (
+			<AuthenticatedRoute>
+				<div> Địt cụ mày làm bài thi rồi vào lại làm chóa gì nữa  </div>
 			</AuthenticatedRoute>
 		);
 	}
