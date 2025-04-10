@@ -4,7 +4,14 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="" />
+    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/api/exam.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/exam.api.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/exam/questions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/exam/questions/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/ui/NavItems.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/ui/NavItems.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/api_instance.ts" beforeDir="false" afterPath="$PROJECT_DIR$/services/api_instance.ts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/services/exam.service.ts" beforeDir="false" afterPath="$PROJECT_DIR$/services/exam.service.ts" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -30,11 +37,11 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/lbibi1805-dot/hvtc-event-landing-main.git&quot;,
-    &quot;accountId&quot;: &quot;8d61ca47-1249-46f8-8c83-4370e29c582b&quot;
+    &quot;accountId&quot;: &quot;eaf64fd2-3275-41cd-ad93-f273c6de9ecc&quot;
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="CurrentFile" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
@@ -47,29 +54,29 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "bach__develop__front__end",
-    "ignore.virus.scanning.warn.message": "true",
-    "javascript.nodejs.core.library.configured.version": "22.14.0",
-    "javascript.nodejs.core.library.typings.version": "22.14.0",
-    "last_opened_file_path": "C:/Users/itsld/Documents/GitHub/hvtc-event-landing-main/components",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_interpreter_path": "C:/Users/itsld/AppData/Roaming/JetBrains/WebStorm2024.3/node/versions/22.14.0/node",
-    "nodejs_package_manager_path": "npm",
-    "npm.dev.executor": "Run",
-    "prettierjs.PrettierConfiguration.Package": "D:\\Workspace\\WebDev\\hvtc-event-landing-main\\node_modules\\prettier",
-    "settings.editor.selected.configurable": "settings.nodejs",
-    "ts.external.directory.path": "C:\\Users\\itsld\\Documents\\GitHub\\hvtc-event-landing-main\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;javascript.nodejs.core.library.configured.version&quot;: &quot;22.14.0&quot;,
+    &quot;javascript.nodejs.core.library.typings.version&quot;: &quot;22.14.0&quot;,
+    &quot;last_opened_file_path&quot;: &quot;D:/Workspace/WebDev/group_project_fullstack_backend&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_interpreter_path&quot;: &quot;node&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;npm.dev.executor&quot;: &quot;Run&quot;,
+    &quot;prettierjs.PrettierConfiguration.Package&quot;: &quot;D:\\Workspace\\WebDev\\hvtc-event-landing-main\\node_modules\\prettier&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;settings.nodejs&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;D:\\Workspace\\WebDev\\hvtc-event-landing-main\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\itsld\Documents\GitHub\hvtc-event-landing-main\components" />
@@ -139,6 +146,8 @@
       <workItem from="1744180998541" duration="43000" />
       <workItem from="1744181085744" duration="1829000" />
       <workItem from="1744186602808" duration="8871000" />
+      <workItem from="1744267257588" duration="10661000" />
+      <workItem from="1744295136875" duration="4744000" />
     </task>
     <servers />
   </component>

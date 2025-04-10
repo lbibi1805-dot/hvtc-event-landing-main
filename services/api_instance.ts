@@ -23,10 +23,10 @@ API_INSTANCE.interceptors.request.use(
 API_INSTANCE.interceptors.response.use(
 	(response) => response,
 	(error) => {
-		if (error.response?.status === 401) {
-			localStorage.removeItem("token");
-			window.location.href = "/sign-in";
-		}
+		// if (error.response?.status === 401) {
+		// 	localStorage.removeItem("token");
+		// 	window.location.href = "/sign-in";
+		// }
 		return Promise.reject(error.response?.data?.message || error.message);
 	}
 );
