@@ -155,7 +155,7 @@ const SignUpForm = () => {
 	return (
 		<div>
 			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-				<div className="w-full bg-white rounded-xl shadow border md:mt-0 max-w-5xl xl:p-0">
+				<div className="w-full bg-white rounded-xl shadow border md:mt-0 max-w-7xl xl:p-0">
 					<div className="p-8 space-y-6 md:space-y-8 sm:p-10">
 						<p className="text-2xl font-semibold leading-tight tracking-tight text-gray-900 md:text-3xl">
 							Tham gia <span>Race of Finance</span>
@@ -165,13 +165,13 @@ const SignUpForm = () => {
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 								<FormFields form={form} />
-								<div className="flex items-center justify-center">
+								<div className="flex items-center justify-center -mb-20">
 									<Button type="submit">Tham gia</Button>
 								</div>
 							</form>
 						</Form>
 					</div>
-					<div className="text-sm text-center my-3 text-gray-900">
+					<div className="text-sm text-center my-3 text-gray-900 -mt-5">
 						Đã có tài khoản?{" "}
 						<a className="text-sm text-[#27548A]" href="/sign-in">
 							Đăng nhập ngay

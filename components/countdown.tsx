@@ -9,11 +9,12 @@ const Countdown: React.FC = () => {
     seconds: 0,
   });
 
+  // SET THE COUNTDOWN DATE
   const currentDate = new Date();
   const nextMonth = new Date(
     currentDate.getFullYear(),
-    5, // Month (0-based, so 5 = June)
-    26, // Day
+    3, // Month (0-based, so 5 = June)
+    21, // Day
     0, // Hour
     0, // Minute
     0 // Second
