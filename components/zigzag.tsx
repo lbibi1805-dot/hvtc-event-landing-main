@@ -5,6 +5,16 @@ export default function Zigzag() {
     <section id="intro" className="items-center align-middle">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         <div className="mt-1.5 md:mt-7 border-t border-gray-800">
+          {/*  Header */}
+          <div className="mx-auto text-center">
+            <h2
+              className="h2 md:-mt-40 text-4xl md:text-5xl font-bold text-white"
+              data-aos="fade-up"
+              style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}
+            >
+              GIỚI THIỆU
+            </h2>
+          </div>
           {/* Content Wrapper */}
           <div className="sm:flex gap-20">
             {/* Logo Section */}
