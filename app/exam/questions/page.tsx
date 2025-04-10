@@ -109,14 +109,6 @@ const ExamQuestion = () => {
 		);
 	}
 
-	if (isTakenExam){
-		return (
-			<AuthenticatedRoute>
-				<div> Địt cụ mày làm bài thi rồi vào lại làm chóa gì nữa  </div>
-			</AuthenticatedRoute>
-		);
-	}
-
 	return (
 		<AuthenticatedRoute>
 			{!isReady ? (
