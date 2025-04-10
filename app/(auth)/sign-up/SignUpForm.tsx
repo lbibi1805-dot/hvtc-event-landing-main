@@ -21,8 +21,8 @@ const formSchema = z
 		university: z.enum(Object.values(University) as [string, ...string[]], { required_error: "Trường đại học là bắt buộc", invalid_type_error: "Trường đại học không hợp lệ" }),
 		major: z.enum(Object.values(Major) as [string, ...string[]], { required_error: "Ngành học là bắt buộc", invalid_type_error: "Ngành học không hợp lệ" }),
 		sid: z.string().optional().refine(val => !val || /^[A-Za-z0-9-]+$/.test(val), { message: "Mã sinh viên không hợp lệ" }).transform(val => val?.trim() || ""),
-		password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-		confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+		//password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+		//confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 		linkFacebook: z.string().optional().refine(val => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val), { message: "Đường dẫn Facebook không hợp lệ" }),
 		terms: z.boolean().refine(val => val, { message: "Bạn phải đồng ý với các điều khoản" }),
 	})
