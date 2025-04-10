@@ -167,7 +167,7 @@ const SignUpForm = () => {
 							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 								<FormFields form={form} />
 								<div className="flex items-center justify-center -mb-20">
-									<Button type="submit">Tham gia</Button>
+									<Button className="bg-[#27548A] w-48" type="submit">Tham gia</Button>
 								</div>
 							</form>
 						</Form>
