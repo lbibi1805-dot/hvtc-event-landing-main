@@ -164,7 +164,7 @@ const ExamQuestion = () => {
 				// Modal for readiness confirmation
 				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
 					<div className="bg-white p-6 rounded-lg shadow-lg text-center">
-						<h2 className="text-xl font-semibold text-black mb-4">Are you ready to start the exam?</h2>
+						<h2 className="text-xl font-semibold text-black mb-4">Bạn đã sẵn sàng bắt đầu bài thi?</h2>
 						<button
 							onClick={handleReady}
 							className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
