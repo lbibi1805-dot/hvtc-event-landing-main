@@ -27,7 +27,7 @@ const formSchema = z
 		linkFacebook: z.string().optional().refine(val => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val), { message: "Đường dẫn Facebook không hợp lệ" }),
 		terms: z.boolean().refine(val => val, { message: "Bạn phải đồng ý với các điều khoản" }),
 	})
-	.refine(data => data.password === data.confirmPassword, { message: "Mật khẩu không khớp", path: ["confirmPassword"] });
+	// .refine(data => data.password === data.confirmPassword, { message: "Mật khẩu không khớp", path: ["confirmPassword"] });
 
 const SignUpForm = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -41,8 +41,8 @@ const SignUpForm = () => {
 			university: undefined as unknown as University,
 			major: undefined as unknown as Major,
 			sid: "",
-			password: "",
-			confirmPassword: "",
+			// password: "",
+			// confirmPassword: "",
 			linkFacebook: "",
 			terms: false,
 		},
