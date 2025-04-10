@@ -1,5 +1,4 @@
 "use client";
-
 import React, { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -22,12 +21,12 @@ const formSchema = z
 		university: z.enum(Object.values(University) as [string, ...string[]], { required_error: "Trường đại học là bắt buộc", invalid_type_error: "Trường đại học không hợp lệ" }),
 		major: z.enum(Object.values(Major) as [string, ...string[]], { required_error: "Ngành học là bắt buộc", invalid_type_error: "Ngành học không hợp lệ" }),
 		sid: z.string().optional().refine(val => !val || /^[A-Za-z0-9-]+$/.test(val), { message: "Mã sinh viên không hợp lệ" }).transform(val => val?.trim() || ""),
-		password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-		confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+		//password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
+		//confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
 		linkFacebook: z.string().optional().refine(val => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val), { message: "Đường dẫn Facebook không hợp lệ" }),
 		terms: z.boolean().refine(val => val, { message: "Bạn phải đồng ý với các điều khoản" }),
 	})
-	.refine(data => data.password === data.confirmPassword, { message: "Mật khẩu không khớp", path: ["confirmPassword"] });
+	// .refine(data => data.password === data.confirmPassword, { message: "Mật khẩu không khớp", path: ["confirmPassword"] });
 
 const SignUpForm = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -41,8 +40,8 @@ const SignUpForm = () => {
 			university: undefined as unknown as University,
 			major: undefined as unknown as Major,
 			sid: "",
-			password: "",
-			confirmPassword: "",
+			// password: "",
+			// confirmPassword: "",
 			linkFacebook: "",
 			terms: false,
 		},
@@ -154,24 +153,26 @@ const SignUpForm = () => {
 
 	return (
 		<div>
-			<div className="flex flex-col items-center justify-center px-6 py-8 mx-auto lg:py-0">
-				<div className="w-full bg-white rounded-xl shadow border md:mt-0 max-w-5xl xl:p-0">
+			<div className="flex flex-col items-center justify-center py-8 mx-auto lg:py-0 md:-ml-10 md:-mr-20">
+				<div className=" w-full bg-white rounded-xl shadow border md:mt-0 max-w-7xl xl:p-0">
 					<div className="p-8 space-y-6 md:space-y-8 sm:p-10">
-						<p className="text-2xl font-semibold leading-tight tracking-tight text-gray-900 md:text-3xl">
-							Tham gia <span>Race of Finance</span>
-						</p>
+						<div className="flex flex-col items-center justify-center text-center">
+							<p className="text-2xl font-semibold leading-tight tracking-tight text-gray-900 md:text-3xl">
+								Tham gia <span>Race of Finance</span>
+							</p>
+						</div>
 						{error && <p className="text-red-500 text-sm">{error}</p>}
 						{success && <p className="text-green-500 text-sm">{success}</p>}
 						<Form {...form}>
 							<form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
 								<FormFields form={form} />
-								<div className="flex items-center justify-center">
+								<div className="flex items-center justify-center -mb-20">
 									<Button type="submit">Tham gia</Button>
 								</div>
 							</form>
 						</Form>
 					</div>
-					<div className="text-sm text-center my-3 text-gray-900">
+					<div className="text-sm text-center my-3 text-gray-900 -mt-5">
 						Đã có tài khoản?{" "}
 						<a className="text-sm text-[#27548A]" href="/sign-in">
 							Đăng nhập ngay

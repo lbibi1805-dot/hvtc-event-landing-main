@@ -150,6 +150,13 @@ const SignInForm = () => {
 						Đăng nhập
 					</Button>
 				</form>
+				{/* Link to Sign-Up Page */}
+                <div className="text-sm text-center mt-4 text-black">
+                        Chưa có tài khoản?{" "}
+                    <a className="text-[#27548A] font-medium hover:underline" href="/sign-up">
+                        Đăng ký ngay
+                    </a>
+                </div>
 			</Form>
 		</div>
 	);
