@@ -24,7 +24,8 @@ export const submitExam =  async (examId: string, data: {answers: any, screenOut
 		throw new Error("User ID is required");
 	}
 	console.log(data)
-	if(!data || !data.answers || !data.screenOut) {
+	if(!data.screenOut) data.screenOut = 0;
+	if(!data || !data.answers) {
 		throw new Error("Data is required");
 	}
 

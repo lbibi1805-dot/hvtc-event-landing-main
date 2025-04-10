@@ -176,7 +176,7 @@ const ExamQuestion = () => {
 			) : (
 				<div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
 					{/* Disable screen when time is up */}
-					{timeUp && (
+					{(timeUp && isTakenExam) && (
 						<div className="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
 							<div className="bg-white p-6 rounded-lg shadow-lg text-center">
 								<h2 className="text-xl font-semibold mb-4 text-red-600">Đã kết thúc thời gian làm bài thi!</h2>

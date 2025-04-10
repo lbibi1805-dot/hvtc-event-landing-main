@@ -4,7 +4,7 @@ import { signIn, signUp, sendVerification, verifyCode, fetchUserData } from "@/a
 export const signInUser = async (userInput: { email: string; password: string }) => {
 	const response = await signIn(userInput);
 	if (!response.data.success) {
-		throw new Error(response.data.message || "Đăng nhập thất bại");
+		throw new Error("Đăng nhập thất bại");
 	}
 	return response.data;
 };
