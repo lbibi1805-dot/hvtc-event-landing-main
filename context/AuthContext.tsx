@@ -56,11 +56,10 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 
 					// SET MẤY GIỜ MỞ TEST
 					const currentDate = new Date();
-					const testStartDate = new Date('2025-04-15T00:00:00'); 	// THỜI GIAN MỞ TEST
-					const testEndDate = new Date('2025-04-20T23:59:59'); 	// THỜI GIAN ĐÓNG TEST
+					const testStartDate = new Date('2025-04-07T00:00:00'); 	// THỜI GIAN MỞ TEST
+					const testEndDate = new Date('2025-04-08T23:59:59'); 	// THỜI GIAN ĐÓNG TEST
 					setIsTimeToDoTest(currentDate >= testStartDate && currentDate <= testEndDate);
 					setIsTestClosed(currentDate > testEndDate); // TEST ĐÓNG NẾU THỜI GIAN HIỆN TẠI VƯỢT TẠI THỜI GIAN ĐÓNG TEST
-
 					console.log('Exam taken status:', examTaken);
 				} catch (error) {
 					localStorage.removeItem('token');
