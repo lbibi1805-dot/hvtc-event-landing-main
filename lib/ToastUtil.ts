@@ -3,8 +3,8 @@
 import {
 	toast,
 	type ToastT,
-	type ExternalToast,
-	type PromiseData,
+	type ExternalToast, PromiseData,
+	// type PromiseData,
 } from "sonner";
 
 export enum ToastType {
@@ -74,36 +74,36 @@ export const ToastUtil = {
 	): string | number => toast.loading(message, { description, ...options }),
 
 	// Promise-based toast
-	promise: <ToastData>(
-		promise: Promise<ToastData>,
-		messages: {
-			loading: string | React.ReactNode;
-			success:
-				| string
-				| React.ReactNode
-				| ((data: ToastData) => string | React.ReactNode);
-			error:
-				| string
-				| React.ReactNode
-				| ((error: any) => string | React.ReactNode);
-			description?: string | React.ReactNode;
-		},
-		options: ExternalToast = {}
-	):
-		| (string & { unwrap: () => Promise<ToastData> })
-		| (number & { unwrap: () => Promise<ToastData> })
-		| {
-				unwrap: () => Promise<ToastData>;
-		  } => {
-		const promiseData: PromiseData<ToastData> = {
-			loading: messages.loading,
-			success: messages.success,
-			error: messages.error,
-			description: messages.description,
-			...options,
-		};
-		return toast.promise(promise, promiseData);
-	},
+	// promise: <ToastData>(
+	// 	promise: Promise<ToastData>,
+	// 	messages: {
+	// 		loading: string | React.ReactNode;
+	// 		success:
+	// 			| string
+	// 			| React.ReactNode
+	// 			| ((data: ToastData) => string | React.ReactNode);
+	// 		error:
+	// 			| string
+	// 			| React.ReactNode
+	// 			| ((error: any) => string | React.ReactNode);
+	// 		description?: string | React.ReactNode;
+	// 	},
+	// 	options: ExternalToast = {}
+	// ):
+	// 	| (string & { unwrap: () => Promise<ToastData> })
+	// 	| (number & { unwrap: () => Promise<ToastData> })
+	// 	| {
+	// 			unwrap: () => Promise<ToastData>;
+	// 	  } => {
+	// 	const promiseData: PromiseData<ToastData> = {
+	// 		loading: messages.loading,
+	// 		success: messages.success,
+	// 		error: messages.error,
+	// 		description: messages.description,
+	// 		...options,
+	// 	};
+	// 	return toast.promise(promise, promiseData);
+	// },
 
 	// Dismiss a toast
 	dismiss: (id?: string | number): string | number => {
