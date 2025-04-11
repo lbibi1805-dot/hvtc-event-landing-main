@@ -32,7 +32,7 @@ const ReadyModal: React.FC<ReadyModalProps> = ({ onConfirm }) => {
                     <button
                         onClick={() => router.push("/")}
                         className="px-4 py-2 bg-gray-300 text-black rounded-lg hover:bg-gray-400"
-                    >
+                    > 
                         Quay lại trang chủ
                     </button>
                 </div>
