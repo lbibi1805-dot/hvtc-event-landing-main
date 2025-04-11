@@ -28,7 +28,7 @@ function ImageList() {
           </div>
 
           {/* Carousel */}
-          <div className="-mt-8">
+          <div className="-mt-8 ml-4 mr-4">
             <Carousel autoSlide={false}>
               {slides.map((slide, index) => (
                 <img
