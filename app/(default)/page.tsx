@@ -36,7 +36,7 @@ const animationVariants = {
 
 export default function Home() {
   return (
-    <div>
+    <div>  
       <Hero />
       {/* <Features /> */}
       <div className='mt-0.05'>
