@@ -111,9 +111,7 @@ const ExamQuestion = () => {
 		};
 
 		const response = await submitExam(examData?.examId as string, {answers: formattedAnswers.answers, screenOut: tabSwitchCount});
-
 		console.log("Submitted answers:", response);
-		alert("Answers submitted!");
 	};
 
 
