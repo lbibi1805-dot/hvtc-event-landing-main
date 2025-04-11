@@ -3,6 +3,7 @@ import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
+import ReadyModal from "@/components/ReadyModal";
 
 import { tryParsePattern } from "next/dist/build/webpack/plugins/jsconfig-paths-plugin";
 import { startExam, submitExam } from "@/services/exam.service";
@@ -12,7 +13,6 @@ import { RootState } from "@reduxjs/toolkit/query";
 import { useAuth } from "@/context/AuthContext";
 import toastUtil from "@/lib/ToastUtil";
 import TestUnavailable from "@/components/TestUnavailable";
-
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
@@ -33,7 +33,6 @@ const ExamQuestion = () => {
 		setTabSwitchCount(0);
 		localStorage.setItem("tabSwitchCount", "0");
 	}, []);
-
 
 	// Timer countdown logic
 	useEffect(() => {
@@ -161,18 +160,7 @@ const ExamQuestion = () => {
 	return (
 		<AuthenticatedRoute>
 			{!isReady ? (
-				// Modal for readiness confirmation
-				<div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50">
-					<div className="bg-white p-6 rounded-lg shadow-lg text-center">
-						<h2 className="text-xl font-semibold text-black mb-4">Are you ready to start the exam?</h2>
-						<button
-							onClick={handleReady}
-							className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
-						>
-							Yes, I'm Ready
-						</button>
-					</div>
-				</div>
+				<ReadyModal onConfirm={handleReady} />
 			) : (
 				<div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
 					{/* Disable screen when time is up */}
