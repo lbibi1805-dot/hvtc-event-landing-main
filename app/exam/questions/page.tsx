@@ -5,33 +5,39 @@ import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
 import ReadyModal from "@/components/ReadyModal";
 
-import { tryParsePattern } from "next/dist/build/webpack/plugins/jsconfig-paths-plugin";
 import { startExam, submitExam } from "@/services/exam.service";
 import { SubmissionResponse } from "@/api/exam.api";
-import { useSelector } from "react-redux";
-import { RootState } from "@reduxjs/toolkit/query";
-import { useAuth } from "@/context/AuthContext";
 import toastUtil from "@/lib/ToastUtil";
 import TestUnavailable from "@/components/TestUnavailable";
+import { useAuth } from "@/context/AuthContext";
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
 	const [currentQuestion, setCurrentQuestion] = useState(5);
 	const [answers, setAnswers] = useState<Record<number, string | null>>({});
 	const [timeLeft, setTimeLeft] = useState(999); // 30 minutes in seconds CHANGE THE COUNTDOWN TIME
-	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0);
+	const [tabSwitchCount, setTabSwitchCount] = useState(0); // Default to 0
 	const [warningMessage, setWarningMessage] = useState("");
 	const [isReady, setIsReady] = useState(false); // Modal state
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null); // State to hold exam data
-	const {user} = useAuth();
-	const { isTakenExam } = useAuth();
+	const { user, isTakenExam } = useAuth();
+
+	// Initialize tabSwitchCount from localStorage on client side
+	useEffect(() => {
+		if (typeof window !== "undefined" && window.localStorage) {
+			const storedCount = localStorage.getItem("tabSwitchCount");
+			setTabSwitchCount(parseInt(storedCount || "0"));
+		}
+	}, []);
 
 	// Reset tab switch count at start of exam
 	useEffect(() => {
 		setTabSwitchCount(0);
-		localStorage.setItem("tabSwitchCount", "0");
+		if (typeof window !== "undefined" && window.localStorage) {
+			localStorage.setItem("tabSwitchCount", "0");
+		}
 	}, []);
 
 	// Timer countdown logic
@@ -65,10 +71,19 @@ const ExamQuestion = () => {
 	// Detect tab or window switching (anti-cheating)
 	useEffect(() => {
 		const warnUser = () => {
-			// const newCount = tabSwitchCount + 1;
-			setTabSwitchCount(prev => prev + 1);
-			localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
-			toastUtil.warning(`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${tabSwitchCount === 1 ? "lần" : "lần"})`)
+			setTabSwitchCount((prev) => {
+				const newCount = prev + 1;
+				if (typeof window !== "undefined" && window.localStorage) {
+					localStorage.setItem("tabSwitchCount", newCount.toString());
+				}
+				toastUtil.warning(
+					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+				);
+				setWarningMessage(
+					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+				);
+				return newCount;
+			});
 			setTimeout(() => setWarningMessage(""), 30000);
 		};
 
@@ -76,18 +91,12 @@ const ExamQuestion = () => {
 			if (document.hidden) warnUser();
 		};
 
-		const handleBlur = () => {
-			warnUser();
-		};
-
-		window.addEventListener("blur", handleBlur);
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 
 		return () => {
-			window.removeEventListener("blur", handleBlur);
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, [tabSwitchCount]);
+	}, []);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string) => {
@@ -110,10 +119,12 @@ const ExamQuestion = () => {
 				})),
 		};
 
-		const response = await submitExam(examData?.examId as string, {answers: formattedAnswers.answers, screenOut: tabSwitchCount});
+		const response = await submitExam(examData?.examId as string, {
+			answers: formattedAnswers.answers,
+			screenOut: tabSwitchCount,
+		});
 		console.log("Submitted answers:", response);
 	};
-
 
 	const remainingTime = (): number => {
 		if (!examData || !examData.startedAt || !examData.duration) {
@@ -128,7 +139,7 @@ const ExamQuestion = () => {
 
 		const diff = endTimeMs - now.getTime(); // Thời gian còn lại (mili-giây)
 
-		console.log('diff:', diff); // Thay alert bằng console.log để tránh blocking
+		console.log("diff:", diff); // Thay alert bằng console.log để tránh blocking
 		return diff <= 0 ? 0 : Math.floor(diff / 1000); // Chuyển sang giây
 	};
 
@@ -136,7 +147,7 @@ const ExamQuestion = () => {
 	const handleReady = async () => {
 		setIsReady(true);
 		const response = await startExam();
-		setExamData(prev => response);
+		setExamData((prev) => response);
 	};
 
 	// Kiểm tra đã phải thời gian làm bài chưa
@@ -147,10 +158,10 @@ const ExamQuestion = () => {
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
 
-	if (!isTimeToDoTest()){
+	if (!isTimeToDoTest()) {
 		return (
 			<AuthenticatedRoute>
-				<TestUnavailable/>
+				<TestUnavailable />
 			</AuthenticatedRoute>
 		);
 	}
@@ -162,10 +173,12 @@ const ExamQuestion = () => {
 			) : (
 				<div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
 					{/* Disable screen when time is up */}
-					{(timeUp && isTakenExam) && (
+					{timeUp && isTakenExam && (
 						<div className="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
 							<div className="bg-white p-6 rounded-lg shadow-lg text-center">
-								<h2 className="text-xl font-semibold mb-4 text-red-600">Đã kết thúc thời gian làm bài thi!</h2>
+								<h2 className="text-xl font-semibold mb-4 text-red-600">
+									Đã kết thúc thời gian làm bài thi!
+								</h2>
 								<p className="text-gray-700"> Đang điều hướng về trang chủ...</p>
 							</div>
 						</div>
@@ -213,21 +226,23 @@ const ExamQuestion = () => {
 
 							{/* Question number buttons */}
 							<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
-								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map((num) => (
-									<button
-										key={num}
-										onClick={() => handleQuestionSelect(num)}
-										className={`py-1 rounded-lg text-sm font-medium transition border ${
-											currentQuestion === num
-												? "bg-blue-600 text-white border-blue-600"
-												: answers[num]
-													? "bg-green-100 text-green-800 border-green-200"
-													: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-										}`}
-									>
-										{num}
-									</button>
-								))}
+								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map(
+									(num) => (
+										<button
+											key={num}
+											onClick={() => handleQuestionSelect(num)}
+											className={`py-1 rounded-lg text-sm font-medium transition border ${
+												currentQuestion === num
+													? "bg-blue-600 text-white border-blue-600"
+													: answers[num]
+														? "bg-green-100 text-green-800 border-green-200"
+														: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+											}`}
+										>
+											{num}
+										</button>
+									)
+								)}
 							</div>
 
 							{/* Question header */}
