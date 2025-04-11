@@ -58,7 +58,7 @@ const SignUpForm = () => {
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		const toastId = ToastUtil.show(ToastType.LOADING, "Đang đăng ký...");
 		try {
-			const response = await fetch(`http://localhost:5001/api/v1/auth/sign-up`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/sign-up`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify(values),
@@ -66,7 +66,7 @@ const SignUpForm = () => {
 
 			const data = await response.json();
 			if (response.ok) {
-				const verificationResponse = await fetch(`http://localhost:5001/api/v1/auth/send-verification`, {
+				const verificationResponse = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/send-verification`, {
 					method: "POST",
 					headers: { "Content-Type": "application/json" },
 					body: JSON.stringify({ email: values.email, candidateData: values }),
@@ -102,7 +102,7 @@ const SignUpForm = () => {
 		setIsResending(true);
 		const toastId = ToastUtil.show(ToastType.LOADING, "Đang gửi lại mã xác nhận...");
 		try {
-			const response = await fetch(`http://localhost:5001/api/v1/auth/send-verification`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/send-verification`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email: form.getValues("email"), candidateData: form.getValues() }),
@@ -125,7 +125,7 @@ const SignUpForm = () => {
 	const handleVerifyCode = async () => {
 		const toastId = ToastUtil.show(ToastType.LOADING, "Đang xác nhận...");
 		try {
-			const response = await fetch(`http://localhost:5001/api/v1/auth/verify-code`, {
+			const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/auth/verify-code`, {
 				method: "POST",
 				headers: { "Content-Type": "application/json" },
 				body: JSON.stringify({ email: form.getValues("email"), code, token, candidateData: form.getValues() }),
