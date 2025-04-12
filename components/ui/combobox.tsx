@@ -29,7 +29,7 @@ export const Combobox: React.FC<ComboboxProps> = ({
 													  options,
 													  value,
 													  onChange,
-													  placeholder = "Select an option...",
+													  placeholder = "Chọn một lựa chọn",
 													  className,
 												  }) => {
 	const [open, setOpen] = React.useState(false);

@@ -9,9 +9,13 @@ interface ProtectedRouteProps {
 }
 
 export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
-	const { isAuthenticated, isLoading, isTakenExam} = useAuth();
+	const { isAuthenticated, isLoading, isTakenExam, updateExamStatus} = useAuth();
 	const router = useRouter();
 
+	const updateExam = async () => {
+		await updateExamStatus();
+	}
+	updateExam();
 	useEffect(() => {
 		if (!isLoading && !isAuthenticated && !isTakenExam) {
 			router.push('/'); // Redirect to homepage if NOT authenticated
@@ -29,6 +33,8 @@ export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
 			</div>
 		);
 	}
+
+
 
 	if (!isAuthenticated) {
 		return null; // Render nothing while redirecting
