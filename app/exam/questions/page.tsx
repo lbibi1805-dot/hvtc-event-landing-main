@@ -173,7 +173,7 @@ const ExamQuestion = () => {
 		setCurrentQuestion(num);
 	};
 
-	// Submit all answers
+	// 
 	const handleSubmit = async () => {
 		if (hasSubmitted) return; // Ngăn submit nhiều lần
 
