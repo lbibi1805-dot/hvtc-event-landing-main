@@ -59,14 +59,14 @@ export default function Header() {
               <div className="flex items-center gap-x-4 md:gap-x-6">
                 {isAuthenticated ? (
                   <li className="flex items-center">
-                    <span className="text-white mr-2 md:mr-4 text-sm md:text-base">
-                      Welcome, {user?.name}!
+                    <span className="text-white mr-2 md:mr-4 text-sm md:text-base font-semibold">
+                      Xin chào, {user?.name}!
                     </span>
                     <button
                       onClick={logout}
                       className="text-white hover:text-gray-300 transition duration-200 ease-in-out"
                     >
-                      Logout
+                      Đăng xuất
                     </button>
                   </li>
                 ) : (

@@ -101,4 +101,5 @@ export enum Major {
     PublicHealth = 'Y tế công cộng',
     Musicology = 'Âm nhạc học',
     Nursing = 'Điều dưỡng',
+    "OTHER" = 'Ngành khác',
 }

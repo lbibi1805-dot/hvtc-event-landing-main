@@ -13,6 +13,7 @@ import { RootState } from "@reduxjs/toolkit/query";
 import { useAuth } from "@/context/AuthContext";
 import toastUtil from "@/lib/ToastUtil";
 import TestUnavailable from "@/components/TestUnavailable";
+import { AlertDialogUtils } from "@/lib/AlertDialog";
 
 const ExamQuestion = () => {
 	const totalQuestions = 25;
@@ -25,7 +26,7 @@ const ExamQuestion = () => {
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null); // State to hold exam data
-	const {user} = useAuth();
+	const { user } = useAuth();
 	const { isTakenExam } = useAuth();
 
 	// Reset tab switch count at start of exam
@@ -38,28 +39,21 @@ const ExamQuestion = () => {
 	useEffect(() => {
 		if (timeLeft > 0) {
 			const timer = setInterval(() => {
-				setTimeLeft((prev) => (prev > 0 ? prev - 1 : 0));
+				setTimeLeft(prev => (prev > 0 ? prev - 1 : 0));
 			}, 1000);
 			return () => clearInterval(timer);
 		} else {
 			// When time is up
 			setTimeUp(true);
 			setTimeout(() => {
-				// router.push("/exam/result"); // Redirect to home page after 10 seconds
+				router.push("/"); // Redirect to home page after 10 seconds
 			}, 5000);
 		}
 	}, [timeLeft, router]);
 
 	useEffect(() => {
 		const remain = remainingTime();
-		if (remain <= 0) {
-			setTimeUp(true);
-			setTimeout(() => {
-				router.push("/exam/result");
-			}, 5000);
-		} else {
-			setTimeLeft(remain);
-		}
+		setTimeLeft(remain);
 	}, [examData]);
 
 	// Detect tab or window switching (anti-cheating)
@@ -68,7 +62,9 @@ const ExamQuestion = () => {
 			// const newCount = tabSwitchCount + 1;
 			setTabSwitchCount(prev => prev + 1);
 			localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
-			toastUtil.warning(`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${tabSwitchCount === 1 ? "lần" : "lần"})`)
+			toastUtil.warning(
+				`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${tabSwitchCount === 1 ? "lần" : "lần"})`,
+			);
 			setTimeout(() => setWarningMessage(""), 30000);
 		};
 
@@ -85,13 +81,16 @@ const ExamQuestion = () => {
 
 		return () => {
 			window.removeEventListener("blur", handleBlur);
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
+			document.removeEventListener(
+				"visibilitychange",
+				handleVisibilityChange
+			);
 		};
 	}, [tabSwitchCount]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string) => {
-		setAnswers((prev) => ({ ...prev, [currentQuestion]: answer }));
+		setAnswers(prev => ({ ...prev, [currentQuestion]: answer }));
 	};
 
 	// Select different question
@@ -101,6 +100,18 @@ const ExamQuestion = () => {
 
 	// Submit all answers
 	const handleSubmit = async () => {
+
+		const confirm = await AlertDialogUtils.warning(
+			{
+				title: "Xác nhận nộp bài thi",
+				description: "Vui lòng kiểm tra lại các câu trả lời trước khi nộp bài thi. Sau khi nộp, bạn sẽ không thể thay đổi câu trả lời.",
+				cancelText: "Hủy bỏ",
+				confirmText: "Xác nhận",
+			}
+		)
+
+		if(!confirm) return;
+
 		const formattedAnswers = {
 			answers: Object.entries(answers)
 				.filter(([_, value]) => value !== null) // Loại bỏ các câu chưa trả lời
@@ -110,10 +121,22 @@ const ExamQuestion = () => {
 				})),
 		};
 
-		const response = await submitExam(examData?.examId as string, {answers: formattedAnswers.answers, screenOut: tabSwitchCount});
-		console.log("Submitted answers:", response);
-	};
+		const response = await submitExam(examData?.examId as string, {
+			answers: formattedAnswers.answers,
+			screenOut: tabSwitchCount,
+		});
 
+		if(response.status !== 200){
+			toastUtil.error("Nộp bài thi thất bại! Đã hết giờ làm bài hoặc thông tin không hợp lệ. Vui lòng liên hệ ban tổ chức")
+		}
+		toastUtil.success("Nộp bài thi thành công!")
+		isTakenExam
+		setTimeout(() => {}, 3000);
+		toastUtil.info("Đang điều hướng về trang chủ...");
+		setTimeout(() => {
+			router.push("/"); // Redirect to home page after 10 seconds
+		}, 5000);
+	};
 
 	const remainingTime = (): number => {
 		if (!examData || !examData.startedAt || !examData.duration) {
@@ -128,7 +151,7 @@ const ExamQuestion = () => {
 
 		const diff = endTimeMs - now.getTime(); // Thời gian còn lại (mili-giây)
 
-		console.log('diff:', diff); // Thay alert bằng console.log để tránh blocking
+		console.log("diff:", diff); // Thay alert bằng console.log để tránh blocking
 		return diff <= 0 ? 0 : Math.floor(diff / 1000); // Chuyển sang giây
 	};
 
@@ -147,10 +170,10 @@ const ExamQuestion = () => {
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
 
-	if (!isTimeToDoTest()){
+	if (!isTimeToDoTest()) {
 		return (
 			<AuthenticatedRoute>
-				<TestUnavailable/>
+				<TestUnavailable />
 			</AuthenticatedRoute>
 		);
 	}
@@ -162,11 +185,16 @@ const ExamQuestion = () => {
 			) : (
 				<div className="relative min-h-screen bg-gray-50 flex items-center justify-center px-2 py-8">
 					{/* Disable screen when time is up */}
-					{(timeUp && isTakenExam) && (
+					{timeUp && isTakenExam && (
 						<div className="absolute inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center">
 							<div className="bg-white p-6 rounded-lg shadow-lg text-center">
-								<h2 className="text-xl font-semibold mb-4 text-red-600">Đã kết thúc thời gian làm bài thi!</h2>
-								<p className="text-gray-700"> Đang điều hướng về trang chủ...</p>
+								<h2 className="text-xl font-semibold mb-4 text-red-600">
+									Đã kết thúc thời gian làm bài thi!
+								</h2>
+								<p className="text-gray-700">
+									{" "}
+									Đang điều hướng về trang chủ...
+								</p>
 							</div>
 						</div>
 					)}
@@ -186,8 +214,11 @@ const ExamQuestion = () => {
 							{/* Refined Timer */}
 							<div className="text-right mb-6">
 								<div className="inline-flex items-center px-6 py-3 rounded-2xl bg-[#f2f2f2] text-gray-900 border border-gray-300 text-xl font-semibold tracking-wide shadow-inner">
-									{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
-									{String(timeLeft % 60).padStart(2, "0")}
+									{String(Math.floor(timeLeft / 60)).padStart(
+										2,
+										"0"
+									)}
+									:{String(timeLeft % 60).padStart(2, "0")}
 								</div>
 							</div>
 
@@ -213,10 +244,15 @@ const ExamQuestion = () => {
 
 							{/* Question number buttons */}
 							<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
-								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map((num) => (
+								{Array.from(
+									{ length: totalQuestions },
+									(_, i) => i + 1
+								).map(num => (
 									<button
 										key={num}
-										onClick={() => handleQuestionSelect(num)}
+										onClick={() =>
+											handleQuestionSelect(num)
+										}
 										className={`py-1 rounded-lg text-sm font-medium transition border ${
 											currentQuestion === num
 												? "bg-blue-600 text-white border-blue-600"
@@ -232,12 +268,12 @@ const ExamQuestion = () => {
 
 							{/* Question header */}
 							<h2 className="text-lg font-semibold text-gray-800 mb-4">
-								Question {currentQuestion} of {totalQuestions}
+								Đáp án cho câu hỏi {currentQuestion}
 							</h2>
 
 							{/* Multiple choice answer options */}
 							<form className="space-y-3 mb-6">
-								{["A", "B", "C", "D"].map((option) => (
+								{["A", "B", "C", "D"].map(option => (
 									<label
 										key={option}
 										className="flex items-center space-x-3 text-gray-700 hover:text-blue-700"
@@ -246,11 +282,18 @@ const ExamQuestion = () => {
 											type="radio"
 											name={`question-${currentQuestion}`}
 											value={option}
-											checked={answers[currentQuestion] === option}
-											onChange={() => handleAnswerChange(option)}
+											checked={
+												answers[currentQuestion] ===
+												option
+											}
+											onChange={() =>
+												handleAnswerChange(option)
+											}
 											className="accent-blue-600"
 										/>
-										<span className="text-base">{option}</span>
+										<span className="text-base">
+											{option}
+										</span>
 									</label>
 								))}
 							</form>
@@ -260,7 +303,7 @@ const ExamQuestion = () => {
 								onClick={handleSubmit}
 								className="mt-auto w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
 							>
-								Submit
+								Nộp bài
 							</button>
 						</div>
 					</div>

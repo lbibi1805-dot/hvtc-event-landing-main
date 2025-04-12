@@ -22,11 +22,14 @@ import { signInUser } from "@/services/auth.service";
 
 // Define the form schema using Zod
 const formSchema = z.object({
-	email: z.string().min(2, {
-		message: "Username must be at least 2 characters.",
-	}),
+	email: z
+		.string()
+		.min(1, { message: "Email không được để trống" })
+		.email({ message: "Email không hợp lệ" })
+		.trim()
+		.toLowerCase(),
 	password: z.string().min(6, {
-		message: "Password must be at least 6 characters.",
+		message: "Mật khẩu phải tối thiểu 6 ký tự.",
 	}),
 });
 
@@ -72,8 +75,8 @@ const SignInForm = () => {
 
 	return (
 		<div className="max-w-md w-full mx-auto mt-16 bg-white border border-gray-200 shadow-xl rounded-xl px-6 py-10">
-			<h2 className="text-3xl font-extrabold text-center text-gray-800 mb-2">
-				<strong>Đăng Nhập</strong>
+			<h2 className="text-2xl font-extrabold text-center text-gray-800 mb-2">
+				Chào mừng bạn quay trở lại!
 			</h2>
 			<Form {...form}>
 				<form

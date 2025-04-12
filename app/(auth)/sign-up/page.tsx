@@ -14,12 +14,12 @@ export default function SignUp() {
                 <div className="w-full max-w-xl mx-auto flex flex-col items-center justify-center py-20">
 
                     {/* Page header */}
-                    <div className=" text-center drop-shadow-md mt-10 -mb-3 md:mb-5">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white -mb-2">
-                            Welcome
+                    <div className="-mb-5 text-center drop-shadow-md">
+                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            Cuộc thi Race of Finance 2025
                         </h1>
                         <p className="text-white text-md">
-                            We exist to make entrepreneurship easier.
+                            Câu lạc bộ chứng khoán trẻ Học Viện Tài Chính
                         </p>
                     </div>
                     <SignUpForm />

@@ -15,11 +15,11 @@ export default function SignIn() {
 
                     {/* Page header */}
                     <div className="-mb-5 text-center drop-shadow-md">
-                        <h1 className="text-3xl md:text-4xl font-bold text-white mb-2">
-                            Welcome back
+                        <h1 className="text-2xl md:text-3xl font-bold text-white mb-2">
+                            Cuộc thi Race of Finance 2025
                         </h1>
                         <p className="text-white text-md">
-                            We exist to make entrepreneurship easier.
+                            Câu lạc bộ chứng khoán trẻ Học Viện Tài Chính
                         </p>
                     </div>
                     
