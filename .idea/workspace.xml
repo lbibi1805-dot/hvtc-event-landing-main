@@ -4,7 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="" />
+    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/exam/questions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/exam/questions/page.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/timeline.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/timeline.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/components/timelineData.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/timelineData.tsx" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,7 +57,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "vercel",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.nodejs.core.library.configured.version": "22.14.0",
     "javascript.nodejs.core.library.typings.version": "22.14.0",
@@ -143,6 +148,7 @@
       <workItem from="1744295136875" duration="4744000" />
       <workItem from="1744444735037" duration="3289000" />
       <workItem from="1744468928181" duration="5995000" />
+      <workItem from="1744482218090" duration="2120000" />
     </task>
     <servers />
   </component>
