@@ -36,7 +36,26 @@ const ExamQuestion = () => {
 	const [hasSubmitted, setHasSubmitted] = useState(false); // Trạng thái đã submit
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null);
-	const { user, isTakenExam } = useAuth();
+	const { user, isTakenExam, updateExamStatus } = useAuth();
+
+	const isTimeToDoTest = () => {
+		const currentDate = Date.now();
+		const testStartDate = new Date("2025-04-09T00:00:00").getTime();
+		const testEndDate = new Date("2025-04-30T23:59:59").getTime();
+		return currentDate >= testStartDate && currentDate <= testEndDate;
+	};
+
+	if (!isTimeToDoTest()) {
+		return (
+			<AuthenticatedRoute>
+				<TestUnavailable/>
+			</AuthenticatedRoute>
+		);
+	}
+
+	updateExamStatus;
+
+
 
 	// Reset tab switch count at start of exam
 	useEffect(() => {
@@ -94,6 +113,7 @@ const ExamQuestion = () => {
 
 	// Detect tab or window switching (anti-cheating)
 	useEffect(() => {
+		if(!isReady) return;
 		const warnUser = () => {
 			setTabSwitchCount((prev) => prev + 1);
 			localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
@@ -118,7 +138,7 @@ const ExamQuestion = () => {
 			window.removeEventListener("blur", handleBlur);
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, [tabSwitchCount]);
+	}, [tabSwitchCount, isReady]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string | null) => {
@@ -200,20 +220,7 @@ const ExamQuestion = () => {
 	};
 
 	// Kiểm tra thời gian làm bài
-	const isTimeToDoTest = () => {
-		const currentDate = Date.now();
-		const testStartDate = new Date("2025-04-09T00:00:00").getTime();
-		const testEndDate = new Date("2025-04-30T23:59:59").getTime();
-		return currentDate >= testStartDate && currentDate <= testEndDate;
-	};
 
-	if (!isTimeToDoTest()) {
-		return (
-			<AuthenticatedRoute>
-				<TestUnavailable />
-			</AuthenticatedRoute>
-		);
-	}
 
 	return (
 		<AuthenticatedRoute>
