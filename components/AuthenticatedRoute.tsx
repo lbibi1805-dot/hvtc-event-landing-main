@@ -15,8 +15,8 @@ export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
 	const updateExam = async () => {
 		await updateExamStatus();
 	}
-	updateExam();
 	useEffect(() => {
+		updateExam;
 		if (!isLoading && !isAuthenticated && !isTakenExam) {
 			router.push('/'); // Redirect to homepage if NOT authenticated
 		}
@@ -41,5 +41,5 @@ export default function AuthenticatedRoute({ children }: ProtectedRouteProps) {
 	}
 
 
-	return <>{children}</>;
+	return <div className={"mt-10"}>{children}</div>;
 }

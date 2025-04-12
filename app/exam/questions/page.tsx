@@ -1,6 +1,5 @@
 // app/exam/questions/page.tsx
 "use client";
-import ProtectedRoute from "@/components/ProtectedRoute";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
@@ -13,30 +12,24 @@ import TestUnavailable from "@/components/TestUnavailable";
 import { AlertDialogUtils } from "@/lib/AlertDialog";
 import { QuestionCard } from "@/app/exam/questions/QuestionCard";
 
-// Mock data cho câu hỏi và đáp án
-const mockQuestions = Array.from({ length: 25 }, (_, index) => ({
-	question: `Câu ${index + 1}: Luật Chứng khoán 2019 (Luật số 54/2019/QH14) được Quốc hội Việt Nam thông qua ngày 26/11/2019 quy định về các hoạt động trên thị trường chứng khoán Việt Nam có hiệu lực từ thời điểm nào trong các thời điểm dưới đây:`,
-	answers: [
-		{ label: "A", content: `Đáp án A cho câu ${index + 1}` },
-		{ label: "B", content: `Đáp án B cho câu ${index + 1}` },
-		{ label: "C", content: `Đáp án C cho câu ${index + 1}` },
-		{ label: "D", content: `Đáp án D cho câu ${index + 1}` },
-	],
-}));
-
 const ExamQuestion = () => {
-	const totalQuestions = 25;
+	const [totalQuestions, setTotalQuestions] = useState(0);
 	const [currentQuestion, setCurrentQuestion] = useState(1); // Bắt đầu từ câu 1
 	const [answers, setAnswers] = useState<Record<number, string | null>>({});
 	const [timeLeft, setTimeLeft] = useState(999); // 30 minutes in seconds
-	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0);
+	const [tabSwitchCount, setTabSwitchCount] = useState<number>(() => {
+		// Đọc giá trị từ localStorage khi component mount
+		const storedCount = localStorage.getItem("tabSwitchCount");
+		return storedCount ? parseInt(storedCount, 10) : 0;
+	});
 	const [warningMessage, setWarningMessage] = useState("");
 	const [isReady, setIsReady] = useState(false); // Modal state
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
 	const [hasSubmitted, setHasSubmitted] = useState(false); // Trạng thái đã submit
+	const [isLeaving, setIsLeaving] = useState(false); // Trạng thái để debounce sự kiện rời khỏi trang
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null);
-	const { user, isTakenExam, updateExamStatus } = useAuth();
+	const { isTakenExam, updateExamStatus } = useAuth();
 
 	const isTimeToDoTest = () => {
 		const currentDate = Date.now();
@@ -48,27 +41,22 @@ const ExamQuestion = () => {
 	if (!isTimeToDoTest()) {
 		return (
 			<AuthenticatedRoute>
-				<TestUnavailable/>
+				<TestUnavailable />
 			</AuthenticatedRoute>
 		);
 	}
 
-	updateExamStatus;
-
-
-
-	// Reset tab switch count at start of exam
+	// Lưu tabSwitchCount vào localStorage mỗi khi nó thay đổi
 	useEffect(() => {
-		setTabSwitchCount(0);
-		localStorage.setItem("tabSwitchCount", "0");
-	}, []);
+		localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
+	}, [tabSwitchCount]);
 
 	// Timer countdown logic, warnings, and auto-submit
 	useEffect(() => {
 		if (!isReady || hasSubmitted) return; // Không chạy timer nếu chưa sẵn sàng hoặc đã submit
 
 		const timer = setInterval(() => {
-			setTimeLeft((prev) => {
+			setTimeLeft(prev => {
 				const newTime = prev > 0 ? prev - 1 : 0;
 
 				// Hiển thị thông báo dựa trên thời gian còn lại
@@ -81,7 +69,9 @@ const ExamQuestion = () => {
 						"Thời gian làm bài thi còn lại dưới 5 giây! Vui lòng nộp bài thi hoặc hệ thống sẽ tự động nộp bài thi khi còn 3 giây"
 					);
 				} else if (newTime <= 3 && newTime > 0) {
-					setWarningMessage("Thời gian làm bài thi đã hết! Đang tự động nộp bài...");
+					setWarningMessage(
+						"Thời gian làm bài thi đã hết! Đang tự động nộp bài..."
+					);
 				}
 
 				// Tự động submit khi thời gian còn 3 giây
@@ -94,8 +84,9 @@ const ExamQuestion = () => {
 					setTimeUp(true);
 					setWarningMessage("Thời gian làm bài thi đã hết!");
 					toastUtil.info("Đang điều hướng về trang chủ...");
-					setTimeout(() => {
-						router.push("/");
+					setTimeout(async () => {
+						await updateExamStatus();
+						window.location.href = "/"; // Hard reload
 					}, 3000);
 				}
 
@@ -109,40 +100,71 @@ const ExamQuestion = () => {
 	useEffect(() => {
 		const remain = remainingTime();
 		setTimeLeft(remain);
+		// Cập nhật totalQuestions từ examData
+		if (examData?.maxQuestions) {
+			setTotalQuestions(examData.maxQuestions);
+		}
 	}, [examData]);
 
 	// Detect tab or window switching (anti-cheating)
 	useEffect(() => {
-		if(!isReady) return;
+		if (!isReady) return;
+
 		const warnUser = () => {
-			setTabSwitchCount((prev) => prev + 1);
-			localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
+			setTabSwitchCount(prev => prev + 1);
 			toastUtil.warning(
-				`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${tabSwitchCount === 1 ? "lần" : "lần"})`
+				`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount + 1} ${tabSwitchCount + 1 === 1 ? "lần" : "lần"})`
 			);
-			setTimeout(() => setWarningMessage(""), 30000);
+			setWarningMessage(`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount + 1} ${tabSwitchCount + 1 === 1 ? "lần" : "lần"})`);
+
+			setTimeout(() => {
+				setWarningMessage("")
+			}, 3000); // Đợi 3 giây trước khi hiển thị thông báo
 		};
 
 		const handleVisibilityChange = () => {
-			if (document.hidden) warnUser();
+			if (document.hidden) {
+				// Người dùng rời khỏi tab
+				if (!isLeaving) {
+					setIsLeaving(true);
+					warnUser();
+				}
+			} else {
+				// Người dùng quay lại tab
+				setIsLeaving(false);
+			}
 		};
 
 		const handleBlur = () => {
-			warnUser();
+			// Người dùng rời khỏi cửa sổ
+			if (!isLeaving) {
+				setIsLeaving(true);
+				warnUser();
+			}
+		};
+
+		const handleFocus = () => {
+			// Người dùng quay lại cửa sổ
+			setIsLeaving(false);
 		};
 
 		window.addEventListener("blur", handleBlur);
+		window.addEventListener("focus", handleFocus);
 		document.addEventListener("visibilitychange", handleVisibilityChange);
 
 		return () => {
 			window.removeEventListener("blur", handleBlur);
-			document.removeEventListener("visibilitychange", handleVisibilityChange);
+			window.removeEventListener("focus", handleFocus);
+			document.removeEventListener(
+				"visibilitychange",
+				handleVisibilityChange
+			);
 		};
-	}, [tabSwitchCount, isReady]);
+	}, [tabSwitchCount, isReady, isLeaving]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string | null) => {
-		setAnswers((prev) => ({ ...prev, [currentQuestion]: answer }));
+		setAnswers(prev => ({ ...prev, [currentQuestion]: answer }));
 	};
 
 	// Select different question
@@ -154,7 +176,7 @@ const ExamQuestion = () => {
 	const handleSubmit = async () => {
 		if (hasSubmitted) return; // Ngăn submit nhiều lần
 
-		// Hiển thị xác nhận nếu thời gian còn lại > 3 giây
+		// Hiển thị xác nhận nếu thời gian còn lại > 5 giây
 		if (timeLeft > 5) {
 			const confirm = await AlertDialogUtils.warning({
 				title: "Xác nhận nộp bài thi",
@@ -174,7 +196,7 @@ const ExamQuestion = () => {
 				.filter(([_, value]) => value !== null) // Loại bỏ các câu chưa trả lời
 				.map(([key, value]) => ({
 					questionOrder: parseInt(key),
-					selectedOption: value,
+					selectedOption: value, // "A", "B", "C", "D"
 				})),
 		};
 
@@ -189,15 +211,16 @@ const ExamQuestion = () => {
 			);
 		} else {
 			toastUtil.success("Nộp bài thi thành công!");
-			setTimeout(() => {
+			setTimeout(async () => {
 				toastUtil.info("Đang điều hướng về trang chủ...");
-				router.push("/"); // Redirect to home page after 3 seconds
+				await updateExamStatus();
+				window.location.href = "/"; // Hard reload về trang chủ
 			}, 3000);
 		}
 	};
 
 	const remainingTime = (): number => {
-		if (!examData || !examData.startedAt || !examData.duration) {
+		if (!examData || !examData?.startedAt || !examData?.duration) {
 			return 10;
 		}
 
@@ -216,11 +239,9 @@ const ExamQuestion = () => {
 	const handleReady = async () => {
 		setIsReady(true);
 		const response = await startExam();
-		setExamData((prev) => response);
+		console.log(response);
+		setExamData(response);
 	};
-
-	// Kiểm tra thời gian làm bài
-
 
 	return (
 		<AuthenticatedRoute>
@@ -235,7 +256,9 @@ const ExamQuestion = () => {
 								<h2 className="text-xl font-semibold mb-4 text-red-600">
 									Đã kết thúc thời gian làm bài thi!
 								</h2>
-								<p className="text-gray-700">Đang điều hướng về trang chủ...</p>
+								<p className="text-gray-700">
+									Đang điều hướng về trang chủ...
+								</p>
 							</div>
 						</div>
 					)}
@@ -243,12 +266,49 @@ const ExamQuestion = () => {
 					<div className="w-full max-w-5xl bg-white shadow-sm rounded-2xl flex flex-col lg:flex-row overflow-hidden border border-gray-200">
 						{/* Question Section */}
 						<div className="w-full lg:w-2/3 p-6">
-							<QuestionCard
-								question={mockQuestions[currentQuestion - 1].question}
-								answers={mockQuestions[currentQuestion - 1].answers}
-								selectedAnswer={answers[currentQuestion]} // Truyền đáp án đã chọn cho câu hỏi hiện tại
-								onSelectAnswer={handleAnswerChange}
-							/>
+							{examData?.questions &&
+							examData.questions.length > 0 ? (
+								<QuestionCard
+									question={
+										examData.questions[currentQuestion - 1]
+											.questionContent
+									}
+									answers={[
+										{
+											label: "A",
+											content:
+												examData.questions[
+													currentQuestion - 1
+												].options[0].optionA,
+										},
+										{
+											label: "B",
+											content:
+												examData.questions[
+													currentQuestion - 1
+												].options[0].optionB,
+										},
+										{
+											label: "C",
+											content:
+												examData.questions[
+													currentQuestion - 1
+												].options[0].optionC,
+										},
+										{
+											label: "D",
+											content:
+												examData.questions[
+													currentQuestion - 1
+												].options[0].optionD,
+										},
+									]}
+									selectedAnswer={answers[currentQuestion]} // Truyền đáp án đã chọn cho câu hỏi hiện tại
+									onSelectAnswer={handleAnswerChange}
+								/>
+							) : (
+								<p>Đang tải câu hỏi...</p>
+							)}
 						</div>
 
 						{/* Answer Panel Section */}
@@ -256,8 +316,11 @@ const ExamQuestion = () => {
 							{/* Refined Timer */}
 							<div className="text-right mb-6">
 								<div className="inline-flex items-center px-6 py-3 rounded-2xl bg-[#f2f2f2] text-gray-900 border border-gray-300 text-xl font-semibold tracking-wide shadow-inner">
-									{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
-									{String(timeLeft % 60).padStart(2, "0")}
+									{String(Math.floor(timeLeft / 60)).padStart(
+										2,
+										"0"
+									)}
+									:{String(timeLeft % 60).padStart(2, "0")}
 								</div>
 							</div>
 
@@ -283,23 +346,26 @@ const ExamQuestion = () => {
 
 							{/* Question number buttons */}
 							<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
-								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map(
-									(num) => (
-										<button
-											key={num}
-											onClick={() => handleQuestionSelect(num)}
-											className={`py-1 rounded-lg text-sm font-medium transition border ${
-												currentQuestion === num
-													? "bg-blue-600 text-white border-blue-600"
-													: answers[num]
-														? "bg-green-100 text-green-800 border-green-200"
-														: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-											}`}
-										>
-											{num}
-										</button>
-									)
-								)}
+								{Array.from(
+									{ length: totalQuestions },
+									(_, i) => i + 1
+								).map(num => (
+									<button
+										key={num}
+										onClick={() =>
+											handleQuestionSelect(num)
+										}
+										className={`py-1 rounded-lg text-sm font-medium transition border ${
+											currentQuestion === num
+												? "bg-blue-600 text-white border-blue-600"
+												: answers[num]
+													? "bg-green-100 text-green-800 border-green-200"
+													: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+										}`}
+									>
+										{num}
+									</button>
+								))}
 							</div>
 
 							{/* Submit answers button */}
