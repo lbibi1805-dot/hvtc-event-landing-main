@@ -27,7 +27,6 @@ const ExamQuestion = () => {
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null);
 	const { isTakenExam, updateExamStatus } = useAuth();
 
-
 	const isTimeToDoTest = () => {
 		const currentDate = Date.now();
 		const testStartDate = new Date("2025-04-09T00:00:00").getTime();
@@ -42,18 +41,13 @@ const ExamQuestion = () => {
 			</AuthenticatedRoute>
 		);
 	}
+
 	// Đọc tabSwitchCount từ localStorage sau khi component render phía client
 	useEffect(() => {
 		const storedCount = localStorage.getItem("tabSwitchCount");
 		if (storedCount) {
 			setTabSwitchCount(parseInt(storedCount, 10));
 		}
-	}, []);
-
-	// Reset tab switch count at start of exam (nếu cần reset)
-	useEffect(() => {
-		localStorage.setItem("tabSwitchCount", "0");
-		setTabSwitchCount(0);
 	}, []);
 
 	// Lưu tabSwitchCount vào localStorage mỗi khi nó thay đổi
@@ -124,7 +118,10 @@ const ExamQuestion = () => {
 				toastUtil.warning(
 					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
 				);
-				setTimeout(() => setWarningMessage(""), 30000);
+				setWarningMessage(
+					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+				);
+				setTimeout(() => setWarningMessage(""), 5000);
 				return newCount;
 			});
 		};
@@ -245,6 +242,9 @@ const ExamQuestion = () => {
 		const response = await startExam();
 		console.log(response);
 		setExamData(response);
+		// Reset tabSwitchCount khi bắt đầu bài thi
+		setTabSwitchCount(0);
+		localStorage.setItem("tabSwitchCount", "0");
 	};
 
 	return (
