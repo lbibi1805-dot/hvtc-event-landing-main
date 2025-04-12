@@ -4,9 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/app/exam/questions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/exam/questions/page.tsx" afterDir="false" />
-    </list>
+    <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -54,7 +52,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "main",
+    "git-widget-placeholder": "vercel",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.nodejs.core.library.configured.version": "22.14.0",
     "javascript.nodejs.core.library.typings.version": "22.14.0",
