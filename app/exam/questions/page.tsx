@@ -190,7 +190,6 @@ const ExamQuestion = () => {
 			if (!confirm) return;
 		}
 
-		setHasSubmitted(true); // Đánh dấu đã submit
 
 		const formattedAnswers = {
 			answers: Object.entries(answers)
@@ -211,6 +210,7 @@ const ExamQuestion = () => {
 				"Nộp bài thi thất bại! Đã hết giờ làm bài hoặc thông tin không hợp lệ. Vui lòng liên hệ ban tổ chức"
 			);
 		} else {
+			setHasSubmitted(true); // Đánh dấu đã submit
 			toastUtil.success("Nộp bài thi thành công!");
 			setTimeout(async () => {
 				toastUtil.info("Đang điều hướng về trang chủ...");
