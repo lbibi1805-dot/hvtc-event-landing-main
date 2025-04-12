@@ -8,6 +8,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
+	Select,
+	SelectContent,
+	SelectItem,
+	SelectTrigger,
+	SelectValue,
+} from "@/components/ui/select";
+import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
@@ -19,25 +26,130 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Major } from "@/enums/major.enums";
 import { University } from "@/enums/university.enums";
-import { Combobox } from "@/components/ui/combobox"; // Import Combobox
 
 interface FormFieldsProps {
 	form: any;
 }
 
+// Separate component for Date of Birth field to isolate hooks
+const DateOfBirthField = ({ control }: { control: any }) => {
+	const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+	const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
+	const [yearInput, setYearInput] = useState(currentYear.toString());
+	const [yearError, setYearError] = useState("");
+
+	const validateYear = (value: string) => {
+		const year = parseInt(value, 10);
+		if (!value) {
+			setYearError("Vui lòng nhập năm sinh");
+			return false;
+		}
+		if (isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
+			setYearError(`Năm sinh phải từ 1900 đến ${new Date().getFullYear()}`);
+			return false;
+		}
+		setYearError("");
+		return true;
+	};
+
+	const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+		setYearInput(e.target.value);
+	};
+
+	const handleYearBlur = () => {
+		if (validateYear(yearInput)) {
+			const year = parseInt(yearInput, 10);
+			setCurrentYear(year);
+			setCurrentMonth(0);
+		} else {
+			setYearInput(currentYear.toString());
+		}
+	};
+
+	return (
+		<FormField
+			control={control}
+			name="dob"
+			render={({ field }) => (
+				<FormItem className="flex flex-col mt-2">
+					<FormLabel className="text-black">Ngày sinh</FormLabel>
+					<Popover>
+						<PopoverTrigger asChild>
+							<FormControl>
+								<Button
+									variant="outline"
+									className={cn(
+										"text-black",
+										"w-full pl-3 text-left font-normal",
+										!field.value && "text-muted-foreground"
+									)}
+								>
+									{field.value ? format(field.value, "PPP") : <span>Chọn ngày sinh</span>}
+									<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+								</Button>
+							</FormControl>
+						</PopoverTrigger>
+						<PopoverContent className="w-auto p-0" align="start">
+							<div className="flex flex-col px-4 py-2">
+								{/* Year Input */}
+								<div className="flex items-center gap-2 mb-2">
+									<label htmlFor="year-input" className="text-sm font-medium text-gray-700">
+										Năm:
+									</label>
+									<input
+										id="year-input"
+										type="number"
+										value={yearInput}
+										onChange={handleYearChange}
+										onBlur={handleYearBlur}
+										onKeyDown={(e) => {
+											if (e.key === "Enter") {
+												handleYearBlur();
+											}
+										}}
+										className={cn(
+											"w-20 px-2 py-1 border rounded text-black focus:ring-primary-500 focus:border-primary-500",
+											yearError && "border-red-500"
+										)}
+									/>
+								</div>
+								{yearError && <p className="text-red-500 text-xs">{yearError}</p>}
+							</div>
+
+							{/* Calendar */}
+							<Calendar
+								mode="single"
+								selected={field.value}
+								onSelect={(date) => {
+									if (date) {
+										setCurrentYear(date.getFullYear());
+										setCurrentMonth(date.getMonth());
+										setYearInput(date.getFullYear().toString());
+										setYearError("");
+									}
+									field.onChange(date);
+								}}
+								disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
+								initialFocus
+								month={new Date(currentYear, currentMonth)}
+								onMonthChange={(date) => {
+									setCurrentYear(date.getFullYear());
+									setCurrentMonth(date.getMonth());
+									setYearInput(date.getFullYear().toString());
+									setYearError("");
+								}}
+							/>
+						</PopoverContent>
+					</Popover>
+					<FormMessage />
+				</FormItem>
+			)}
+		/>
+	);
+};
+
 export const FormFields = ({ form }: FormFieldsProps) => {
-	const [showPassword, setShowPassword] = useState(false);
-
-	// Chuẩn bị options cho Combobox
-	const universityOptions = Object.values(University).map((uni) => ({
-		value: uni,
-		label: uni,
-	}));
-
-	const majorOptions = Object.values(Major).map((major) => ({
-		value: major,
-		label: major,
-	}));
+	const [showPassword, setShowPassword] = useState(false); // Note: Unused, consider removing if not needed
 
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -54,74 +166,7 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 					</FormItem>
 				)}
 			/>
-			<FormField
-				control={form.control}
-				name="dob"
-				render={({ field }) => {
-					const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-					const [currentMonth, setCurrentMonth] = useState(new Date().getMonth());
-
-					return (
-						<FormItem className="flex flex-col mt-2">
-							<FormLabel className="text-black">Ngày sinh</FormLabel>
-							<Popover>
-								<PopoverTrigger asChild>
-									<FormControl>
-										<Button
-											variant="outline"
-											className={cn(
-												"text-black",
-												"w-full pl-3 text-left font-normal",
-												!field.value && "text-muted-foreground"
-											)}
-										>
-											{field.value ? format(field.value, "PPP") : <span>Chọn ngày sinh</span>}
-											<CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
-										</Button>
-									</FormControl>
-								</PopoverTrigger>
-								<PopoverContent className="w-auto p-0" align="start">
-									<div className="flex flex-col px-4 py-2">
-										<div className="flex items-center gap-2 mb-2">
-											<label htmlFor="year-input" className="text-sm font-medium text-gray-700">
-												Năm:
-											</label>
-											<input
-												id="year-input"
-												type="number"
-												value={currentYear}
-												onChange={(e) => {
-													const year = parseInt(e.target.value, 10);
-													if (!isNaN(year) && year >= 1900 && year <= new Date().getFullYear()) {
-														setCurrentYear(year);
-														setCurrentMonth(0);
-													}
-												}}
-												className="w-20 px-2 py-1 border border-gray-300 rounded text-black focus:ring-primary-500 focus:border-primary-500"
-											/>
-										</div>
-									</div>
-									<Calendar
-										mode="single"
-										selected={field.value}
-										onSelect={(date) => {
-											field.onChange(date);
-										}}
-										disabled={(date) => date > new Date() || date < new Date("1900-01-01")}
-										initialFocus
-										month={new Date(currentYear, currentMonth)}
-										onMonthChange={(date) => {
-											setCurrentYear(date.getFullYear());
-											setCurrentMonth(date.getMonth());
-										}}
-									/>
-								</PopoverContent>
-							</Popover>
-							<FormMessage />
-						</FormItem>
-					);
-				}}
-			/>
+			<DateOfBirthField control={form.control} />
 			<FormField
 				control={form.control}
 				name="email"
@@ -167,18 +212,20 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel className="text-black">Trường đang theo học</FormLabel>
-						<FormControl>
-							<Combobox
-								options={universityOptions}
-								value={field.value || ""}
-								onChange={(value) => field.onChange(value)}
-								placeholder="Chọn trường đại học"
-								className={cn(
-									"text-black",
-									field.value && "text-blue-600" // Màu sau khi chọn
-								)}
-							/>
-						</FormControl>
+						<Select onValueChange={field.onChange} defaultValue={field.value}>
+							<FormControl className="text-black">
+								<SelectTrigger>
+									<SelectValue placeholder="Chọn trường đại học" />
+								</SelectTrigger>
+							</FormControl>
+							<SelectContent>
+								{Object.values(University).map((uni, index) => (
+									<SelectItem key={`university-${index}`} value={String(uni)}>
+										{uni}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
 						<FormMessage />
 					</FormItem>
 				)}
@@ -189,18 +236,20 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel className="text-black">Ngành học</FormLabel>
-						<FormControl>
-							<Combobox
-								options={majorOptions}
-								value={field.value || ""}
-								onChange={(value) => field.onChange(value)}
-								placeholder="Chọn ngành học"
-								className={cn(
-									"text-black",
-									field.value && "text-blue-600" // Màu sau khi chọn
-								)}
-							/>
-						</FormControl>
+						<Select onValueChange={field.onChange} defaultValue={field.value}>
+							<FormControl>
+								<SelectTrigger>
+									<SelectValue placeholder="Chọn ngành học" />
+								</SelectTrigger>
+							</FormControl>
+							<SelectContent>
+								{Object.values(Major).map((major) => (
+									<SelectItem key={major} value={major}>
+										{major}
+									</SelectItem>
+								))}
+							</SelectContent>
+						</Select>
 						<FormMessage />
 					</FormItem>
 				)}
