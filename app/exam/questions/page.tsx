@@ -167,7 +167,7 @@ const ExamQuestion = () => {
 		setAnswers(prev => ({ ...prev, [currentQuestion]: answer }));
 	};
 
-	// Select different question
+	//
 	const handleQuestionSelect = (num: number) => {
 		setCurrentQuestion(num);
 	};

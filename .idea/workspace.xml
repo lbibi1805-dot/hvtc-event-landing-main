@@ -5,11 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e2432acd-21a7-4d9d-9cdf-35b73d6311f8" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/api/exam.api.ts" beforeDir="false" afterPath="$PROJECT_DIR$/api/exam.api.ts" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/exam/questions/QuestionCard.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/exam/questions/QuestionCard.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/exam/questions/page.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/exam/questions/page.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/components/AuthenticatedRoute.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/components/AuthenticatedRoute.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -58,7 +54,7 @@
     "ASKED_SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
-    "git-widget-placeholder": "TestUnavailable",
+    "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "javascript.nodejs.core.library.configured.version": "22.14.0",
     "javascript.nodejs.core.library.typings.version": "22.14.0",
