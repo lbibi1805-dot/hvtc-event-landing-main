@@ -17,11 +17,7 @@ const ExamQuestion = () => {
 	const [currentQuestion, setCurrentQuestion] = useState(1); // Bắt đầu từ câu 1
 	const [answers, setAnswers] = useState<Record<number, string | null>>({});
 	const [timeLeft, setTimeLeft] = useState(999); // 30 minutes in seconds
-	const [tabSwitchCount, setTabSwitchCount] = useState<number>(() => {
-		// Đọc giá trị từ localStorage khi component mount
-		const storedCount = localStorage.getItem("tabSwitchCount");
-		return storedCount ? parseInt(storedCount, 10) : 0;
-	});
+	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0); // Khởi tạo với 0
 	const [warningMessage, setWarningMessage] = useState("");
 	const [isReady, setIsReady] = useState(false); // Modal state
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
@@ -46,6 +42,14 @@ const ExamQuestion = () => {
 		);
 	}
 
+	// Đọc tabSwitchCount từ localStorage sau khi component render phía client
+	useEffect(() => {
+		const storedCount = localStorage.getItem("tabSwitchCount");
+		if (storedCount) {
+			setTabSwitchCount(parseInt(storedCount, 10));
+		}
+	}, []);
+
 	// Lưu tabSwitchCount vào localStorage mỗi khi nó thay đổi
 	useEffect(() => {
 		localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
@@ -56,7 +60,7 @@ const ExamQuestion = () => {
 		if (!isReady || hasSubmitted) return; // Không chạy timer nếu chưa sẵn sàng hoặc đã submit
 
 		const timer = setInterval(() => {
-			setTimeLeft(prev => {
+			setTimeLeft((prev) => {
 				const newTime = prev > 0 ? prev - 1 : 0;
 
 				// Hiển thị thông báo dựa trên thời gian còn lại
@@ -69,9 +73,7 @@ const ExamQuestion = () => {
 						"Thời gian làm bài thi còn lại dưới 5 giây! Vui lòng nộp bài thi hoặc hệ thống sẽ tự động nộp bài thi khi còn 3 giây"
 					);
 				} else if (newTime <= 3 && newTime > 0) {
-					setWarningMessage(
-						"Thời gian làm bài thi đã hết! Đang tự động nộp bài..."
-					);
+					setWarningMessage("Thời gian làm bài thi đã hết! Đang tự động nộp bài...");
 				}
 
 				// Tự động submit khi thời gian còn 3 giây
@@ -111,15 +113,17 @@ const ExamQuestion = () => {
 		if (!isReady) return;
 
 		const warnUser = () => {
-			setTabSwitchCount(prev => prev + 1);
-			toastUtil.warning(
-				`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount + 1} ${tabSwitchCount + 1 === 1 ? "lần" : "lần"})`
-			);
-			setWarningMessage(`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount + 1} ${tabSwitchCount + 1 === 1 ? "lần" : "lần"})`);
-
-			setTimeout(() => {
-				setWarningMessage("")
-			}, 3000); // Đợi 3 giây trước khi hiển thị thông báo
+			setTabSwitchCount((prev) => {
+				const newCount = prev + 1;
+				toastUtil.warning(
+					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+				);
+				setWarningMessage(
+					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+				);
+				setTimeout(() => setWarningMessage(""), 5000);
+				return newCount;
+			});
 		};
 
 		const handleVisibilityChange = () => {
@@ -155,19 +159,16 @@ const ExamQuestion = () => {
 		return () => {
 			window.removeEventListener("blur", handleBlur);
 			window.removeEventListener("focus", handleFocus);
-			document.removeEventListener(
-				"visibilitychange",
-				handleVisibilityChange
-			);
+			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
 	}, [tabSwitchCount, isReady, isLeaving]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string | null) => {
-		setAnswers(prev => ({ ...prev, [currentQuestion]: answer }));
+		setAnswers((prev) => ({ ...prev, [currentQuestion]: answer }));
 	};
 
-	//
+	// Select different question
 	const handleQuestionSelect = (num: number) => {
 		setCurrentQuestion(num);
 	};
@@ -241,6 +242,9 @@ const ExamQuestion = () => {
 		const response = await startExam();
 		console.log(response);
 		setExamData(response);
+		// Reset tabSwitchCount khi bắt đầu bài thi
+		setTabSwitchCount(0);
+		localStorage.setItem("tabSwitchCount", "0");
 	};
 
 	return (
@@ -256,9 +260,7 @@ const ExamQuestion = () => {
 								<h2 className="text-xl font-semibold mb-4 text-red-600">
 									Đã kết thúc thời gian làm bài thi!
 								</h2>
-								<p className="text-gray-700">
-									Đang điều hướng về trang chủ...
-								</p>
+								<p className="text-gray-700">Đang điều hướng về trang chủ...</p>
 							</div>
 						</div>
 					)}
@@ -266,41 +268,35 @@ const ExamQuestion = () => {
 					<div className="w-full max-w-5xl bg-white shadow-sm rounded-2xl flex flex-col lg:flex-row overflow-hidden border border-gray-200">
 						{/* Question Section */}
 						<div className="w-full lg:w-2/3 p-6">
-							{examData?.questions &&
-							examData.questions.length > 0 ? (
+							{examData?.questions && examData.questions.length > 0 ? (
 								<QuestionCard
 									question={
-										examData.questions[currentQuestion - 1]
-											.questionContent
+										examData.questions[currentQuestion - 1].questionContent
 									}
 									answers={[
 										{
 											label: "A",
 											content:
-												examData.questions[
-													currentQuestion - 1
-												].options[0].optionA,
+											examData.questions[currentQuestion - 1].options[0]
+												.optionA,
 										},
 										{
 											label: "B",
 											content:
-												examData.questions[
-													currentQuestion - 1
-												].options[0].optionB,
+											examData.questions[currentQuestion - 1].options[0]
+												.optionB,
 										},
 										{
 											label: "C",
 											content:
-												examData.questions[
-													currentQuestion - 1
-												].options[0].optionC,
+											examData.questions[currentQuestion - 1].options[0]
+												.optionC,
 										},
 										{
 											label: "D",
 											content:
-												examData.questions[
-													currentQuestion - 1
-												].options[0].optionD,
+											examData.questions[currentQuestion - 1].options[0]
+												.optionD,
 										},
 									]}
 									selectedAnswer={answers[currentQuestion]} // Truyền đáp án đã chọn cho câu hỏi hiện tại
@@ -316,11 +312,8 @@ const ExamQuestion = () => {
 							{/* Refined Timer */}
 							<div className="text-right mb-6">
 								<div className="inline-flex items-center px-6 py-3 rounded-2xl bg-[#f2f2f2] text-gray-900 border border-gray-300 text-xl font-semibold tracking-wide shadow-inner">
-									{String(Math.floor(timeLeft / 60)).padStart(
-										2,
-										"0"
-									)}
-									:{String(timeLeft % 60).padStart(2, "0")}
+									{String(Math.floor(timeLeft / 60)).padStart(2, "0")}:
+									{String(timeLeft % 60).padStart(2, "0")}
 								</div>
 							</div>
 
@@ -346,26 +339,23 @@ const ExamQuestion = () => {
 
 							{/* Question number buttons */}
 							<div className="grid grid-cols-5 sm:grid-cols-6 gap-2 mb-6">
-								{Array.from(
-									{ length: totalQuestions },
-									(_, i) => i + 1
-								).map(num => (
-									<button
-										key={num}
-										onClick={() =>
-											handleQuestionSelect(num)
-										}
-										className={`py-1 rounded-lg text-sm font-medium transition border ${
-											currentQuestion === num
-												? "bg-blue-600 text-white border-blue-600"
-												: answers[num]
-													? "bg-green-100 text-green-800 border-green-200"
-													: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
-										}`}
-									>
-										{num}
-									</button>
-								))}
+								{Array.from({ length: totalQuestions }, (_, i) => i + 1).map(
+									(num) => (
+										<button
+											key={num}
+											onClick={() => handleQuestionSelect(num)}
+											className={`py-1 rounded-lg text-sm font-medium transition border ${
+												currentQuestion === num
+													? "bg-blue-600 text-white border-blue-600"
+													: answers[num]
+														? "bg-green-100 text-green-800 border-green-200"
+														: "bg-white text-gray-700 border-gray-200 hover:bg-gray-100"
+											}`}
+										>
+											{num}
+										</button>
+									)
+								)}
 							</div>
 
 							{/* Submit answers button */}
