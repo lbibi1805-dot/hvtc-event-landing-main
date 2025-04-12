@@ -6,9 +6,9 @@ const HeroSection: React.FC = () => {
 
   const updateImageSource = () => {
     if (window.innerWidth <= 720) {
-      setImageSrc('/images/mobileHead.jpg');
+      setImageSrc('/images/2025/COVER DỌC-01.jpg');
     } else {
-      setImageSrc('/images/main_new_2025.jpg');
+      setImageSrc('/images/2025/COVER ROF25-01.jpg');
     }
   };
 
@@ -22,7 +22,8 @@ const HeroSection: React.FC = () => {
 
   return (
     <section className="relative overflow-hidden mt-16 h-screen max-w-screen mb-0">
-      <div className="absolute inset-0 z-0 md:pt-2">
+      {/* Background Image */}
+      <div className="absolute inset-0 z-0">
         <img
           id="background-image"
           src={imageSrc}
@@ -31,13 +32,12 @@ const HeroSection: React.FC = () => {
         />
       </div>
       <div className="max-w-6xl mx-auto px-4 sm:px-6 relative">
-        {/* Illustration behind hero content */}
         {/* Hero content */}
         <div className="relative pt-32 pb-10 md:pt-80 md:pb-16">
           {/* Section header */}
           <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
             <div className="max-w-xs mx-auto sm:max-w-none sm:flex sm:justify-center">
-              {/* Additional content can go here */}
+              {/* Content removed */}
             </div>
           </div>
         </div>

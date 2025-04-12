@@ -22,7 +22,8 @@ import Countdown from '@/components/countdown'
 import Timeline from '@/components/timeline'
 import Sponsor from '@/components/sponsor'
 import ImageList from '@/components/ImageList'
-// import ImageList from '@/components/ImageList'
+import RegisterNow from '@/components/RegisterNow'
+import Rules from '@/components/Rules'
 
 const DATA = [
     { image: "/images/Asset 1.png" },
@@ -36,17 +37,42 @@ const animationVariants = {
 
 export default function Home() {
   return (
-    <div>  
+    <div>
+      {/* Hero Section */}
       <Hero />
-      {/* <Features /> */}
-      <div className='mt-0.05'>
+
+      {/* Zigzag Section */}
+      <div className="mt-16">
         <Zigzag />
       </div>
-      <Countdown />
-      <Timeline />
-      <Testimonials />
-      {/*<Sponsor/>*/}
-      <ImageList/>
+
+      {/* Countdown Section */}
+      <div className="mt-16">
+        <Countdown />
+      </div>
+
+      <div className='mt-16'>
+        <Rules/>
+      </div>
+      {/* Timeline Section */}
+      <div className="mt-16 ml-10 mr-10">
+        <Timeline />
+      </div>
+
+      {/* Timeline Section */}
+      <div className="mt-16 ml-10 mr-10">
+        <Sponsor/>
+      </div>
+
+      {/* Testimonials Section */}
+      <div className="mt-16 ml-10 mr-10">
+        <Testimonials />
+      </div>
+
+      {/* Image List Section */}
+      <div className="mt-16 ml-15 mr-15">
+        <ImageList />
+      </div>
     </div>
-  )
+  );
 }

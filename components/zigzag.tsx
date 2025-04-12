@@ -8,7 +8,7 @@ export default function Zigzag() {
           {/*  Header */}
           <div className="mx-auto text-center">
             <h2
-              className="h2 md:-mt-40 text-4xl md:text-5xl font-bold text-white mb-10"
+              className="h2  text-4xl md:text-5xl font-bold text-white mb-10"
               data-aos="fade-up"
               style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}
             >
