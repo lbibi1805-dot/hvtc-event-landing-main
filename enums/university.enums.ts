@@ -106,4 +106,5 @@ export enum University {
     HVUPT = 'Đại học Hùng Vương Phú Thọ',
     BGMU = 'Đại học Y Dược Bắc Giang',
     HDUT = 'Đại học Kỹ thuật Y Dược Hải Dương',
+    "OTHER" = 'Trường khác',
 }

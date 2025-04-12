@@ -4,7 +4,7 @@ import toastUtil from "@/lib/ToastUtil";
 export const fetchSubmissionStatus = async (userId: string) => {
 	const response = await getSubmissionStatus(userId);
 	if (response.status !== 200) {
-		throw new Error(response.data.message || "Failed to fetch submission status");
+		throw new Error(response.data.message || "Lỗi khi lấy trạng thái bài thi");
 	}
 
 	console.log("Respone data", response.data);
@@ -14,7 +14,7 @@ export const fetchSubmissionStatus = async (userId: string) => {
 export const startExam =  async () => {
 	const response = await fetchExam();
 	if (response.status === 404) {
-		throw new Error(response.data.message || "Failed to fetch exam");
+		throw new Error(response.data.message || "Lỗi khi lấy thông tin bài thi");
 	}
 	return response.data.data;
 }
@@ -30,10 +30,5 @@ export const submitExam =  async (examId: string, data: {answers: any, screenOut
 	}
 
 	const response = await postSubmitExam(examId, data);
-	if (response.status !== 200) {
-		throw new Error(response.data.message || "Failed to submit exam");
-	}
-
-	toastUtil.success("Submission Successfully submitted successfully");
-	return response.data.data;
+	return response;
 }
