@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useState, ReactNode } from 'react';
 import { fetchUserProfile } from '@/services/auth.service';
 import { fetchSubmissionStatus } from '@/services/exam.service';
+import toastUtil from "@/lib/ToastUtil";
 
 // Define the user type (adjust based on your API response)
 interface User {
@@ -21,6 +22,7 @@ interface AuthContextInterface {
 	token: string | null;
 	login: (token: string) => Promise<void>;
 	logout: () => void;
+	updateExamStatus: () => Promise<void>;
 	isLoading: boolean;
 	isTimeToDoTest: boolean; //  ĐẾN GIỜ LÀM TEST CHƯA
 	isTestClosed: boolean; //    HẾT THỜI HẠN LÀM TEST CHƯA
@@ -126,6 +128,18 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 		setIsLoading(false);
 	};
 
+	const updateExamStatus = async () => {
+		if (user) {
+			try {
+				const examTaken = await fetchSubmissionStatus(user._id);
+				setIsTakenExam(examTaken);
+			} catch (error) {
+				toastUtil.info("Lỗi khi cập nhật trạng thái bài thi. Đang đăng xuất...");
+				logout();
+			}
+		}
+	}
+
 	return (
 		<AuthContext.Provider
 			value={{
@@ -138,6 +152,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 				token,
 				login,
 				logout,
+				updateExamStatus,
 				isLoading,
 			}}
 		>

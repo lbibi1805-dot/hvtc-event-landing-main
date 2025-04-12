@@ -26,6 +26,7 @@ import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import { Major } from "@/enums/major.enums";
 import { University } from "@/enums/university.enums";
+import {Combobox} from "@/components/ui/combobox";
 
 interface FormFieldsProps {
 	form: any;
@@ -44,13 +45,16 @@ const DateOfBirthField = ({ control }: { control: any }) => {
 			setYearError("Vui lòng nhập năm sinh");
 			return false;
 		}
-		if (isNaN(year) || year < 1900 || year > new Date().getFullYear()) {
-			setYearError(`Năm sinh phải từ 1900 đến ${new Date().getFullYear()}`);
+		if (isNaN(year) || year < 1900 || year > 2007) {
+			setYearError(`Năm sinh phải từ 1900 đến 2007`);
 			return false;
 		}
 		setYearError("");
 		return true;
 	};
+
+	// Chuẩn bị options cho Combobox
+
 
 	const handleYearChange = (e: React.ChangeEvent<HTMLInputElement>) => {
 		setYearInput(e.target.value);
@@ -150,7 +154,15 @@ const DateOfBirthField = ({ control }: { control: any }) => {
 
 export const FormFields = ({ form }: FormFieldsProps) => {
 	const [showPassword, setShowPassword] = useState(false); // Note: Unused, consider removing if not needed
+	const universityOptions = Object.values(University).map((uni) => ({
+		value: uni,
+		label: uni,
+	}));
 
+	const majorOptions = Object.values(Major).map((major) => ({
+		value: major,
+		label: major,
+	}));
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<FormField
@@ -212,20 +224,18 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel className="text-black">Trường đang theo học</FormLabel>
-						<Select onValueChange={field.onChange} defaultValue={field.value}>
-							<FormControl className="text-black">
-								<SelectTrigger>
-									<SelectValue placeholder="Chọn trường đại học" />
-								</SelectTrigger>
-							</FormControl>
-							<SelectContent>
-								{Object.values(University).map((uni, index) => (
-									<SelectItem key={`university-${index}`} value={String(uni)}>
-										{uni}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<FormControl>
+							<Combobox
+								options={universityOptions}
+								value={field.value || ""}
+								onChange={(value) => field.onChange(value)}
+								placeholder="Chọn trường đại học"
+								className={cn(
+									"text-black",
+									field.value && "text-black" // Màu sau khi chọn
+								)}
+							/>
+						</FormControl>
 						<FormMessage />
 					</FormItem>
 				)}
@@ -236,20 +246,18 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				render={({ field }) => (
 					<FormItem>
 						<FormLabel className="text-black">Ngành học</FormLabel>
-						<Select onValueChange={field.onChange} defaultValue={field.value}>
-							<FormControl>
-								<SelectTrigger>
-									<SelectValue placeholder="Chọn ngành học" />
-								</SelectTrigger>
-							</FormControl>
-							<SelectContent>
-								{Object.values(Major).map((major) => (
-									<SelectItem key={major} value={major}>
-										{major}
-									</SelectItem>
-								))}
-							</SelectContent>
-						</Select>
+						<FormControl>
+							<Combobox
+								options={majorOptions}
+								value={field.value || ""}
+								onChange={(value) => field.onChange(value)}
+								placeholder="Chọn ngành học"
+								className={cn(
+									"text-black",
+									field.value && "text-black" // Màu sau khi chọn
+								)}
+							/>
+						</FormControl>
 						<FormMessage />
 					</FormItem>
 				)}
