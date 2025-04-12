@@ -7,18 +7,23 @@ interface ApiResponse<T> {
 	data: T;
 	message?: string;
 }
+export interface QuestionInterface {
+	questionOrder: number;
+	questionContent: string;
+	options: Array<{
+		optionA: string;
+		optionB: string;
+		optionC: string;
+		optionD: string;
+	}>;
+	score: number;
+}
 
 export interface SubmissionResponse {
 	examId: string;
-	content: string;
 	maxQuestions: number;
-	questions: {
-		questionOrder: number;
-		options: string[];
-		correctOption: string;
-		score: number;
-	}[];
-	duration: number;
+	questions: QuestionInterface[];
+	duration?: number;
 	startedAt: string;
 }
 
