@@ -3,6 +3,7 @@ import { useCallback, useEffect, useState } from "react";
 import CountdownBox from "./CountdownBox";
 import CountdownHeader from "./CountdownHeader";
 import CountdownButton from "./CountdownButton";
+import RegisterNow from "./RegisterNow";
 
 const Countdown: React.FC = () => {
   const [countDownTime, setCountDownTime] = useState({
@@ -67,7 +68,7 @@ const Countdown: React.FC = () => {
   const formatTime = (time: number) => time.toString().padStart(2, "0");
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-transparent px-4">
+    <section className="w-full h-screen flex flex-col justify-center items-center bg-transparent px-4 mt-80">
       {/* Countdown Header */}
       <CountdownHeader/>
       
@@ -95,7 +96,11 @@ const Countdown: React.FC = () => {
         </div>
 
         {/* Call-to-Action Button */}
-        <CountdownButton />
+        <div className="md:mb-8">
+          <CountdownButton />
+        </div>
+        <hr className="md:mt-3"/>
+        <RegisterNow/>
       </div>
     </section>
   );

@@ -2,14 +2,11 @@ import React from "react";
 import Carousel from "./Carrousel";
 
 const slides = [
-  "/images/history/2.jpeg",
-  "/images/history/3.jpeg",
-  "/images/history/4.jpeg",
-  "/images/history/6.jpeg",
-  "/images/history/7.jpeg",
-  "/images/history/8.jpeg",
-  "/images/history/9.jpeg",
-  "/images/history/rof 1.jpeg",
+  "/images/2025/chung kết ROF 24/_DSC7494.jpg",
+  "/images/2025/chung kết ROF 24/_HA_5906.JPG",
+  "/images/2025/chung kết ROF 24/_HA_5753.JPG",
+
+
 ];
 
 function ImageList() {
