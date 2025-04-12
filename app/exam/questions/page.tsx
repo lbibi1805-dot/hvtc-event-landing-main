@@ -23,6 +23,7 @@ const ExamQuestion = () => {
 	const [warningMessage, setWarningMessage] = useState("");
 	const [isReady, setIsReady] = useState(false); // Modal state
 	const [timeUp, setTimeUp] = useState(false); // Time-up state
+	const [isMouseInIframe, setIsMouseInIframe] = useState(false); // Track mouse in iframe
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null); // State to hold exam data
 	const {user} = useAuth();
@@ -65,10 +66,14 @@ const ExamQuestion = () => {
 	// Detect tab or window switching (anti-cheating)
 	useEffect(() => {
 		const warnUser = () => {
-			// const newCount = tabSwitchCount + 1;
-			setTabSwitchCount(prev => prev + 1);
+			if (isMouseInIframe) return; 			// Ignore if mouse is in iframe
+			setTabSwitchCount((prev) => prev + 1);
 			localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
-			toastUtil.warning(`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${tabSwitchCount === 1 ? "lần" : "lần"})`)
+			toastUtil.warning(
+				`Bạn đã rời khỏi môi trường làm bài thi (${tabSwitchCount} ${
+					tabSwitchCount === 1 ? "lần" : "lần"
+				})`
+			);
 			setTimeout(() => setWarningMessage(""), 30000);
 		};
 
@@ -87,7 +92,7 @@ const ExamQuestion = () => {
 			window.removeEventListener("blur", handleBlur);
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, [tabSwitchCount]);
+	}, [tabSwitchCount, isMouseInIframe]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string) => {
@@ -136,7 +141,7 @@ const ExamQuestion = () => {
 	const handleReady = async () => {
 		setIsReady(true);
 		const response = await startExam();
-		setExamData(prev => response);
+		setExamData((prev) => response);
 	};
 
 	// Kiểm tra đã phải thời gian làm bài chưa
@@ -178,6 +183,8 @@ const ExamQuestion = () => {
 								src={examData?.content}
 								title="Exam"
 								className="w-full h-[400px] md:h-[500px] lg:h-[90vh] rounded-xl border border-gray-300"
+								onMouseEnter={() => setIsMouseInIframe(true)} // Set true when mouse enters iframe
+								onMouseLeave={() => setIsMouseInIframe(false)} // Set false when mouse leaves iframe
 							></iframe>
 						</div>
 
