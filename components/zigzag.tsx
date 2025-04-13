@@ -76,7 +76,7 @@ export default function Zigzag() {
                 <b>Race of Finance</b> là một cuộc thi về lĩnh vực Tài chính -
                 Chứng khoán dành cho sinh viên trên toàn quốc, được tổ chức bởi
                 CLB Chứng khoán trẻ Học viện Tài chính. Cuộc thi Race of Finance
-                qua 2 mùa thi thành công rực rỡ với những con số ấn tượng.
+                qua 3 mùa thi thành công rực rỡ với những con số ấn tượng.
               </p>
             </div>
           </div>
