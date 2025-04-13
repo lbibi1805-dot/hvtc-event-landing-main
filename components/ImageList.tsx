@@ -3,21 +3,20 @@ import Carousel from "./Carrousel";
 
 const slides = [
   // ảnh tập thể
-  "/images/2025/chung kết ROF 24/_DSC8006.jpg",
+  "/images/2025/ck/_DSC8006.webp",
   "/images/2025/chung kết ROF 24/_DSC7494.jpg",
-  "/images/2025/chung kết ROF 24/_HA_5906.JPG",
+  "/images/2025/ck/_HA_5906.webp",
   // ảnh cúp
-  "/images/2025/chung kết ROF 24/_HA_5753.JPG",
+  "/images/2025/ck/_HA_5753.webp",
 
   // ...
-  "/images/2025/chung kết ROF 24/_DSC7962.JPG",
-  "/images/2025/chung kết ROF 24/_DSC7962.JPG",
-  "/images/2025/chung kết ROF 24/_DSC7977.JPG",
+  "/images/2025/ck/_DSC7962.webp",
+  "/images/2025/ck/_DSC7977.webp",
   "/images/2025/chung kết ROF 24/_DSC7904.jpg",
   "/images/2025/chung kết ROF 24/_DSC7887.jpg",
   "/images/2025/chung kết ROF 24/_DSC7916.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7944.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7986.jpg",
+  "/images/2025/ck/_DSC7944.webp",
+  "/images/2025/ck/_DSC7986.webp",
 
   //..khác
   "/images/2025/chung kết ROF 24/_DSC7534.jpg",
@@ -27,11 +26,11 @@ const slides = [
   "/images/2025/chung kết ROF 24/_DSC7615.jpg",
   "/images/2025/chung kết ROF 24/_DSC7635.jpg",
   "/images/2025/chung kết ROF 24/_DSC7710.jpg",
-  "/images/2025/chung kết ROF 24/_HA_5858.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5878.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5890.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5900.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5912.JPG",
+  "/images/2025/ck/_HA_5858.webp",
+  "/images/2025/ck/_HA_5878.webp",
+  "/images/2025/ck/_HA_5890.webp",
+  "/images/2025/ck/_HA_5900.webp",
+  "/images/2025/ck/_HA_5912.webp",
   "/images/2025/chung kết ROF 24/_HA_5972.JPG",
 
 ];

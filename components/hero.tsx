@@ -2,13 +2,13 @@
 import React, { useEffect, useState } from 'react';
 
 const HeroSection: React.FC = () => {
-  const [imageSrc, setImageSrc] = useState('/images/head.jpg');
+  const [imageSrc, setImageSrc] = useState('/images/2025/COVER ROF25-01.webp');
 
   const updateImageSource = () => {
     if (window.innerWidth <= 720) {
-      setImageSrc('/images/2025/COVER DỌC-01.jpg');
+      setImageSrc('/images/2025/COVER DỌC-01.webp');
     } else {
-      setImageSrc('/images/2025/COVER ROF25-01.jpg');
+      setImageSrc('/images/2025/COVER ROF25-01.webp');
     }
   };
 

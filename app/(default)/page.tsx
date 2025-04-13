@@ -12,17 +12,12 @@ export const metadata = {
 }
 
 import Hero from '@/components/hero'
-import Features from '@/components/features'
-import Newsletter from '@/components/newsletter'
 import Zigzag from '@/components/zigzag'
 import Testimonials from '@/components/testimonials'
-import ModalVideo from '@/components/modal-video'
-import VideoThumb from '@/public/images/hero-image-01.jpg'
 import Countdown from '@/components/countdown'
 import Timeline from '@/components/timeline'
 import Sponsor from '@/components/sponsor'
 import ImageList from '@/components/ImageList'
-import RegisterNow from '@/components/RegisterNow'
 import Rules from '@/components/Rules'
 
 const DATA = [
