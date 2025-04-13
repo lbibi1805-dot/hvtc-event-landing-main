@@ -1,40 +1,13 @@
 import React from "react";
 import Carousel from "./Carrousel";
-
-const slides = [
-  // ảnh tập thể
-  "/images/2025/chung kết ROF 24/_DSC8006.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7494.jpg",
-  "/images/2025/chung kết ROF 24/_HA_5906.JPG",
-  // ảnh cúp
-  "/images/2025/chung kết ROF 24/_HA_5753.JPG",
-
-  // ...
-  "/images/2025/chung kết ROF 24/_DSC7962.JPG",
-  "/images/2025/chung kết ROF 24/_DSC7962.JPG",
-  "/images/2025/chung kết ROF 24/_DSC7977.JPG",
-  "/images/2025/chung kết ROF 24/_DSC7904.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7887.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7916.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7944.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7986.jpg",
-
-  //..khác
-  "/images/2025/chung kết ROF 24/_DSC7534.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7548.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7553.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7557.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7615.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7635.jpg",
-  "/images/2025/chung kết ROF 24/_DSC7710.jpg",
-  "/images/2025/chung kết ROF 24/_HA_5858.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5878.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5890.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5900.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5912.JPG",
-  "/images/2025/chung kết ROF 24/_HA_5972.JPG",
-
-];
+const createImageList = () => {
+  let links: string[] = [];
+  for(let i = 1; i <= 22; i++){
+    links.push(`/images/2025/chung kết ROF 24/${i}.webp`);
+  }
+    return links;
+}
+const slides = createImageList();
 
 function ImageList() {
   return (

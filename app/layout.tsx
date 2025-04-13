@@ -15,7 +15,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
       <html lang="en" className={montserrat.className}>
       <body
           className={`antialiasing bg-blend-multiply bg-gray-500 bg-fixed text-gray-200 tracking-tight`}
-          style={{ backgroundImage: "url('/images/back-02.png')" }}
+          style={{ backgroundImage: "url('/images/2025/back-02.webp')" }}
       >
       <ClientWrapper>{children}</ClientWrapper>
       </body>
