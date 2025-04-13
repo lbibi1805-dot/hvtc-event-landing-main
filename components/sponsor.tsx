@@ -2,10 +2,12 @@ export default function Sponsor() {
   return (
     <section id="sponsor">
       {/* Section header */}
-      <div className="max-w-3xl mx-auto text-center pb-12 md:pb-16">
-        <h2 className="h2 mt-32" data-aos="fade-up" style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)" }}>
-          ĐƠN VỊ ĐỒNG HÀNH
-        </h2>
+      <div className="pb-10 md:pb-12 mb-1.5">
+            <h2
+              className="text-2xl md:text-4xl font-extrabold color:white bg-clip-text text-center"
+            >
+              ĐƠN VỊ ĐỒNG HÀNH
+            </h2>
       </div>
 
       {/** Đơn Vị Chỉ Đạo */}

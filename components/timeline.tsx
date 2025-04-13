@@ -8,7 +8,7 @@ export default function Timeline() {
 				<h2
 					className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text"
 					style={{
-						textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)",
+						// textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)",
 						color: "white",
 					}}
 				>
@@ -43,7 +43,7 @@ export default function Timeline() {
 						href="https://drive.google.com/file/d/1B1LIGX89OvngjZ70Sr3W3BHAy-lywySz/view?usp=sharing"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="inline-block px-6 py-3 bg-blue-700 text-white text-lg font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition duration-300 mb-15"
+						className="inline-block px-6 py-3 bg-[#2F6095] text-white text-lg font-semibold rounded-lg shadow-lg border border-sky-600 hover:bg-[#1E486F] hover:border-[#1E486F] transition duration-300"
 					>
 						Booklet Cuộc Thi
 					</a>
