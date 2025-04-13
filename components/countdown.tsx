@@ -73,7 +73,7 @@ const Countdown: React.FC = () => {
       <CountdownHeader />
 
       {/* Outer Container */}
-      <div className="rounded-2xl p-8 sm:p-12 shadow-xl bg-transparent border-4 border-[#224366] w-full max-w-4xl">
+      <div className="rounded-2xl p-8 sm:p-12 shadow-xl border-4 border-[#224366]  bg-[#224366] w-full max-w-4xl">
         {/* Countdown Clock */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
           <CountdownBox

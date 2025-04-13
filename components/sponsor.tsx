@@ -11,7 +11,7 @@ export default function Sponsor() {
       </div>
 
       {/** Đơn Vị Chỉ Đạo */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4">ĐƠN VỊ CHỈ ĐẠO</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-4 lg:gap-6 items-start lg:max-w-none">
@@ -75,7 +75,7 @@ export default function Sponsor() {
       </div>
 
       {/** Đơn Vị Tổ Chức */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4">ĐƠN VỊ TỔ CHỨC</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:grid-cols-2 lg:gap-12 items-start ">
@@ -111,7 +111,7 @@ export default function Sponsor() {
       </div>
 
       {/** NTT Kim Cương */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ KIM CƯƠNG</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -133,7 +133,7 @@ export default function Sponsor() {
       </div>
 
       {/** NTT Bạc */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ VÀNG</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -155,7 +155,7 @@ export default function Sponsor() {
       </div>
 
       {/** NTT Bạc */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ ĐỒNG</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -177,7 +177,7 @@ export default function Sponsor() {
       </div>
 
        {/** NTT Bạc */}
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ THÂN THIẾT</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -200,7 +200,7 @@ export default function Sponsor() {
 
       {/** NTT Bạc */}
 
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ HIỆN VẬT</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -221,7 +221,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ CÔNG NGHỆ</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -242,7 +242,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-      <div className="max-w-3xl mx-auto text-center mb-8">
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >BẢO TRỢ TRUYỀN THÔNG</h3>
 
         <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none mb-10 lg:mb-0">
@@ -341,7 +341,7 @@ export default function Sponsor() {
       </div>
 
              {/** NTT Bạc */}
-             <div className="max-w-3xl mx-auto text-center mb-8">
+             <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >BẢO TRỢ HÌNH ẢNH</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
