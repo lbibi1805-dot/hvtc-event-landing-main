@@ -68,15 +68,14 @@ const Countdown: React.FC = () => {
   const formatTime = (time: number) => time.toString().padStart(2, "0");
 
   return (
-    <section className="w-full h-screen flex flex-col justify-center items-center bg-transparent px-4 mt-80">
+    <section className="w-full min-h-screen flex flex-col justify-center items-center bg-transparent px-4 mt-20 sm:mt-40">
       {/* Countdown Header */}
-      <CountdownHeader/>
-      
-      {/* Outer Container */}
-      <div className="rounded-2xl p-8 sm:p-12 shadow-xl bg-transparent border-4 border-[#224366] w-full max-w-4xl md:-mb-7">
+      <CountdownHeader />
 
+      {/* Outer Container */}
+      <div className="rounded-2xl p-8 sm:p-12 shadow-xl bg-transparent border-4 border-[#224366] w-full max-w-4xl">
         {/* Countdown Clock */}
-        <div className="grid grid-cols-2 sm:grid-cols-4 gap-8">
+        <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-8">
           <CountdownBox
             value={formatTime(countDownTime?.days)}
             label={countDownTime?.days === 1 ? "Day" : "Days"}
@@ -96,11 +95,11 @@ const Countdown: React.FC = () => {
         </div>
 
         {/* Call-to-Action Button */}
-        <div className="md:mb-8">
+        <div className="mt-6 sm:mt-8">
           <CountdownButton />
         </div>
-        <hr className="md:mt-3"/>
-        <RegisterNow/>
+        <hr className="mt-4 sm:mt-6" />
+        <RegisterNow />
       </div>
     </section>
   );

@@ -40,10 +40,10 @@ export default function Footer() {
               <li>
                 <span className="font-medium">Hotline:</span>{" "}
                 <Link
-                  href="tel:0374419203"
+                  href="tel:0962438306"
                   className="text-gray-400 hover:text-white transition duration-200"
                 >
-                  0374 419 203 (Mr. Tuấn Dương - Trưởng BTC)
+                  0962 438 306 (Ms. Minh Khuê)
                 </Link>
               </li>
             </ul>
@@ -77,10 +77,10 @@ export default function Footer() {
               <li>
                 <span className="font-medium">Hotline:</span>{" "}
                 <Link
-                  href="tel:0374419203"
+                  href="tel:0962438306"
                   className="text-gray-400 hover:text-white transition duration-200"
                 >
-                  0374 419 203 (Mr. Tuấn Dương)
+                  0962 438 306 (Ms. Minh Khuê)
                 </Link>
               </li>
             </ul>

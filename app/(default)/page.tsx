@@ -42,35 +42,35 @@ export default function Home() {
       <Hero />
 
       {/* Zigzag Section */}
-      <div className="mt-16">
+      <div className="mt-10 sm:mt-16 mb-20 sm:mb-80">
         <Zigzag />
       </div>
 
       {/* Countdown Section */}
-      <div className="mt-16">
-        <Countdown />
+      <Countdown />
+
+      {/* Rules Section */}
+      <div className="mt-10 sm:mt-16">
+        <Rules />
       </div>
 
-      <div className='mt-16'>
-        <Rules/>
-      </div>
       {/* Timeline Section */}
-      <div className="mt-16 ml-10 mr-10">
+      <div className="mt-10 sm:mt-16 px-4 sm:px-10 mb-40">
         <Timeline />
       </div>
 
-      {/* Timeline Section */}
-      <div className="mt-16 ml-10 mr-10">
-        <Sponsor/>
+      {/* Sponsor Section */}
+      <div className="mt-40 sm:mt-16 px-4 sm:px-10">
+        <Sponsor />
       </div>
 
       {/* Testimonials Section */}
-      <div className="mt-16 ml-10 mr-10">
+      <div className="mt-10 sm:mt-16 px-4 sm:px-10">
         <Testimonials />
       </div>
 
       {/* Image List Section */}
-      <div className="mt-16 ml-15 mr-15">
+      <div className="mt-10 sm:mt-16 px-4 sm:px-15">
         <ImageList />
       </div>
     </div>

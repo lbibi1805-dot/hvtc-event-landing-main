@@ -10,7 +10,10 @@ export default function Testimonials() {
       <div className="max-w-3xl mx-auto text-center pb-10 md:pb-12 -mb-24 mt-36">
           <h2
             className="text-4xl md:text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600 drop-shadow-lg"
-            style={{ textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)", color: "white" }}
+            style={{ 
+              // textShadow: "0 8px 16px rgba(0, 0, 255, 0.5)", 
+              color: "white" 
+            }}
           >
             CƠ CẤU GIẢI THƯỞNG
           </h2>
