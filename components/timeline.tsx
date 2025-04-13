@@ -45,7 +45,7 @@ export default function Timeline() {
 						rel="noopener noreferrer"
 						className="inline-block px-6 py-3 bg-[#2F6095] text-white text-lg font-semibold rounded-lg shadow-lg border border-sky-600 hover:bg-[#1E486F] hover:border-[#1E486F] transition duration-300"
 					>
-						Booklet Cuộc Thi
+						BOOKLET CUỘC THI
 					</a>
 				</div>
 			</div>

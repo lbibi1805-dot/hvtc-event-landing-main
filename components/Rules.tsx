@@ -8,7 +8,7 @@ const Rules: React.FC = () => {
                 </h2>
 
                 {/* Content */}
-                <div className="bg-transparent rounded-2xl shadow-xl border-4 border-[#224366] p-6 sm:p-12">
+                <div className=" bg-[#224366] rounded-2xl shadow-xl border-4 border-[#224366] p-6 sm:p-12">
                     <div className="text-white text-base sm:text-lg leading-relaxed space-y-4 sm:space-y-6">
                         <ul className="list-disc list-inside space-y-3 sm:space-y-4 text-left">
                             <li>
