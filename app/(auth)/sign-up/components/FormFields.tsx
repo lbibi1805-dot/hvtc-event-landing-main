@@ -8,25 +8,15 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import {
-	Select,
-	SelectContent,
-	SelectItem,
-	SelectTrigger,
-	SelectValue,
-} from "@/components/ui/select";
-import {
 	Popover,
 	PopoverContent,
 	PopoverTrigger,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
-import { CalendarIcon, EyeIcon, EyeOffIcon } from "lucide-react";
+import { CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
-import { Major } from "@/enums/major.enums";
-import { University } from "@/enums/university.enums";
-import {Combobox} from "@/components/ui/combobox";
 
 interface FormFieldsProps {
 	form: any;
@@ -153,16 +143,6 @@ const DateOfBirthField = ({ control }: { control: any }) => {
 };
 
 export const FormFields = ({ form }: FormFieldsProps) => {
-	const [showPassword, setShowPassword] = useState(false); // Note: Unused, consider removing if not needed
-	const universityOptions = Object.values(University).map((uni) => ({
-		value: uni,
-		label: uni,
-	}));
-
-	const majorOptions = Object.values(Major).map((major) => ({
-		value: major,
-		label: major,
-	}));
 	return (
 		<div className="grid grid-cols-1 md:grid-cols-2 gap-8">
 			<FormField
@@ -225,16 +205,7 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 					<FormItem>
 						<FormLabel className="text-black">Trường đang theo học</FormLabel>
 						<FormControl>
-							<Combobox
-								options={universityOptions}
-								value={field.value || ""}
-								onChange={(value) => field.onChange(value)}
-								placeholder="Chọn trường đại học"
-								className={cn(
-									"text-black",
-									field.value && "text-black" // Màu sau khi chọn
-								)}
-							/>
+							<Input className="text-black" placeholder="Nhập tên trường đang theo học" {...field} />
 						</FormControl>
 						<FormMessage />
 					</FormItem>
@@ -245,18 +216,9 @@ export const FormFields = ({ form }: FormFieldsProps) => {
 				name="major"
 				render={({ field }) => (
 					<FormItem>
-						<FormLabel className="text-black">Ngành học</FormLabel>
+						<FormLabel className="text-black">Ngành đang theo học</FormLabel>
 						<FormControl>
-							<Combobox
-								options={majorOptions}
-								value={field.value || ""}
-								onChange={(value) => field.onChange(value)}
-								placeholder="Chọn ngành học"
-								className={cn(
-									"text-black",
-									field.value && "text-black" // Màu sau khi chọn
-								)}
-							/>
+							<Input className="text-black" placeholder="Nhập tên nghành học" {...field} />
 						</FormControl>
 						<FormMessage />
 					</FormItem>

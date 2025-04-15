@@ -12,7 +12,7 @@ const TestUnavailable: React.FC = () => {
     // Tính thời gian còn lại đến ngày bắt đầu thi (19/4/2025 00:00:00)
     useEffect(() => {
         const calculateTimeRemaining = () => {
-            const startDate = new Date("2025-04-09T00:00:00").getTime();
+            const startDate = new Date(`${process.env.NEXT_PUBLIC_START_ROUND_1}`).getTime();
             const now = new Date().getTime();
             const timeLeft = startDate - now;
 
@@ -61,8 +61,6 @@ const TestUnavailable: React.FC = () => {
 
                 {/* Thông điệp */}
                 <p className="text-xl text-gray-600 mb-4">
-                    Thời gian thi là từ <span className="font-semibold">ngày 19/4/2025</span> đến{" "}
-                    <span className="font-semibold">ngày 30/4/2025</span>.
                 </p>
                 <p className="text-lg text-gray-600 mb-8">
                     Thời gian thi không hợp lệ, vui lòng quay lại sau.
