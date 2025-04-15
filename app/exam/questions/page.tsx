@@ -29,8 +29,8 @@ const ExamQuestion = () => {
 
 	const isTimeToDoTest = () => {
 		const currentDate = Date.now();
-		const testStartDate = new Date("2025-04-09T00:00:00").getTime();
-		const testEndDate = new Date("2025-04-30T23:59:59").getTime();
+		const testStartDate = new Date(`${process.env.NEXT_PUBLIC_START_ROUND_1}`).getTime();
+		const testEndDate = new Date(`${process.env.NEXT_PUBLIC_END_ROUND_1}`).getTime();
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
 

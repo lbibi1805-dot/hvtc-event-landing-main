@@ -7,7 +7,7 @@ export const fetchSubmissionStatus = async (userId: string) => {
 		throw new Error(response.data.message || "Lỗi khi lấy trạng thái bài thi");
 	}
 
-	console.log("Respone data", response.data);
+	// console.log("Respone data", response.data);
 	return response.data.isTaken; // Trả về isTaken trực tiếp từ data
 };
 
@@ -23,7 +23,7 @@ export const submitExam =  async (examId: string, data: {answers: any, screenOut
 	if(!examId) {
 		throw new Error("User ID is required");
 	}
-	console.log(data)
+	// console.log(data)
 	if(!data.screenOut) data.screenOut = 0;
 	if(!data || !data.answers) {
 		throw new Error("Data is required");

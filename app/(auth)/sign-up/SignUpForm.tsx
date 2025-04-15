@@ -5,28 +5,89 @@ import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Button } from "@/components/ui/button";
 import { Form } from "@/components/ui/form";
-import { Major } from "@/enums/major.enums";
-import { University } from "@/enums/university.enums";
 import ToastUtil, { ToastType } from "@/lib/ToastUtil";
 import { FormFields } from "./components/FormFields";
 import { VerificationModal } from "./components/VerificationModal";
 
-const formSchema = z
+const validProvinceCodes = Array.from({ length: 96 }, (_, i) => String(i + 1).padStart(3, '0'));
+const provinceCodeSet = new Set(validProvinceCodes);
+const cccdRegex = /^[0-9]{3}[0-9]{1}[0-9]{2}[0-9]{6}$/;
+
+export const formSchema = z
 	.object({
-		name: z.string().min(2, { message: "Họ và tên phải có ít nhất 2 ký tự" }).trim(),
-		dob: z.date({ required_error: "Ngày sinh là bắt buộc" }),
-		email: z.string().min(1, { message: "Email không được để trống" }).email({ message: "Email không hợp lệ" }).trim().toLowerCase(),
-		phone: z.string().optional().refine(val => !val || /^(\+84|0)[0-9]{9,10}$/.test(val), { message: "Số điện thoại không hợp lệ" }).transform(val => val?.trim() || ""),
-		cccd: z.string().optional().refine(val => !val || /^[0-9]{9,12}$/.test(val), { message: "Số CCCD không hợp lệ" }).transform(val => val?.trim() || ""),
-		university: z.enum(Object.values(University) as [string, ...string[]], { required_error: "Trường đại học là bắt buộc", invalid_type_error: "Trường đại học không hợp lệ" }),
-		major: z.enum(Object.values(Major) as [string, ...string[]], { required_error: "Ngành học là bắt buộc", invalid_type_error: "Ngành học không hợp lệ" }),
-		sid: z.string().optional().refine(val => !val || /^[A-Za-z0-9-]+$/.test(val), { message: "Mã sinh viên không hợp lệ" }).transform(val => val?.trim() || ""),
-		//password: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-		//confirmPassword: z.string().min(6, { message: "Mật khẩu phải có ít nhất 6 ký tự" }),
-		linkFacebook: z.string().optional().refine(val => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val), { message: "Đường dẫn Facebook không hợp lệ" }),
-		terms: z.boolean().refine(val => val, { message: "Bạn phải đồng ý với các điều khoản" }),
-	})
-	// .refine(data => data.password === data.confirmPassword, { message: "Mật khẩu không khớp", path: ["confirmPassword"] });
+		name: z
+			.string()
+			.min(2, { message: "Họ và tên phải có ít nhất 2 ký tự" })
+			.trim(),
+
+		dob: z
+			.date({ required_error: "Ngày sinh là bắt buộc" })
+			.refine((date) => {
+				const ageDifMs = Date.now() - date.getTime();
+				const ageDate = new Date(ageDifMs);
+				return Math.abs(ageDate.getUTCFullYear() - 1970) >= 18;
+			}, {
+				message: "Bạn phải từ 18 tuổi trở lên",
+			}),
+
+		email: z
+			.string()
+			.min(1, { message: "Email không được để trống" })
+			.email({ message: "Email không hợp lệ" })
+			.trim()
+			.toLowerCase(),
+
+		phone: z
+			.string()
+			.optional()
+			.refine(val => !val || /^(\+84|0)[0-9]{9,10}$/.test(val), {
+				message: "Số điện thoại không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
+
+		cccd: z
+			.string()
+			.optional()
+			.refine(val => {
+				if (!val || !cccdRegex.test(val)) return false;
+				const provinceCode = val.slice(0, 3);
+				return provinceCodeSet.has(provinceCode);
+			}, {
+				message: "Số CCCD không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
+
+		university: z
+			.string()
+			.min(2, { message: "Trường Đại Học phải có ít nhất 2 ký tự" })
+			.max(100, { message: "Trường Đại Học không được vượt quá 100 ký tự" })
+			.trim(),
+
+		major: z
+			.string()
+			.min(2, { message: "Ngành học phải có ít nhất 2 ký tự" })
+			.max(100, { message: "Ngành học không được vượt quá 100 ký tự" })
+			.trim(),
+		sid: z
+			.string()
+			.optional()
+			.refine(val => !val || /^[A-Za-z0-9-]+$/.test(val), {
+				message: "Mã sinh viên không hợp lệ",
+			})
+			.transform(val => val?.trim() || ""),
+		linkFacebook: z
+			.string()
+			.optional()
+			.refine(val => !val || /^(https?:\/\/)?(www\.)?facebook\.com\/.+$/.test(val), {
+				message: "Đường dẫn Facebook không hợp lệ",
+			}),
+
+		terms: z
+			.boolean()
+			.refine(val => val, {
+				message: "Bạn phải đồng ý với các điều khoản",
+			}),
+	});
 
 const SignUpForm = () => {
 	const form = useForm<z.infer<typeof formSchema>>({
@@ -37,11 +98,9 @@ const SignUpForm = () => {
 			email: "",
 			phone: "",
 			cccd: "",
-			university: undefined as unknown as University,
-			major: undefined as unknown as Major,
+			university: "",
+			major: "",
 			sid: "",
-			// password: "",
-			// confirmPassword: "",
 			linkFacebook: "",
 			terms: false,
 		},
@@ -54,7 +113,7 @@ const SignUpForm = () => {
 	const [token, setToken] = useState("");
 	const [isResending, setIsResending] = useState(false);
 
-	//i want to refactor this
+	//I want to refactor this
 	const onSubmit = async (values: z.infer<typeof formSchema>) => {
 		const toastId = ToastUtil.show(ToastType.LOADING, "Đang đăng ký...");
 		try {
