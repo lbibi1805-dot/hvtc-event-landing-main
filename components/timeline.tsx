@@ -40,7 +40,7 @@ export default function Timeline() {
 				{/* External Link */}
 				<div className="text-center mt-8">
 					<a
-						href="https://drive.google.com/file/d/1B1LIGX89OvngjZ70Sr3W3BHAy-lywySz/view?usp=sharing"
+						href="https://drive.google.com/file/d/1ocCBrHYnvuW6qeyUdI-jUj2cUFvC6TZq/view?usp=sharing"
 						target="_blank"
 						rel="noopener noreferrer"
 						className="inline-block px-6 py-3 bg-[#2F6095] text-white text-lg font-semibold rounded-lg shadow-lg border border-sky-600 hover:bg-[#1E486F] hover:border-[#1E486F] transition duration-300"

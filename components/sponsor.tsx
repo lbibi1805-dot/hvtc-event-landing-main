@@ -2,6 +2,7 @@ export default function Sponsor() {
   return (
     <section id="sponsor">
       {/* Section header */}
+      {/* Đơn vị đồng hành */}
       <div className="pb-10 md:pb-12 mb-1.5">
             <h2
               className="text-2xl md:text-4xl font-extrabold color:white bg-clip-text text-center"
@@ -110,7 +111,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-      {/** NTT Kim Cương */}
+      {/* * NTT Kim Cương
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ KIM CƯƠNG</h3>
 
@@ -130,9 +131,9 @@ export default function Sponsor() {
             />
           </div>
         </div>
-      </div>
+      </div> */}
 
-      {/** NTT Bạc */}
+      {/** NTT Vàng */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ VÀNG</h3>
 
@@ -143,7 +144,7 @@ export default function Sponsor() {
             data-aos-delay="400"
           >
             <img
-              src="/images/logo_main/NTT_HK/Bac1.png"
+              src="/images/2025/sponsor/nttv/images.png"
               className="h-auto rounded-lg p-4"
               alt=""
               height={380}
@@ -154,7 +155,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-      {/** NTT Bạc */}
+      {/** NTT Đồng */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ ĐỒNG</h3>
 
@@ -165,7 +166,7 @@ export default function Sponsor() {
             data-aos-delay="400"
           >
             <img
-              src="/images/logo_main/NTT_HK/Dong1.png"
+              src="/images/2025/sponsor/nttd/zim-academy.jpg"
               className="h-auto rounded-lg p-4"
               alt=""
               height={380}
@@ -176,7 +177,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-       {/** NTT Bạc */}
+       {/** NTT Thân Thiết */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ THÂN THIẾT</h3>
 
@@ -198,8 +199,7 @@ export default function Sponsor() {
         </div>
       </div>
 
-      {/** NTT Bạc */}
-
+      {/** NTT Hiện Vật */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ HIỆN VẬT</h3>
 
@@ -210,7 +210,7 @@ export default function Sponsor() {
             data-aos-delay="400"
           >
             <img
-              src="/images/logo_main/NTT_HV/2.png"
+              src="/images/2025/sponsor/ntthv/images.png"
               className="h-auto rounded-lg p-4"
               alt=""
               height={380}
@@ -221,6 +221,7 @@ export default function Sponsor() {
         </div>
       </div>
 
+      {/** Nhà tt công nghệ**/}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >NHÀ TÀI TRỢ CÔNG NGHỆ</h3>
 
@@ -242,106 +243,8 @@ export default function Sponsor() {
         </div>
       </div>
 
+      {/** BẢO TRỢ HÌNH ẢNH */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
-        <h3 className="h3 mb-4" >BẢO TRỢ TRUYỀN THÔNG</h3>
-
-        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none mb-10 lg:mb-0">
-          <div
-            className="flex flex-col p-2 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/1.png"
-              className="h-auto rounded-lg p-4 lg:mt-14"
-              alt=""
-              height={380}
-              width={270}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-          <div
-            className="flex flex-col p-0 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/2.png"
-              className="h-auto rounded-lg p-4 lg:mt-16"
-              alt=""
-              height={380}
-              width={380}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-        </div>
-
-        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none">
-          <div
-            className="flex flex-col p-0 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/3.png"
-              className="h-auto rounded-lg p-4 lg:mt-14"
-              alt=""
-              height={380}
-              width={260}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-          <div
-            className="flex flex-col p-6 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/7.png"
-              className="h-auto rounded-lg p-4 lg:mt-9"
-              alt=""
-              height={380}
-              width={250}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-        </div>
-
-        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none">
-          <div
-            className="flex flex-col p-2 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/5.png"
-              className="h-auto rounded-lg p-4 lg:mt-14"
-              alt=""
-              height={380}
-              width={140}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-          <div
-            className="flex flex-col p-0 justify-center items-center"
-            data-aos="fade-up"
-            data-aos-delay="400"
-          >
-            <img
-              src="/images/logo_main/BaoTroTruyenThong/6.JPG"
-              className="h-auto rounded-lg p-4 lg:mt-24"
-              alt=""
-              height={380}
-              width={390}
-              style={{ maxWidth: "none", backgroundColor:"#fff" }}
-            />
-          </div>
-        </div>
-
-      </div>
-
-             {/** NTT Bạc */}
-             <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >BẢO TRỢ HÌNH ẢNH</h3>
 
         <div className="max-w-sm mx-auto grid gap-8 lg:gap-6 items-start lg:max-w-none">
@@ -351,7 +254,7 @@ export default function Sponsor() {
             data-aos-delay="400"
           >
             <img
-              src="/images/logo_main/BaoTroHinhAnh/1.png"
+              src="/images/2025/sponsor/btha/STAY PUT media.png"
               className="h-auto rounded-lg p-4"
               alt=""
               height={380}
@@ -362,6 +265,191 @@ export default function Sponsor() {
         </div>
       </div>
 
+      {/* BẢO TRỢ CHUYÊN MÔN*/}
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
+        <h3 className="h3 mb-4" >BẢO TRỢ CHUYÊN MÔN</h3>
+
+        <div className="max-w-sm mx-auto grid gap-10 lg:gap-10 items-start lg:max-w-none mb-10 lg:mb-0">
+          <div
+            className="flex flex-col p-2 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/btcm/LCD KHOA NGÂN HÀNG BẢO HIỂM.jpg"
+              className="h-auto rounded-lg p-4 lg:mt-14"
+              alt=""
+              height={380}
+              width={270}
+              style={{ maxWidth: "none", backgroundColor:"black" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/btcm/logo-ysvn-vie-color.png"
+              className="h-auto rounded-lg p-4 lg:mt-16"
+              alt=""
+              height={1500}
+              width={760}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+        </div>
+      </div>
+    
+      {/* BẢO TRỢ truyền hông */}
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
+        <h3 className="h3 mb-4" >BẢO TRỢ TRUYỀN THÔNG</h3>
+
+        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none mb-10 lg:mb-0">
+          <div
+            className="flex flex-col p-2 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/bttt/images.png"
+              className="h-auto rounded-lg p-4 lg:mt-14"
+              alt=""
+              height={380}
+              width={270}
+              style={{ maxWidth: "none", backgroundColor:"black" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/bttt/Logo TĐM.jpg"
+              className="h-auto rounded-lg p-4 lg:mt-16"
+              alt=""
+              height={190}
+              width={190}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+        </div>
+      </div>
+
+      {/* Đối tác truyền hông */}
+      <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
+        <h3 className="h3 mb-4" >ĐỐI TÁC TRUYỀN THÔNG</h3>
+
+        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none mb-10 lg:mb-0">
+          <div
+            className="flex flex-col p-2 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/BSC xanh trắng.png"
+              className="h-auto rounded-lg p-4 lg:mt-14"
+              alt=""
+              height={380}
+              width={270}
+              style={{ maxWidth: "none", backgroundColor:"black" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/CLB SC.jpg"
+              className="h-auto rounded-lg p-4 lg:mt-16"
+              alt=""
+              height={190}
+              width={190}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none">
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/HANU SIC.jpg"
+              className="h-auto rounded-lg p-4 lg:mt-14"
+              alt=""
+              height={190}
+              width={190}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-6 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/logo (1).png"
+              className="h-auto rounded-lg p-4 lg:mt-9"
+              alt=""
+              height={190}
+              width={190}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+        </div>
+
+        <div className="max-w-sm mx-auto grid gap-10 lg:grid-cols-2 lg:gap-10 items-start lg:max-w-none">
+          <div
+            className="flex flex-col p-2 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/LOGO DSC PNG.png"
+              className="h-auto rounded-lg p-4 lg:mt-14"
+              alt=""
+              height={760}
+              width={280}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/LOGOnotback.png"
+              className="h-auto rounded-lg p-4 lg:mt-24"
+              alt=""
+              height={250}
+              width={250}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+
+          <div
+            className="flex flex-col p-0 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/dttt/NSC.png"
+              className="h-auto rounded-lg p-4 lg:mt-24"
+              alt=""
+              height={250}
+              width={250}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+        </div>
+
+      </div>
     </section>
   );
 }
