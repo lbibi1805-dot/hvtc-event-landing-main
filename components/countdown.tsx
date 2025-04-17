@@ -17,11 +17,11 @@ const Countdown: React.FC = () => {
   const currentDate = new Date();
   const nextMonth = new Date(
     currentDate.getFullYear(),
-    3, // Month (0-based, so 3 = April)
-    21, // Day
-    0, // Hour
-    0, // Minute
-    0 // Second
+    4, // Month (0-based, so 3 = April)
+    13, // Day
+    23, // Hour
+    59, // Minute
+    59 // Second
   ).getTime();
 
   const getTimeDifference = () => {
