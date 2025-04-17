@@ -147,8 +147,22 @@ export default function Sponsor() {
               src="/images/2025/sponsor/nttv/images.png"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={380}
-              width={280}
+              height={500}
+              width={500}
+              style={{ maxWidth: "none", backgroundColor:"#fff" }}
+            />
+          </div>
+          <div
+            className="flex flex-col p-6 justify-center items-center"
+            data-aos="fade-up"
+            data-aos-delay="400"
+          >
+            <img
+              src="/images/2025/sponsor/btcm/110e4712_bvsc.png"
+              className="h-auto rounded-lg p-4"
+              alt=""
+              height={500}
+              width={500}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
@@ -169,8 +183,8 @@ export default function Sponsor() {
               src="/images/2025/sponsor/nttd/zim-academy.jpg"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={380}
-              width={300}
+              height={500}
+              width={500}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
@@ -191,8 +205,8 @@ export default function Sponsor() {
               src="/images/logo_main/NTT_HK/Thanthiet1.png"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={380}
-              width={250}
+              height={400}
+              width={400}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
