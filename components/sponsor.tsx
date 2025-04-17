@@ -301,7 +301,7 @@ export default function Sponsor() {
         </div>
       </div>
     
-      {/* BẢO TRỢ truyền hông */}
+      {/* BẢO TRỢ truyền thông */}
       <div className="max-w-4xl font-semibold mx-auto text-center mb-8">
         <h3 className="h3 mb-4" >BẢO TRỢ TRUYỀN THÔNG</h3>
 
