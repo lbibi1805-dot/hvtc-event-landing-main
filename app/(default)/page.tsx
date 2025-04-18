@@ -10,7 +10,6 @@ export const metadata = {
     ],
   },
 }
-
 import Hero from '@/components/hero'
 import Zigzag from '@/components/zigzag'
 import Testimonials from '@/components/testimonials'

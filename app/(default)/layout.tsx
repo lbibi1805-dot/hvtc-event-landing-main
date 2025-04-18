@@ -7,6 +7,7 @@ import 'aos/dist/aos.css'
 
 import PageIllustration from '@/components/page-illustration'
 import Footer from '@/components/ui/footer'
+import { SpeedInsights } from "@vercel/speed-insights/next"
 
 export default function DefaultLayout({
   children,
@@ -30,6 +31,7 @@ export default function DefaultLayout({
         <PageIllustration />
 
         {children}
+        <SpeedInsights/>
 
       </main>
 
