@@ -1,5 +1,7 @@
 // components/TestUnavailable.tsx
 import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router";
+import Link from "next/link";
 
 const TestUnavailable: React.FC = () => {
     const [timeRemaining, setTimeRemaining] = useState({
@@ -8,6 +10,8 @@ const TestUnavailable: React.FC = () => {
         minutes: 0,
         seconds: 0,
     });
+
+    // const navigate = useNavigate();
 
     // Tính thời gian còn lại đến ngày bắt đầu thi (19/4/2025 00:00:00)
     useEffect(() => {
@@ -18,6 +22,8 @@ const TestUnavailable: React.FC = () => {
 
             if (timeLeft <= 0) {
                 setTimeRemaining({ days: 0, hours: 0, minutes: 0, seconds: 0 });
+                // navigate("/exam/questions")
+                // <Link ="/exam/questions" />;
                 return;
             }
 

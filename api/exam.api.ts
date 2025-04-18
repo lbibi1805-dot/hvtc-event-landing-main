@@ -2,6 +2,7 @@
 import API_INSTANCE from "@/services/api_instance";
 
 interface ApiResponse<T> {
+    screenOut: number;
     isTaken: any;
 	success: boolean;
 	data: T;
@@ -32,6 +33,11 @@ interface SubmissionStatusResponse {
 	isTaken: boolean;
 }
 
+interface ScreenOutResponse {
+	message: string;
+	screenOut: number;
+}
+
 export const getSubmissionStatus = (userId: string) =>
 	API_INSTANCE.get<ApiResponse<SubmissionStatusResponse>>(`/api/v1/exam/${userId}`);
 
@@ -40,3 +46,9 @@ export const fetchExam = () =>
 
 export const postSubmitExam = (userId: string, data: {answers: any, screenOut: number}) =>
 	API_INSTANCE.post<ApiResponse<SubmissionResponse>>(`/api/v1/exam/${userId}/submit`, data);
+
+export const getScreenOut = () =>
+	API_INSTANCE.get<ApiResponse<ScreenOutResponse>>(`/api/v1/exam/screenOut`);
+
+export const saveScreenOut = () =>
+	API_INSTANCE.put<ApiResponse<ScreenOutResponse>>(`/api/v1/exam/screenOut`);

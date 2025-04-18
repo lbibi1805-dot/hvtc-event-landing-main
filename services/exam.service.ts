@@ -1,4 +1,9 @@
-import { fetchExam, getSubmissionStatus, postSubmitExam } from "@/api/exam.api";
+import { fetchExam,
+	getSubmissionStatus,
+	postSubmitExam,
+	getScreenOut as getScreenOutAPI,
+	saveScreenOut as saveScreenOutAPI,
+} from "@/api/exam.api";
 import toastUtil from "@/lib/ToastUtil";
 
 export const fetchSubmissionStatus = async (userId: string) => {
@@ -31,4 +36,22 @@ export const submitExam =  async (examId: string, data: {answers: any, screenOut
 
 	const response = await postSubmitExam(examId, data);
 	return response;
+}
+
+export const getScreenOut = async () => {
+	const response = await getScreenOutAPI();
+	if (response.status !== 200) {
+		throw new Error(response.data.message || "Lỗi khi lấy thông tin bài thi");
+	}
+	// console.log(response);
+	return response.data;
+}
+
+export const saveScreenOut = async () => {
+	const response = await saveScreenOutAPI();
+	if (response.status !== 200) {
+		throw new Error(response.data.message || "Lỗi khi lấy thông tin bài thi");
+	}
+	// console.log(response);
+	return response.data;
 }

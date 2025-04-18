@@ -4,7 +4,12 @@ import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import AuthenticatedRoute from "@/components/AuthenticatedRoute";
 import ReadyModal from "@/components/ReadyModal";
-import { startExam, submitExam } from "@/services/exam.service";
+import {
+	startExam,
+	submitExam,
+	getScreenOut,
+	saveScreenOut,
+} from "@/services/exam.service";
 import { SubmissionResponse } from "@/api/exam.api";
 import { useAuth } from "@/context/AuthContext";
 import toastUtil from "@/lib/ToastUtil";
@@ -14,23 +19,27 @@ import { QuestionCard } from "@/app/exam/questions/QuestionCard";
 
 const ExamQuestion = () => {
 	const [totalQuestions, setTotalQuestions] = useState(0);
-	const [currentQuestion, setCurrentQuestion] = useState(1); // Bắt đầu từ câu 1
+	const [currentQuestion, setCurrentQuestion] = useState(1);
 	const [answers, setAnswers] = useState<Record<number, string | null>>({});
-	const [timeLeft, setTimeLeft] = useState(999); // 30 minutes in seconds
-	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0); // Khởi tạo với 0
+	const [timeLeft, setTimeLeft] = useState(999);
+	const [tabSwitchCount, setTabSwitchCount] = useState<number>(0);
 	const [warningMessage, setWarningMessage] = useState("");
-	const [isReady, setIsReady] = useState(false); // Modal state
-	const [timeUp, setTimeUp] = useState(false); // Time-up state
-	const [hasSubmitted, setHasSubmitted] = useState(false); // Trạng thái đã submit
-	const [isLeaving, setIsLeaving] = useState(false); // Trạng thái để debounce sự kiện rời khỏi trang
+	const [isReady, setIsReady] = useState(false);
+	const [timeUp, setTimeUp] = useState(false);
+	const [hasSubmitted, setHasSubmitted] = useState(false);
+	const [isLeaving, setIsLeaving] = useState(false);
 	const router = useRouter();
 	const [examData, setExamData] = useState<SubmissionResponse | null>(null);
 	const { isTakenExam, updateExamStatus } = useAuth();
 
 	const isTimeToDoTest = () => {
 		const currentDate = Date.now();
-		const testStartDate = new Date(`${process.env.NEXT_PUBLIC_START_ROUND_1}`).getTime();
-		const testEndDate = new Date(`${process.env.NEXT_PUBLIC_END_ROUND_1}`).getTime();
+		const testStartDate = new Date(
+			`${process.env.NEXT_PUBLIC_START_ROUND_1}`
+		).getTime();
+		const testEndDate = new Date(
+			`${process.env.NEXT_PUBLIC_END_ROUND_1}`
+		).getTime();
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
 
@@ -42,28 +51,26 @@ const ExamQuestion = () => {
 		);
 	}
 
-	// Đọc tabSwitchCount từ localStorage sau khi component render phía client
+	// Fetch initial screenOut count from database
 	useEffect(() => {
-		const storedCount = localStorage.getItem("tabSwitchCount");
-		if (storedCount) {
-			setTabSwitchCount(parseInt(storedCount, 10));
-		}
-	}, []);
+		const fetchScreenOut = async () => {
+			const response = await getScreenOut();
+			setTabSwitchCount(response.screenOut || 0);
+		};
 
-	// Lưu tabSwitchCount vào localStorage mỗi khi nó thay đổi
-	useEffect(() => {
-		localStorage.setItem("tabSwitchCount", tabSwitchCount.toString());
-	}, [tabSwitchCount]);
+		if (isReady && examData?.examId) {
+			fetchScreenOut();
+		}
+	}, [isReady, examData?.examId]);
 
 	// Timer countdown logic, warnings, and auto-submit
 	useEffect(() => {
-		if (!isReady || hasSubmitted) return; // Không chạy timer nếu chưa sẵn sàng hoặc đã submit
+		if (!isReady || hasSubmitted) return;
 
 		const timer = setInterval(() => {
 			setTimeLeft((prev) => {
 				const newTime = prev > 0 ? prev - 1 : 0;
 
-				// Hiển thị thông báo dựa trên thời gian còn lại
 				if (newTime <= 20 && newTime > 5) {
 					setWarningMessage(
 						"Thời gian làm bài thi còn lại dưới 20 giây! Vui lòng nộp bài thi hoặc hệ thống sẽ tự động nộp bài thi khi còn 3 giây"
@@ -76,19 +83,17 @@ const ExamQuestion = () => {
 					setWarningMessage("Thời gian làm bài thi đã hết! Đang tự động nộp bài...");
 				}
 
-				// Tự động submit khi thời gian còn 3 giây
 				if (newTime <= 3 && newTime > 0 && !hasSubmitted) {
 					handleSubmit();
 				}
 
-				// Khi thời gian hết
 				if (newTime <= 0) {
 					setTimeUp(true);
 					setWarningMessage("Thời gian làm bài thi đã hết!");
 					toastUtil.info("Đang điều hướng về trang chủ...");
 					setTimeout(async () => {
 						await updateExamStatus();
-						window.location.href = "/"; // Hard reload
+						window.location.href = "/";
 					}, 3000);
 				}
 
@@ -102,7 +107,6 @@ const ExamQuestion = () => {
 	useEffect(() => {
 		const remain = remainingTime();
 		setTimeLeft(remain);
-		// Cập nhật totalQuestions từ examData
 		if (examData?.maxQuestions) {
 			setTotalQuestions(examData.maxQuestions);
 		}
@@ -112,35 +116,37 @@ const ExamQuestion = () => {
 	useEffect(() => {
 		if (!isReady) return;
 
-		const warnUser = () => {
-			setTabSwitchCount((prev) => {
-				const newCount = prev + 1;
-				toastUtil.warning(
-					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
-				);
-				setWarningMessage(
-					`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
-				);
-				setTimeout(() => setWarningMessage(""), 5000);
-				return newCount;
-			});
+		const warnUser = async () => {
+			try {
+				const response = await saveScreenOut();
+				setTabSwitchCount((prev) => {
+					const newCount = prev + 1;
+					toastUtil.warning(
+						`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`, "", { duration: 5000, position: "top-center" }
+					);
+					setWarningMessage(
+						`Bạn đã rời khỏi môi trường làm bài thi (${newCount} ${newCount === 1 ? "lần" : "lần"})`
+					);
+					setTimeout(() => setWarningMessage(""), 5000);
+					return newCount;
+				});
+			} catch (error) {
+				toastUtil.error("Lỗi khi ghi nhận hành vi rời môi trường thi!");
+			}
 		};
 
 		const handleVisibilityChange = () => {
 			if (document.hidden) {
-				// Người dùng rời khỏi tab
 				if (!isLeaving) {
 					setIsLeaving(true);
 					warnUser();
 				}
 			} else {
-				// Người dùng quay lại tab
 				setIsLeaving(false);
 			}
 		};
 
 		const handleBlur = () => {
-			// Người dùng rời khỏi cửa sổ
 			if (!isLeaving) {
 				setIsLeaving(true);
 				warnUser();
@@ -148,7 +154,6 @@ const ExamQuestion = () => {
 		};
 
 		const handleFocus = () => {
-			// Người dùng quay lại cửa sổ
 			setIsLeaving(false);
 		};
 
@@ -161,7 +166,7 @@ const ExamQuestion = () => {
 			window.removeEventListener("focus", handleFocus);
 			document.removeEventListener("visibilitychange", handleVisibilityChange);
 		};
-	}, [tabSwitchCount, isReady, isLeaving]);
+	}, [tabSwitchCount, isReady, isLeaving, examData?.examId]);
 
 	// Track answer changes
 	const handleAnswerChange = (answer: string | null) => {
@@ -173,11 +178,10 @@ const ExamQuestion = () => {
 		setCurrentQuestion(num);
 	};
 
-	// 
+	// Submit exam
 	const handleSubmit = async () => {
-		if (hasSubmitted) return; // Ngăn submit nhiều lần
+		if (hasSubmitted) return;
 
-		// Hiển thị xác nhận nếu thời gian còn lại > 5 giây
 		if (timeLeft > 5) {
 			const confirm = await AlertDialogUtils.warning({
 				title: "Xác nhận nộp bài thi",
@@ -190,13 +194,12 @@ const ExamQuestion = () => {
 			if (!confirm) return;
 		}
 
-
 		const formattedAnswers = {
 			answers: Object.entries(answers)
-				.filter(([_, value]) => value !== null) // Loại bỏ các câu chưa trả lời
+				.filter(([_, value]) => value !== null)
 				.map(([key, value]) => ({
 					questionOrder: parseInt(key),
-					selectedOption: value, // "A", "B", "C", "D"
+					selectedOption: value,
 				})),
 		};
 
@@ -210,12 +213,12 @@ const ExamQuestion = () => {
 				"Nộp bài thi thất bại! Đã hết giờ làm bài hoặc thông tin không hợp lệ. Vui lòng liên hệ ban tổ chức"
 			);
 		} else {
-			setHasSubmitted(true); // Đánh dấu đã submit
-			toastUtil.success("Nộp bài thi thành công!");
+			setHasSubmitted(true);
+			toastUtil.success("Nộp bài thi thành công!", "", { duration: 500, position: "top-center" });
 			setTimeout(async () => {
-				toastUtil.info("Đang điều hướng về trang chủ...");
+				toastUtil.info("Đang điều hướng về trang chủ...", "", { duration: 500, position: "top-center" });
 				await updateExamStatus();
-				window.location.href = "/"; // Hard reload về trang chủ
+				window.location.href = "/";
 			}, 3000);
 		}
 	};
@@ -232,7 +235,6 @@ const ExamQuestion = () => {
 		const endTimeMs = startedAtMs + durationMs;
 		const diff = endTimeMs - now.getTime();
 
-		console.log("diff:", diff);
 		return diff <= 0 ? 0 : Math.floor(diff / 1000);
 	};
 
@@ -240,11 +242,7 @@ const ExamQuestion = () => {
 	const handleReady = async () => {
 		setIsReady(true);
 		const response = await startExam();
-		console.log(response);
 		setExamData(response);
-		// Reset tabSwitchCount khi bắt đầu bài thi
-		setTabSwitchCount(0);
-		localStorage.setItem("tabSwitchCount", "0");
 	};
 
 	return (
@@ -270,36 +268,26 @@ const ExamQuestion = () => {
 						<div className="w-full lg:w-2/3 p-6">
 							{examData?.questions && examData.questions.length > 0 ? (
 								<QuestionCard
-									question={
-										examData.questions[currentQuestion - 1].questionContent
-									}
+									question={examData.questions[currentQuestion - 1].questionContent}
 									answers={[
 										{
 											label: "A",
-											content:
-											examData.questions[currentQuestion - 1].options[0]
-												.optionA,
+											content: examData.questions[currentQuestion - 1].options[0].optionA,
 										},
 										{
 											label: "B",
-											content:
-											examData.questions[currentQuestion - 1].options[0]
-												.optionB,
+											content: examData.questions[currentQuestion - 1].options[0].optionB,
 										},
 										{
 											label: "C",
-											content:
-											examData.questions[currentQuestion - 1].options[0]
-												.optionC,
+											content: examData.questions[currentQuestion - 1].options[0].optionC,
 										},
 										{
 											label: "D",
-											content:
-											examData.questions[currentQuestion - 1].options[0]
-												.optionD,
+											content: examData.questions[currentQuestion - 1].options[0].optionD,
 										},
 									]}
-									selectedAnswer={answers[currentQuestion]} // Truyền đáp án đã chọn cho câu hỏi hiện tại
+									selectedAnswer={answers[currentQuestion]}
 									onSelectAnswer={handleAnswerChange}
 								/>
 							) : (
@@ -362,11 +350,36 @@ const ExamQuestion = () => {
 							<button
 								onClick={handleSubmit}
 								className="mt-auto w-full py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 transition"
-								disabled={hasSubmitted} // Vô hiệu hóa nút sau khi submit
+								disabled={hasSubmitted}
 							>
 								Nộp bài
 							</button>
 						</div>
+					</div>
+
+					{/* Contact Button */}
+					<div className="fixed bottom-4 right-4 z-40">
+						<button
+							onClick={() =>
+								window.location.href = "mailto:raceoffinance.ysc@gmail.com?subject=Báo%20cáo%20sự%20cố%20trong%20bài%20thi"
+							}
+							className="px-4 py-2 bg-gray-100 text-gray-900 rounded-lg shadow-lg hover:bg-red-600 hover:text-white transition text-sm font-medium flex items-center gap-2"
+						>
+							<svg
+								className="w-5 h-5"
+								fill="none"
+								stroke="currentColor"
+								strokeWidth={2}
+								viewBox="0 0 24 24"
+							>
+								<path
+									strokeLinecap="round"
+									strokeLinejoin="round"
+									d="M2.25 12.76c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.076-4.076a1.526 1.526 0 0 1 1.037-.443 48.282 48.282 0 0 0 5.68-.494c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"
+								/>
+							</svg>
+							Báo cáo sự cố: raceoffinance.ysc@gmail.com
+						</button>
 					</div>
 				</div>
 			)}

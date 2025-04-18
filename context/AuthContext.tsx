@@ -62,7 +62,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({ children }) =>
 					const testEndDate = new Date('2025-04-08T23:59:59'); 	// THỜI GIAN ĐÓNG TEST
 					setIsTimeToDoTest(currentDate >= testStartDate && currentDate <= testEndDate);
 					setIsTestClosed(currentDate > testEndDate); // TEST ĐÓNG NẾU THỜI GIAN HIỆN TẠI VƯỢT TẠI THỜI GIAN ĐÓNG TEST
-					console.log('Exam taken status:', examTaken);
+					// console.log('Exam taken status:', examTaken);
 				} catch (error) {
 					localStorage.removeItem('token');
 					setIsAuthenticated(false);
