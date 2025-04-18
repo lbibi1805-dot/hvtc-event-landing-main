@@ -147,8 +147,8 @@ export default function Sponsor() {
               src="/images/2025/sponsor/nttv/images.png"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={500}
-              width={500}
+              height={400}
+              width={400}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
@@ -161,8 +161,8 @@ export default function Sponsor() {
               src="/images/2025/sponsor/btcm/110e4712_bvsc.png"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={500}
-              width={500}
+              height={400}
+              width={400}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
@@ -183,8 +183,8 @@ export default function Sponsor() {
               src="/images/2025/sponsor/nttd/zim-academy.jpg"
               className="h-auto rounded-lg p-4"
               alt=""
-              height={500}
-              width={500}
+              height={400}
+              width={400}
               style={{ maxWidth: "none", backgroundColor:"#fff" }}
             />
           </div>
