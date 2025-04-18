@@ -2,7 +2,7 @@ export const timelineData = [
 	{
 		title: "VÒNG 1",
 		name: "IDEA SKETCH",
-		date: "(21/04/2025 - 13/05/2025)",
+		date: "(19/04/2025 - 13/05/2025)",
 		description: "“Nét phác đầu tiên – kiến thức nền.”",
 		details: [
 			"Hình thức thi: Bài test trực tuyến (Online) – Thi cá nhân, bao gồn 25 câu hỏi trắc nghiệm trong 30 phút với các chủ đề liên quan đến lĩnh vực Tài chính – Chứng khoán",
@@ -53,7 +53,7 @@ export const timelineData = [
 	{
 		title: "CHUNG KẾT",
 		name: "MASTERPIECE",
-		date: "(Dự kiến: Tháng 8/2025)",
+		date: "(04/08/2025)",
 		description: "“Bức họa hoàn chỉnh – khẳng định bản lĩnh.”",
 		details: [
 			"The Maze – Vượt mê cung kiến thức",
