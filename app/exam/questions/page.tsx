@@ -16,6 +16,7 @@ import toastUtil from "@/lib/ToastUtil";
 import TestUnavailable from "@/components/TestUnavailable";
 import { AlertDialogUtils } from "@/lib/AlertDialog";
 import { QuestionCard } from "@/app/exam/questions/QuestionCard";
+import TestClose from "@/components/TestClose";
 
 const ExamQuestion = () => {
 	const [totalQuestions, setTotalQuestions] = useState(0);
@@ -42,6 +43,15 @@ const ExamQuestion = () => {
 		).getTime();
 		return currentDate >= testStartDate && currentDate <= testEndDate;
 	};
+
+	const isClosing = true;
+	if (isClosing) {
+		return (
+			<AuthenticatedRoute>
+				<TestClose />
+			</AuthenticatedRoute>
+		);
+	}
 
 	if (!isTimeToDoTest()) {
 		return (
